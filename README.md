@@ -1,187 +1,146 @@
 # OpenColor Labs
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Version](https://img.shields.io/badge/version-2.0.0-blue)
 ![Speyer UI](https://img.shields.io/badge/Speyer_UI-v2.1.2-green)
 ![Licence](https://img.shields.io/badge/licence-MIT-lightgrey)
 
-**Open source, scientifically transparent colour vision analysis and simulation.**
+An open-source colour vision analysis tool. Procedurally generated Ishihara plates, three-axis CVD detection, a split-screen Reality Simulator, and daltonisation-based reveal — all in a single HTML file.
 
-[Live Demo](https://adrianspeyer.github.io/Open-Colour-Labs/) · [View Source](https://github.com/adrianspeyer/Open-Colour-Labs)
-
----
-
-## About The Project
-
-Most online colour blindness tests are marketing tools designed to sell expensive "correction" glasses. OpenColor Labs is different. It is a strictly mathematical, open-source tool designed to provide directional analysis and, more importantly, **validation**.
-
-We use procedural generation to create Ishihara-style dot plates that cannot be memorised, and we provide a "Qualia Validator" to let users prove the diagnosis to themselves using their own **qualia** (subjective experience).
+**[Live Demo →](https://adrianspeyer.github.io/Open-Colour-Labs/)**
 
 ---
 
-## Key Features
+## What It Does
 
-**Procedural Generation** — Test plates are generated in real-time using HTML5 Canvas. No static images means you cannot cheat by memorising answers. HSL colour jitter ensures no two plates are ever identical.
-
-**The "Qualia" Validator** — A draggable split-screen simulator that uses SVG colour matrices to simulate Protanopia, Deuteranopia, and Tritanopia. If you are colourblind, the "Original" and "Simulated" sides will look identical to you — providing definitive proof of the diagnosis. Drag the divider to compare precisely.
-
-**Scientifically Grounded Simulation** — The simulator uses the Machado, Oliveira & Fernandes (2009) severity=1.0 matrices, the gold standard for dichromacy simulation. These are validated against the Brettel, Viénot & Mollon (1997) model and operate correctly in the SVG `linearRGB` colour space.
-
-**Three-Option Response System** — Users can choose between "I see [number]", "I see no number — just dots", and "I see something, but can't make it out." The distinction between seeing nothing and partial visibility is clinically meaningful: it helps estimate severity (dichromacy vs. anomalous trichromacy).
-
-**Strict Scoring** — Includes "Trap" plates (random noise) to detect guessing and "Brightness" traps to distinguish between Protan (Red-Blind) and Deutan (Green-Blind) deficiencies.
-
-**Reveal Mode** — A daltonisation filter ("Reveal What You're Missing") shifts confused hues into the Blue/Yellow spectrum, allowing colourblind users to see the information they are missing. For normal-vision observers, both sides appear nearly identical — confirming the shift is targeted to the CVD channel.
-
----
-
-## Usage
-
-This project is a single-file application. No build steps, no servers, no dependencies.
-
-1. Download `index.html` and `test-image.jpg`.
-2. Open `index.html` in any modern web browser.
-3. That's it.
-
----
-
-## Tech Stack
-
-| Layer | Technology | Purpose |
-|-------|-----------|---------|
-| Rendering | HTML5 Canvas | Pixel-perfect, randomised dot generation |
-| Simulation | SVG `feColorMatrix` Filters | Machado et al. (2009) colour vision simulation matrices |
-| Daltonisation | SVG `feColorMatrix` Filter | R-G opponent signal shifted into Blue channel for Reveal mode |
-| Comparison | Draggable Slider | Mouse + touch clip-path comparison with divider handle |
-| Design System | [Speyer UI v2.1.2](https://github.com/adrianspeyer/speyer-ui) | Accessible, colour-blind friendly interface with design tokens |
-| Icons | [Lucide](https://lucide.dev/) | Lightweight iconography |
-| Logic | Vanilla JavaScript | State management and view rendering — zero frameworks |
+| Feature | Description |
+|---------|-------------|
+| **14-Plate Test** | Procedural Ishihara plates: demo, R/G vanishing, R/G desaturated, brightness traps, tritan (B/Y), hidden-digit, and noise traps |
+| **Three-Axis Detection** | Classifies Protan (red-weak), Deutan (green-weak), and Tritan (blue-yellow) deficiencies |
+| **Hidden-Digit Plates** | Reverse plates where CVD observers see a number that normal vision cannot — positive confirmation |
+| **Severity Estimation** | Differentiates anomalous trichromacy (mild) from dichromacy (severe) based on response patterns |
+| **Qualia Validator** | Draggable split-screen simulator using Machado et al. (2009) SVG filters in linearRGB |
+| **Reveal Mode** | Daltonisation (Fidaner et al. 2005) shifts R-G opponent signal into the blue channel so CVD users can see what they're missing |
 
 ---
 
 ## How It Works
 
-### The Test (10 Plates)
+### Test Engine
 
-The test sequence includes five plate types, each serving a diagnostic purpose based on pseudoisochromatic plate (PIP) design principles (Hardy, Rand & Rittler, 1945):
+Each plate is **procedurally generated on a `<canvas>`** with HSL jitter, rejection sampling, and 2,000 dots per plate. No plate is ever identical. The 14-plate sequence follows Hardy, Rand & Rittler's (1945) four pseudoisochromatic design types:
 
-| Plate Type | Count | PIP Classification | Purpose |
-|-----------|-------|--------------------|---------|
-| **Demo (Control)** | 2 | Demonstration | High-contrast plates everyone should see. Validates screen calibration. |
-| **Red/Green Confusion** | 2 | Vanishing | Standard Ishihara confusion axis. The number vanishes for both Protan and Deutan observers. |
-| **Red/Green Hard** | 2 | Vanishing (desaturated) | Low-saturation variant (~15%). Catches mild anomalous trichromacy that standard plates miss. |
-| **Brightness Trap** | 2 | Diagnostic | Dark red on dark grey-green. Protan-specific — protanopes perceive red as very dark due to reduced L-cone luminance sensitivity. |
-| **Noise Trap** | 2 | Trap | Pure random noise with no hidden number. Detects guessing. |
+1. **Vanishing plates** — a number visible to normal vision, invisible to CVD
+2. **Diagnostic plates** — differentiate protan from deutan via luminance
+3. **Hidden-digit plates** — a number visible to CVD, invisible to normal vision
+4. **Noise traps** — random dots with no number (guessing detection)
 
-### Scoring Logic
+The scoring pipeline validates screen calibration (demo plates), detects guessing (noise traps), confirms with hidden-digit results, then classifies by type and severity.
 
-The engine uses a strict pipeline with severity estimation:
+### Simulator
 
-1. **Invalid (Screen):** Failed demo plates → screen calibration or Night Mode issue.
-2. **Invalid (Guessing):** Claimed to see numbers in noise plates.
-3. **Normal:** All diagnostic plates correct.
-4. **Protan:** Missed brightness trap plates (red appears dark/black).
-5. **Deutan:** Missed R/G confusion plates but passed brightness traps.
-6. **Severity:** "Nothing" responses suggest dichromacy (severe); "Unsure/partial" responses suggest anomalous trichromacy (mild-moderate).
+The "Qualia Validator" applies **SVG `feColorMatrix` filters** with `color-interpolation-filters="linearRGB"` to a test image. Users drag a slider to compare the original image with its simulated counterpart. If both sides look identical, the diagnosis is confirmed.
 
-### The Simulator
+**What colourblind users see:** In "Reveal" mode, the *right* side is daltonised — colours shifted so the CVD observer can perceive differences they normally miss. The left side looks the same as always.
 
-The Qualia Validator applies SVG `feColorMatrix` transforms to a reference image (`test-image.jpg`) via a draggable split-screen comparison. The simulation matrices are from Machado, Oliveira & Fernandes (2009), severity=1.0:
+**What normal-vision users see:** In simulation modes (Protanopia, Deuteranopia, Tritanopia), the right side shows the degraded colour space. Normal-vision users see a dramatic difference; CVD users see little or none.
 
-- **Protanopia** — L-cone (red) absent. Reds appear dark/black.
-- **Deuteranopia** — M-cone (green) absent. Greens and reds collapse together.
-- **Tritanopia** — S-cone (blue) absent. Blues and yellows become confused.
-- **Reveal** — Custom daltonisation that shifts the red-green confusion axis into blue-yellow, making hidden information visible. Matrix: `B' = 0.5R − 0.4G + B`.
+---
 
-**For colourblind users:** If the "Original" and "Simulated" halves look identical, it confirms the diagnosis. Switch to "Reveal" to see what you've been missing — reds shift blue-ish, greens shift yellow-ish.
+## Tech Stack
 
-**For normal-vision observers:** The simulation side looks dramatically different to you. In Reveal mode, both sides look nearly identical — because the shift targets a channel you already perceive.
+| Layer | Technology |
+|-------|-----------|
+| Design System | [Speyer UI v2.1.2](https://github.com/adrianspeyer/speyer-ui) — topbar, nav, footer, cards, badges, shields, progress, alerts, stat/KPI |
+| Icons | [Lucide](https://lucide.dev/) (pinned, deferred, auto-init on load) |
+| Simulation | Machado, Oliveira & Fernandes (2009) — severity 1.0 matrices |
+| Daltonisation | Fidaner, Ozguven & Cemgil (2005) — B' = 0.5R − 0.4G + B |
+| Plate Design | Hardy, Rand & Rittler (1945) — four PIP design types |
+| Comparison | Draggable split-screen slider with touch + mouse support |
+| SEO | Open Graph, Twitter Cards, JSON-LD (`WebApplication` + `FAQPage`) |
+| Accessibility | WCAG 2.1 AA, `prefers-reduced-motion`, `prefers-contrast: more`, `prefers-color-scheme`, safe-area insets, skip navigation, ARIA labels, 44px touch targets |
+
+**Zero dependencies. Zero build steps. Single HTML file.**
 
 ---
 
 ## Scientific References
 
-This project is grounded in peer-reviewed colour vision research:
-
-| Reference | Used For |
-|-----------|----------|
-| Machado, G.M., Oliveira, M.M., & Fernandes, L.A.F. (2009). [A Physiologically-based Model for Simulation of Color Vision Deficiency](https://www.inf.ufrgs.br/~oliveira/pubs_files/CVD_Simulation/CVD_Simulation.html). *IEEE Transactions on Visualization and Computer Graphics*, 15(6), 1291–1298. | SVG simulation matrices (severity=1.0 dichromacy) |
-| Brettel, H., Viénot, F., & Mollon, J.D. (1997). [Computerized Simulation of Color Appearance for Dichromats](https://pubmed.ncbi.nlm.nih.gov/9316278/). *Journal of the Optical Society of America A*, 14(10), 2647–2655. | Foundational LMS-based simulation model; Machado validates against this |
-| Viénot, F., Brettel, H., & Mollon, J.D. (1999). Digital Video Colourmaps for Checking the Legibility of Displays by Dichromats. *Color Research & Application*, 24(4), 243–252. | Simplified protanopia/deuteranopia simulation method |
-| Hardy, L.H., Rand, G., & Rittler, M.C. (1945). Tests for the Detection and Analysis of Color Blindness. *Journal of the Optical Society of America*, 35(4), 268–275. | Classification of pseudoisochromatic plate types (vanishing, diagnostic, transformation, hidden-digit) |
-| DaltonLens Project. (2021). [Review of Open Source Color Blindness Simulations](https://daltonlens.org/opensource-cvd-simulation/). | Comparative analysis of simulation accuracy across implementations |
-
----
-
-## Project Structure
-```
-Open-Colour-Labs/
-├── index.html        # Complete application (HTML + CSS + JS)
-├── test-image.jpg    # Reference image for the Qualia Validator
-├── LICENSE           # MIT Licence
-├── CONTRIBUTING.md   # Contribution guidelines
-└── README.md         # This file
-```
-
----
-
-## Contributing
-
-We welcome contributions! Specifically, we are looking for:
-
-**Algorithm Improvements** — Tuning the hue and saturation jitter on the confusion plates to better match clinical anomaloscope readings.
-
-**New Plate Types** — Implementing "hidden-digit" (reverse) plates where colourblind users see a number that normal vision cannot, and "transformation" plates where different observers see different numbers.
-
-**Severity Slider for Simulator** — The Machado model provides matrices for severities 0.0–1.0 in 0.1 steps. A slider could let users explore the full range from mild anomalous trichromacy to full dichromacy.
-
-**Matrix Accuracy** — Validating the SVG `linearRGB` pipeline against reference implementations like [DaltonLens-Python](https://daltonlens.org/) or [jsColorblindSimulator](https://github.com/MaPePeR/jsColorblindSimulator).
-
-**Accessibility** — Improving keyboard navigation and screen reader support.
-
-### How to Contribute
-
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
----
-
-## Changelog
-
-### [1.0.0] — 2026-02-16
-
-**Initial versioned release.** Everything prior was unversioned iteration.
-
-#### Added
-- **Procedural Ishihara Plate Generator** — 5 plate types (demo, R/G confusion, R/G hard, brightness trap, noise trap) with 2,000 dots per plate, HSL colour jitter (hue ±8°, sat ±15%, lum ±8°), and rejection sampling for circular dot placement.
-- **Three-Option Response System** — Number selection (4 randomised choices), "I see no number — just dots", and "I see something, but can't make it out." Severity estimation from Nothing vs Unsure ratio.
-- **Scoring Engine** — Strict pipeline: screen validation → guessing detection → type classification (Normal / Protan / Deutan / Indeterminate) → severity estimation (dichromacy vs anomalous trichromacy).
-- **Qualia Validator (Simulator)** — Draggable split-screen comparison with mouse + touch support. Bottom layer: filtered image. Top layer: original image clipped to slider position. Divider handle with `backdrop-filter: blur(4px)`.
-- **CVD Simulation Filters** — Machado et al. (2009) severity=1.0 matrices for Protanopia, Deuteranopia, and Tritanopia. SVG `feColorMatrix` in `linearRGB` colour space.
-- **Reveal Mode (Daltonisation)** — Custom filter shifting R-G opponent signal into Blue channel (`B' = 0.5R − 0.4G + B`). Colourblind users see colour differences for the first time; normal-vision observers see near-identical sides.
-- **Results → Simulator Bridge** — "Launch Verification Sim" button on results page pre-selects the diagnosed type in the simulator.
-- **Viewport-Safe Test Layout** — Plate uses `max-height: min(380px, 40vh)` so the entire test view (plate + all 6 buttons) fits on a 1080p screen at 100% zoom without scrolling. Compact button sizing (44px number buttons, 36px special buttons) with reduced spacing.
-
-#### Tech
-- Single-file architecture: `index.html` + `test-image.jpg`, zero build steps.
-- Speyer UI v2.1.2 for design tokens and components.
-- Lucide icons. Vanilla JavaScript with class-based state management.
-- Accessible: skip link, ARIA labels, `role="img"`, `aria-pressed`, `focus-visible` outlines, `prefers-reduced-motion` support.
-
----
-
-## Disclaimer
-
-**This is not a medical device.** This tool generates synthetic approximations of clinical tests. Factors such as screen calibration, ambient lighting, and "Night Shift" modes can significantly affect results. The simulation matrices are educational approximations of dichromacy — individual variation means no simulation is perfectly accurate for every observer. Always consult an optometrist for a comprehensive exam and diagnosis.
+- **Machado, S., Oliveira, M. M., & Fernandes, L. A. F.** (2009). A physiologically-based model for simulation of color vision deficiency. *IEEE Transactions on Visualization and Computer Graphics*, 15(6), 1291–1298.
+- **Brettel, H., Viénot, F., & Mollon, J. D.** (1997). Computerized simulation of color appearance for dichromats. *JOSA A*, 14(10), 2647–2655.
+- **Viénot, F., Brettel, H., & Mollon, J. D.** (1999). Digital video colourmaps for checking the legibility of displays by dichromats. *Color Research & Application*, 24(4), 243–252.
+- **Hardy, L. H., Rand, G., & Rittler, M. C.** (1945). Tests for detection and analysis of color blindness. *JOSA*, 35(4), 268–275.
+- **Fidaner, I. B., Ozguven, N., & Cemgil, T.** (2005). Analysis of color blindness. Technical report.
+- **Gobira, M. et al.** (2025). Assessing the accuracy of a digital color vision test. *Arch Soc Esp Oftalmol*, 100(12), 781–787.
 
 ---
 
 ## Licence
 
-Distributed under the MIT Licence. See `LICENSE` for more information.
+MIT — see [LICENCE](LICENCE) for details.
 
 ---
 
-Built with [Speyer UI](https://github.com/adrianspeyer/speyer-ui). Made in Canada with love. 🇨🇦
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Submit a pull request with a clear description
+
+Especially welcome:
+- Confusion-line-aware colour calibration (CIE chromaticity mapping)
+- Adaptive staircase severity measurement
+- Additional plate types (arrangement, D-15-style)
+- Multilingual support
+
+---
+
+## Changelog
+
+### [2.0.0] — 2026-02-16
+
+**Test Engine**
+- Added **tritan (blue-yellow) plates** — tests the S-cone / blue-yellow confusion axis
+- Added **hidden-digit (reverse) plates** — CVD observers see a number that normal vision cannot
+- Expanded from 10 to **14 plates**: 2 demo, 2 R/G vanishing, 2 R/G desaturated, 2 brightness traps, 2 tritan, 2 hidden-digit, 2 noise traps
+- Updated scoring engine: tritan classification, hidden-digit confirmation, severity differentiation
+- Added **visual progress bar** (`sui-progress`) showing plate N / 14
+
+**SUI Migration**
+- Header → `sui-topbar` + `sui-brand` + `sui-brand-mark` + `sui-brand-name` + `sui-version-pill`
+- Navigation → `sui-nav` + `sui-nav-link` (replaces `sui-btn-ghost` buttons)
+- Footer → `sui-footer` + `sui-footer-links` + `sui-shield` version badge
+- Results → `sui-card` + `sui-card-lg` + `sui-stat` + `sui-kpi-value` + `sui-kpi-label`
+- Info box → `sui-alert` + `sui-alert-info`
+- Icons: pinned Lucide with `onload` callback — fixes missing header icons
+
+**Mobile / iPad / iPhone**
+- `viewport-fit=cover` + `env(safe-area-inset-*)` for notch/Dynamic Island
+- Apple meta tags: `apple-mobile-web-app-capable`, `apple-mobile-web-app-status-bar-style`, `theme-color`
+- All touch targets maintain 44px minimum (`--sui-touch-target`)
+- Portrait + landscape verified for iPad and iPhone
+
+**SEO**
+- `lang="en-CA"` (Canadian spelling throughout)
+- Open Graph tags (title, description, url, type, locale)
+- Twitter Card tags (summary)
+- `<link rel="canonical">`
+- JSON-LD structured data: `WebApplication` + `FAQPage`
+- Optimised title and meta description targeting "colour blind test" keywords
+
+**Content**
+- Fixed disclaimer grammar: "This is an educational tool, not a medical device. It does not replace professional diagnosis."
+
+### [1.0.0] — 2026-02-16
+
+- Initial versioned release
+- Procedural Ishihara plate generator (5 types)
+- Three-option response system (number / nothing / unsure)
+- Scoring engine: screen validation → guessing detection → type classification → severity estimation
+- Qualia Validator: draggable split-screen simulator with Machado (2009) SVG filters
+- Daltonisation-based reveal mode (Fidaner et al. 2005)
+- Viewport-safe layout for 1080p displays at 100% zoom
+- Speyer UI v2.1.2 design system
+
+---
+
+Made in Canada with ❤️
