@@ -55,7 +55,7 @@ The "Qualia Validator" applies **SVG `feColorMatrix` filters** with `color-inter
 | Simulation | Machado, Oliveira & Fernandes (2009) — severity 1.0 matrices |
 | Daltonisation | Fidaner, Ozguven & Cemgil (2005) — B' = 0.5R − 0.4G + B |
 | Plate Design | Hardy, Rand & Rittler (1945) — four PIP design types |
-| Comparison | Draggable split-screen slider with touch + mouse support |
+| Comparison | Draggable split-screen slider with `clip-path` + touch/mouse support |
 | SEO | Open Graph, Twitter Cards, JSON-LD (`WebApplication` + `FAQPage`) |
 | Accessibility | WCAG 2.1 AA, `prefers-reduced-motion`, `prefers-contrast: more`, `prefers-color-scheme`, safe-area insets, skip navigation, ARIA labels, 44px touch targets |
 
@@ -107,11 +107,13 @@ Especially welcome:
 
 **SUI Migration**
 - Header → `sui-topbar` + `sui-brand` + `sui-brand-mark` + `sui-brand-name` + `sui-version-pill`
-- Navigation → `sui-nav` + `sui-nav-link` (replaces `sui-btn-ghost` buttons)
+- Navigation → `sui-topbar-actions` (Test, Simulator, GitHub right-aligned)
 - Footer → `sui-footer` + `sui-footer-links` + `sui-shield` version badge
 - Results → `sui-card` + `sui-card-lg` + `sui-stat` + `sui-kpi-value` + `sui-kpi-label`
-- Info box → `sui-alert` + `sui-alert-info`
+- Info box → `sui-alert` + `sui-alert-info` (shown only for Protan/Deutan/Tritan results)
 - Icons: pinned Lucide with `onload` callback — fixes missing header icons
+- Simulator: replaced overflow-clip approach with `clip-path: inset()` for pixel-perfect image alignment
+- Brand logo: green accent on "Color" restored
 
 **Mobile / iPad / iPhone**
 - `viewport-fit=cover` + `env(safe-area-inset-*)` for notch/Dynamic Island
@@ -129,6 +131,7 @@ Especially welcome:
 
 **Content**
 - Fixed disclaimer grammar: "This is an educational tool, not a medical device. It does not replace professional diagnosis."
+- Removed internal plate type labels from test UI (Control, Noise Trap, etc. no longer visible to users)
 
 ### [1.0.0] — 2026-02-16
 

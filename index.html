@@ -158,7 +158,7 @@
             display: grid; grid-template-columns: 1fr;
             gap: var(--sui-space-4); width: 100%; max-width: var(--sui-max-width);
         }
-        @media (min-width: 1024px) { .sim-grid { grid-template-columns: 280px 1fr; } }
+        @media (min-width: 1024px) { .sim-grid { grid-template-columns: 1fr 280px; } }
 
         /* ── Draggable Comparison Container ── */
         .compare-container {
@@ -168,11 +168,12 @@
             background: #000;
         }
         .compare-img-bottom { display: block; width: 100%; height: auto; }
-        .compare-clip {
-            position: absolute; top: 0; left: 0; bottom: 0;
-            width: 50%; overflow: hidden;
+        .compare-img-top {
+            position: absolute; top: 0; left: 0;
+            display: block; width: 100%; height: 100%;
+            object-fit: cover;
+            clip-path: inset(0 50% 0 0);
         }
-        .compare-img-top { display: block; height: 100%; width: auto; max-width: none; }
         .compare-divider {
             position: absolute; top: 0; bottom: 0; left: 50%;
             width: 3px; background: rgba(255,255,255,0.5);
@@ -227,12 +228,6 @@
             -webkit-background-clip: text; background-clip: text; color: transparent;
         }
 
-        /* Override: sui-nav-link as button needs reset */
-        button.sui-nav-link {
-            background: none; border: none; cursor: pointer;
-            font-family: inherit;
-        }
-
         /* Footer safe area for iPhone */
         .sui-footer {
             padding-bottom: calc(var(--sui-space-5) + env(safe-area-inset-bottom));
@@ -282,21 +277,18 @@
                     <i data-lucide="scan-eye" style="color: var(--sui-success);"></i>
                 </div>
                 <div class="sui-brand-title">
-                    <span class="sui-brand-name">OpenColor Labs</span>
+                    <span class="sui-brand-name">Open<span style="color: var(--sui-success);">Color</span> Labs</span>
                     <span class="sui-version-pill">v2.0.0</span>
                 </div>
             </div>
 
-            <nav class="sui-nav" aria-label="Main navigation">
-                <button class="sui-nav-link" type="button" onclick="app.setView('test')">
+            <div class="sui-topbar-actions">
+                <button class="sui-btn sui-btn-ghost sui-btn-sm" type="button" onclick="app.setView('test')">
                     <i data-lucide="eye"></i> Test
                 </button>
-                <button class="sui-nav-link" type="button" onclick="app.setView('sim')">
+                <button class="sui-btn sui-btn-ghost sui-btn-sm" type="button" onclick="app.setView('sim')">
                     <i data-lucide="split"></i> Simulator
                 </button>
-            </nav>
-
-            <div class="sui-topbar-actions">
                 <a class="sui-btn sui-btn-ghost sui-btn-sm" href="https://github.com/adrianspeyer/Open-Colour-Labs"
                    target="_blank" rel="noopener noreferrer" aria-label="View source on GitHub">
                     <i data-lucide="github"></i>
@@ -593,7 +585,7 @@
             const container = document.getElementById('compare-box');
             if (!container) return;
 
-            const clip = container.querySelector('.compare-clip');
+            const topImg = container.querySelector('.compare-img-top');
             const divider = container.querySelector('.compare-divider');
             let dragging = false;
 
@@ -602,7 +594,7 @@
                 let pct = ((clientX - rect.left) / rect.width) * 100;
                 pct = Math.max(2, Math.min(98, pct));
                 this.state.sliderPos = pct;
-                clip.style.width = pct + '%';
+                topImg.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
                 divider.style.left = pct + '%';
             };
 
@@ -617,7 +609,7 @@
             window.addEventListener('mouseup', onUp);
             window.addEventListener('touchend', onUp);
 
-            clip.style.width = this.state.sliderPos + '%';
+            topImg.style.clipPath = `inset(0 ${100 - this.state.sliderPos}% 0 0)`;
             divider.style.left = this.state.sliderPos + '%';
 
             this._sliderCleanup = () => {
@@ -677,12 +669,11 @@
 
             return `
                 <div class="fade-in" style="display: flex; flex-direction: column; width: 100%; max-width: 460px; align-items: center;">
-                    <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--sui-space-2);">
+                    <div style="width: 100%; display: flex; justify-content: center; align-items: center; margin-bottom: var(--sui-space-2);">
                         <span class="sui-badge sui-badge-neutral sui-badge-sm">
                             <i data-lucide="layers" style="width: 12px; height: 12px;" aria-hidden="true"></i>
                             Plate ${this.state.plateIndex + 1} / ${total}
                         </span>
-                        <span class="sui-badge sui-badge-outline sui-badge-sm">${plate.desc}</span>
                     </div>
                     <!-- SUI Progress Bar -->
                     <div class="sui-progress sui-progress-success" role="progressbar"
@@ -739,13 +730,13 @@
                             </div>
                         </div>
                     </div>
-                    ${dx.badge !== 'Invalid' ? `
+                    ${['Protan', 'Deutan', 'Tritan'].includes(dx.badge) ? `
                     <div class="sui-alert sui-alert-info" style="max-width: 600px;">
                         <i data-lucide="info" style="width: 20px; height: 20px; flex-shrink: 0;" aria-hidden="true"></i>
                         <div>
                             <strong style="display: block; margin-bottom: var(--sui-space-1);">Verify this result yourself</strong>
                             <p style="margin-bottom: var(--sui-space-3); line-height: var(--sui-leading-body);">
-                                Go to the Simulator. If the "Original" and "${dx.badge}" sides look identical to you, the test is accurate. Then try "Reveal" to see what you've been missing.
+                                Go to the Simulator. If the "Original" and "${dx.badge === 'Protan' ? 'Protanopia' : dx.badge === 'Deutan' ? 'Deuteranopia' : 'Tritanopia'}" sides look identical to you, the test is accurate. Then try "Reveal" to see what you've been missing.
                             </p>
                             <button onclick="app.state.simMode='${simTarget}'; app.setView('sim');" class="sui-btn sui-btn-primary sui-btn-sm">
                                 <i data-lucide="split" style="width: 14px; height: 14px;" aria-hidden="true"></i> Launch Verification Sim
@@ -800,9 +791,8 @@
                         <div id="compare-box" class="compare-container" style="order: 1;"
                              role="img" aria-label="Draggable comparison: original vs ${rightLabel}">
                             <img class="compare-img-bottom" src="test-image.jpg" alt="" style="filter: ${filterUrl};">
-                            <div class="compare-clip" style="width: ${this.state.sliderPos}%;">
-                                <img class="compare-img-top" src="test-image.jpg" alt="">
-                            </div>
+                            <img class="compare-img-top" src="test-image.jpg" alt=""
+                                 style="clip-path: inset(0 ${100 - this.state.sliderPos}% 0 0);">
                             <div class="compare-label compare-label-left">ORIGINAL</div>
                             <div class="compare-label compare-label-right"
                                  ${isReveal ? 'style="color: var(--sui-pro); border-color: var(--sui-pro-strong);"' : ''}>
