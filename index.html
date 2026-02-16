@@ -4,129 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Colour Blind Test — Free Online Colour Vision Analysis | OpenColor Labs</title>
-    <meta name="description" content="Free, open-source colour blindness test with procedurally generated Ishihara plates and a split-screen Reality Simulator. Scientifically grounded. No ads, no paid diagnosis — just transparent code.">
+    <meta name="description" content="Free, open-source colour blindness test with 18 procedurally generated Ishihara plates covering protan, deutan, and tritan axes. Split-screen Reality Simulator with contextual narration. Scientifically grounded.">
     <link rel="canonical" href="https://adrianspeyer.github.io/Open-Colour-Labs/">
-
-    <!-- Open Graph -->
     <meta property="og:title" content="OpenColor Labs — Free Colour Blind Test">
-    <meta property="og:description" content="Open-source colour vision analysis with procedural Ishihara plates and a Qualia Validator simulator. Scientifically grounded. No ads, no paid diagnosis.">
+    <meta property="og:description" content="Open-source colour vision analysis with 18 procedural Ishihara plates, transformation plates for protan/deutan differentiation, and a Qualia Validator simulator.">
     <meta property="og:url" content="https://adrianspeyer.github.io/Open-Colour-Labs/">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="en_CA">
-
-    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="OpenColor Labs — Free Colour Blind Test">
-    <meta name="twitter:description" content="Open-source colour vision analysis. Procedural Ishihara plates, Qualia Validator, and daltonisation reveal.">
-
-    <!-- Apple / Mobile -->
+    <meta name="twitter:description" content="Open-source colour vision analysis. 18 plates, transformation-based differentiation, Qualia Validator, daltonisation reveal.">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#0B0F1A">
     <meta name="mobile-web-app-capable" content="yes">
-
-    <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "OpenColor Labs",
-        "url": "https://adrianspeyer.github.io/Open-Colour-Labs/",
-        "applicationCategory": "HealthApplication",
-        "operatingSystem": "Any",
-        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CAD" },
-        "description": "Open-source colour blindness test using procedurally generated Ishihara plates and a split-screen Reality Simulator with CVD simulation matrices from Machado et al. (2009).",
-        "author": { "@type": "Person", "name": "Adrian Speyer" },
-        "license": "https://opensource.org/licenses/MIT"
-    }
+    {"@context":"https://schema.org","@type":"WebApplication","name":"OpenColor Labs","url":"https://adrianspeyer.github.io/Open-Colour-Labs/","applicationCategory":"HealthApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"CAD"},"description":"Open-source colour blindness test using 18 procedurally generated Ishihara plates and a tab-based Reality Simulator with CVD simulation matrices from Machado et al. (2009).","author":{"@type":"Person","name":"Adrian Speyer"},"license":"https://opensource.org/licenses/MIT"}
     </script>
     <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-            {
-                "@type": "Question",
-                "name": "How accurate are online colour blindness tests?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "A 2025 study (Gobira et al.) found digital Ishihara tests achieve 96.4% sensitivity and 99.3% specificity compared to physical plates. However, screen calibration, ambient lighting, and Night Mode settings can affect results. Online tests are screening tools — consult an optometrist for a definitive diagnosis."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "What types of colour blindness does this test detect?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "OpenColor Labs tests for Protan (red-weak), Deutan (green-weak), and Tritan (blue-yellow) colour vision deficiencies using five different plate types: demonstration, vanishing, desaturated, diagnostic (brightness), and hidden-digit plates."
-                }
-            }
-        ]
-    }
+    {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How accurate are online colour blindness tests?","acceptedAnswer":{"@type":"Answer","text":"A 2025 study (Gobira et al.) found digital Ishihara tests achieve 96.4% sensitivity and 99.3% specificity compared to physical plates. However, screen calibration, ambient lighting, and Night Mode settings can affect results. Online tests are screening tools — consult an optometrist for a definitive diagnosis."}},{"@type":"Question","name":"What types of colour blindness does this test detect?","acceptedAnswer":{"@type":"Answer","text":"OpenColor Labs tests for Protan (red-weak), Deutan (green-weak), and Tritan (blue-yellow) colour vision deficiencies using seven plate types including transformation plates that differentiate protan from deutan."}}]}
     </script>
 
-    <!-- Speyer UI v2.1.2 — Tokens + Components -->
+    <!-- Speyer UI v2.1.2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/adrianspeyer/speyer-ui@2.1.2/dist/sui-tokens.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/adrianspeyer/speyer-ui@2.1.2/dist/sui-components.min.css">
-
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
-    <!-- Lucide Icons (pinned, deferred, auto-init on load) -->
     <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" onload="lucide.createIcons()"></script>
 
     <style>
-        /* =====================================================
-           CUSTOM CSS — OpenColor Labs v2.0.0
-           SUI handles: topbar, brand, nav, footer, cards,
-           badges, shields, progress, alerts, buttons, spacing.
-           Below: app-specific layout and test UI only.
-        ===================================================== */
-
-        /* Base */
+        /* === OpenColor Labs v3.0.0 — Custom CSS === */
         body {
-            background-color: var(--sui-bg-primary);
-            color: var(--sui-text-primary);
-            display: flex; flex-direction: column;
-            min-height: 100vh; margin: 0;
+            background: var(--sui-bg-primary); color: var(--sui-text-primary);
+            display: flex; flex-direction: column; min-height: 100vh; margin: 0;
             font-family: var(--sui-font-primary);
-            /* Safe area padding for notched iPhones */
             padding-top: env(safe-area-inset-top);
             padding-left: env(safe-area-inset-left);
             padding-right: env(safe-area-inset-right);
         }
         a { color: var(--sui-blue-primary); text-decoration: none; }
         a:hover { text-decoration: underline; }
-
-        .fade-in { animation: fadeIn 0.4s var(--sui-easing); }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
+        .fade-in { animation: fadeIn 0.35s var(--sui-easing); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
         @media (prefers-reduced-motion: reduce) { .fade-in { animation: none; } }
 
-        /* Main content area */
         main {
-            flex-grow: 1; width: 100%; max-width: var(--sui-max-width);
-            margin: 0 auto; padding: var(--sui-space-3) var(--sui-space-3);
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
+            flex: 1; width: 100%; max-width: var(--sui-max-width);
+            margin: 0 auto; padding: var(--sui-space-3);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
 
-        /* Ishihara Plate — viewport-safe sizing */
-        .plate-container {
-            position: relative; width: 100%; max-width: 360px;
-            max-height: min(360px, 35vh); aspect-ratio: 1 / 1;
+        /* Plate */
+        .plate-wrap {
+            position: relative; width: 100%; max-width: 340px;
+            max-height: min(340px, 34vh); aspect-ratio: 1;
             background: var(--sui-bg-elevated); border-radius: var(--sui-radius-full);
             border: 4px solid var(--sui-border); box-shadow: var(--sui-shadow-lg);
             margin-bottom: var(--sui-space-2); overflow: hidden;
         }
-        .plate-container canvas { width: 100%; height: 100%; object-fit: contain; }
+        .plate-wrap canvas { width: 100%; height: 100%; object-fit: contain; }
 
-        /* Answer Options — 4 columns for number buttons */
-        .options-grid {
+        /* Options grid */
+        .opt-grid {
             display: grid; grid-template-columns: repeat(4, 1fr);
             gap: var(--sui-space-2); width: 100%; max-width: 460px;
         }
@@ -135,60 +75,49 @@
             border: 1px solid var(--sui-border); border-radius: var(--sui-radius-md);
             color: var(--sui-text-primary); font-size: var(--sui-text-h3);
             font-weight: var(--sui-weight-semibold); cursor: pointer;
+            min-height: var(--sui-touch-target);
             transition: background var(--sui-duration-fast) var(--sui-easing),
                         border-color var(--sui-duration-fast) var(--sui-easing);
-            min-height: var(--sui-touch-target);
         }
         .btn-opt:hover { background: var(--sui-bg-elevated); border-color: var(--sui-blue-primary); }
         .btn-opt:active { transform: scale(0.98); }
         .btn-opt:focus-visible { outline: 2px solid var(--sui-blue-focus); outline-offset: 2px; }
-
         .btn-special {
             grid-column: span 4; padding: var(--sui-space-2) var(--sui-space-3);
             background: transparent; border: 1px dashed var(--sui-border);
             border-radius: var(--sui-radius-md); color: var(--sui-text-muted);
-            font-size: var(--sui-text-small); cursor: pointer;
+            font-size: var(--sui-text-small); cursor: pointer; text-align: center;
+            min-height: var(--sui-touch-target);
             transition: all var(--sui-duration-fast) var(--sui-easing);
-            min-height: var(--sui-touch-target); text-align: center;
         }
         .btn-special:hover { background: var(--sui-bg-elevated); color: var(--sui-text-primary); border-color: var(--sui-text-muted); }
 
-        /* ── Simulator Layout ── */
-        .sim-grid {
-            display: grid; grid-template-columns: 1fr;
-            gap: var(--sui-space-4); width: 100%; max-width: var(--sui-max-width);
-        }
-        @media (min-width: 1024px) { .sim-grid { grid-template-columns: 1fr 280px; } }
-
-        /* ── Draggable Comparison Container ── */
-        .compare-container {
+        /* Comparison slider */
+        .compare-box {
             position: relative; overflow: hidden; cursor: ew-resize;
             user-select: none; -webkit-user-select: none;
             border: 1px solid var(--sui-border); border-radius: var(--sui-radius-lg);
-            background: #000;
+            background: #000; width: 100%;
         }
-        .compare-img-bottom { display: block; width: 100%; height: auto; }
-        .compare-img-top {
-            position: absolute; top: 0; left: 0;
-            display: block; width: 100%; height: 100%;
-            object-fit: cover;
-            clip-path: inset(0 50% 0 0);
+        .compare-box img.cmp-bottom { display: block; width: 100%; height: auto; }
+        .compare-box img.cmp-top {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; clip-path: inset(0 50% 0 0);
         }
-        .compare-divider {
+        .cmp-divider {
             position: absolute; top: 0; bottom: 0; left: 50%;
             width: 3px; background: rgba(255,255,255,0.5);
             transform: translateX(-50%); pointer-events: none; z-index: 3;
         }
-        .compare-handle {
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
+        .cmp-handle {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
             width: 44px; height: 44px; border-radius: 50%;
             background: rgba(0,0,0,0.55); border: 2px solid rgba(255,255,255,0.8);
             backdrop-filter: blur(4px); display: flex; align-items: center;
             justify-content: center; pointer-events: none;
         }
-        .compare-handle svg { color: #fff; width: 22px; height: 22px; }
-        .compare-label {
+        .cmp-handle svg { color: #fff; width: 22px; height: 22px; }
+        .cmp-label {
             position: absolute; top: var(--sui-space-3); z-index: 2;
             background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
             padding: var(--sui-space-1) var(--sui-space-3);
@@ -196,22 +125,15 @@
             font-family: var(--sui-font-mono); border: 1px solid rgba(255,255,255,0.1);
             color: #e2e8f0; pointer-events: none;
         }
-        .compare-label-left { left: var(--sui-space-3); }
-        .compare-label-right { right: var(--sui-space-3); }
+        .cmp-label-l { left: var(--sui-space-3); }
+        .cmp-label-r { right: var(--sui-space-3); }
 
-        .sim-btn {
-            width: 100%; padding: var(--sui-space-3); text-align: left;
-            background: var(--sui-bg-primary); border: 1px solid var(--sui-border);
-            color: var(--sui-text-muted); border-radius: var(--sui-radius-sm);
-            margin-bottom: var(--sui-space-2); cursor: pointer;
-            display: flex; justify-content: space-between; align-items: center;
-            font-size: var(--sui-text-small); min-height: var(--sui-touch-target);
-            transition: all var(--sui-duration-fast) var(--sui-easing);
+        /* Reveal full image */
+        .reveal-img {
+            width: 100%; border: 1px solid var(--sui-border);
+            border-radius: var(--sui-radius-lg); display: block;
+            transition: opacity 0.3s var(--sui-easing);
         }
-        .sim-btn:hover { background: var(--sui-bg-elevated); }
-        .sim-btn.active { background: var(--sui-success-soft); border-color: var(--sui-success); color: var(--sui-success); }
-        .sim-btn.active-reveal { background: var(--sui-pro-soft); border-color: var(--sui-pro); color: var(--sui-pro); }
-        .sim-btn:focus-visible { outline: 2px solid var(--sui-blue-focus); outline-offset: 2px; }
 
         /* Hero */
         .hero-glow {
@@ -228,70 +150,98 @@
             -webkit-background-clip: text; background-clip: text; color: transparent;
         }
 
-        /* Footer safe area for iPhone */
-        .sui-footer {
-            padding-bottom: calc(var(--sui-space-5) + env(safe-area-inset-bottom));
+        /* Sim tabs */
+        .sim-tabs {
+            display: flex; gap: var(--sui-space-1); width: 100%;
+            border-bottom: 1px solid var(--sui-border); margin-bottom: var(--sui-space-3);
+            overflow-x: auto; -webkit-overflow-scrolling: touch;
         }
+        .sim-tab {
+            padding: var(--sui-space-2) var(--sui-space-3); background: none; border: none;
+            border-bottom: 2px solid transparent; color: var(--sui-text-muted);
+            font-size: var(--sui-text-small); font-weight: var(--sui-weight-semibold);
+            font-family: var(--sui-font-primary); cursor: pointer; white-space: nowrap;
+            transition: all var(--sui-duration-fast) var(--sui-easing);
+            min-height: var(--sui-touch-target);
+        }
+        .sim-tab:hover { color: var(--sui-text-primary); }
+        .sim-tab.active { color: var(--sui-success); border-bottom-color: var(--sui-success); }
+        .sim-tab:focus-visible { outline: 2px solid var(--sui-blue-focus); outline-offset: -2px; }
+
+        /* Details/collapsible */
+        details.results-detail { max-width: 600px; width: 100%; }
+        details.results-detail summary {
+            cursor: pointer; font-weight: var(--sui-weight-semibold);
+            color: var(--sui-text-secondary); padding: var(--sui-space-3) 0;
+            list-style: none; display: flex; align-items: center; gap: var(--sui-space-2);
+        }
+        details.results-detail summary::-webkit-details-marker { display: none; }
+        details.results-detail summary::before {
+            content: '▸'; transition: transform 0.2s; display: inline-block;
+        }
+        details.results-detail[open] summary::before { transform: rotate(90deg); }
+        details.results-detail .detail-body {
+            padding: var(--sui-space-3); background: var(--sui-bg-elevated);
+            border-radius: var(--sui-radius-md); line-height: var(--sui-leading-body);
+            color: var(--sui-text-secondary); font-size: var(--sui-text-small);
+        }
+        details.results-detail .detail-body h4 {
+            font-size: var(--sui-text-body); color: var(--sui-text-primary);
+            margin: var(--sui-space-3) 0 var(--sui-space-1); font-weight: var(--sui-weight-semibold);
+        }
+        details.results-detail .detail-body h4:first-child { margin-top: 0; }
+
+        /* Footer safe area */
+        .sui-footer { padding-bottom: calc(var(--sui-space-5) + env(safe-area-inset-bottom)); }
     </style>
 </head>
 <body>
-
     <a href="#main" class="sui-visually-hidden">Skip to main content</a>
 
-    <!-- ================================================================
-         SVG FILTERS — Colour Vision Deficiency Simulation
+    <!-- SVG FILTERS — Machado et al. (2009) severity=1.0 linearRGB -->
+    <svg style="position:absolute;width:0;height:0;overflow:hidden;" aria-hidden="true"><defs>
+        <filter id="f-protan" color-interpolation-filters="linearRGB">
+            <feColorMatrix type="matrix" values="0.152286 1.052583 -0.204868 0 0  0.114503 0.786281 0.099216 0 0  -0.003882 -0.048116 1.051998 0 0  0 0 0 1 0"/>
+        </filter>
+        <filter id="f-deutan" color-interpolation-filters="linearRGB">
+            <feColorMatrix type="matrix" values="0.367322 0.860646 -0.227968 0 0  0.280085 0.672501 0.047413 0 0  -0.011820 0.042940 0.968881 0 0  0 0 0 1 0"/>
+        </filter>
+        <filter id="f-tritan" color-interpolation-filters="linearRGB">
+            <feColorMatrix type="matrix" values="1.255528 -0.076749 -0.178779 0 0  -0.078411 0.930809 0.147602 0 0  0.004733 0.691367 0.303900 0 0  0 0 0 1 0"/>
+        </filter>
+        <!-- Daltonisation reveal filters -->
+        <filter id="f-reveal-protan" color-interpolation-filters="linearRGB">
+            <feColorMatrix type="matrix" values="1.0 0.0 0.0 0 0  0.0 1.0 0.0 0 0  0.7 -0.4 1.0 0 0  0 0 0 1 0"/>
+        </filter>
+        <filter id="f-reveal-deutan" color-interpolation-filters="linearRGB">
+            <feColorMatrix type="matrix" values="1.0 0.0 0.0 0 0  0.0 1.0 0.0 0 0  0.4 -0.5 1.0 0 0  0 0 0 1 0"/>
+        </filter>
+        <filter id="f-reveal-tritan" color-interpolation-filters="linearRGB">
+            <feColorMatrix type="matrix" values="1.0 0.0 0.7 0 0  0.0 1.0 0.7 0 0  0.0 0.0 1.0 0 0  0 0 0 1 0"/>
+        </filter>
+    </defs></svg>
 
-         PROTANOPIA / DEUTERANOPIA / TRITANOPIA matrices:
-         Machado, Oliveira & Fernandes (2009) severity=1.0
-         Source: inf.ufrgs.br/~oliveira/pubs_files/CVD_Simulation/
-
-         SVG feColorMatrix defaults to linearRGB, matching the
-         intended use of the Machado model:
-         sRGB → linearise → matrix multiply → re-gamma → sRGB.
-
-         REVEAL filter: daltonisation shifting R-G opponent signal
-         into the Blue channel: B' = 0.5R − 0.4G + B
-    ================================================================ -->
-    <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" aria-hidden="true">
-        <defs>
-            <filter id="protanopia-filter" color-interpolation-filters="linearRGB">
-                <feColorMatrix type="matrix" values="0.152286 1.052583 -0.204868 0 0  0.114503 0.786281 0.099216 0 0  -0.003882 -0.048116 1.051998 0 0  0 0 0 1 0" />
-            </filter>
-            <filter id="deuteranopia-filter" color-interpolation-filters="linearRGB">
-                <feColorMatrix type="matrix" values="0.367322 0.860646 -0.227968 0 0  0.280085 0.672501 0.047413 0 0  -0.011820 0.042940 0.968881 0 0  0 0 0 1 0" />
-            </filter>
-            <filter id="tritanopia-filter" color-interpolation-filters="linearRGB">
-                <feColorMatrix type="matrix" values="1.255528 -0.076749 -0.178779 0 0  -0.078411 0.930809 0.147602 0 0  0.004733 0.691367 0.303900 0 0  0 0 0 1 0" />
-            </filter>
-            <filter id="reveal-filter" color-interpolation-filters="linearRGB">
-                <feColorMatrix type="matrix" values="1.0 0.0 0.0 0 0  0.0 1.0 0.0 0 0  0.5 -0.4 1.0 0 0  0 0 0 1 0" />
-            </filter>
-        </defs>
-    </svg>
-
-    <!-- ===== HEADER — SUI Topbar ===== -->
+    <!-- HEADER -->
     <header class="sui-topbar">
         <div class="sui-topbar-inner">
-            <div class="sui-brand" onclick="app.setView('intro')" role="button" tabindex="0" aria-label="OpenColor Labs home" style="cursor: pointer;">
+            <div class="sui-brand" onclick="app.setView('intro')" role="button" tabindex="0" aria-label="OpenColor Labs home" style="cursor:pointer;">
                 <div class="sui-brand-mark" aria-hidden="true">
-                    <i data-lucide="scan-eye" style="color: var(--sui-success);"></i>
+                    <i data-lucide="scan-eye" style="color:var(--sui-success);"></i>
                 </div>
                 <div class="sui-brand-title">
-                    <span class="sui-brand-name">Open<span style="color: var(--sui-success);">Color</span> Labs</span>
-                    <span class="sui-version-pill">v2.0.0</span>
+                    <span class="sui-brand-name">Open<span style="color:var(--sui-success);">Color</span> Labs</span>
+                    <span class="sui-version-pill">v3.0.0</span>
                 </div>
             </div>
-
             <div class="sui-topbar-actions">
                 <button class="sui-btn sui-btn-ghost sui-btn-sm" type="button" onclick="app.setView('test')">
-                    <i data-lucide="eye"></i> Test
+                    <i data-lucide="eye" style="color:var(--sui-success);width:16px;height:16px;"></i> Test
                 </button>
                 <button class="sui-btn sui-btn-ghost sui-btn-sm" type="button" onclick="app.setView('sim')">
-                    <i data-lucide="split"></i> Simulator
+                    <i data-lucide="split" style="color:var(--sui-success);width:16px;height:16px;"></i> Simulator
                 </button>
-                <a class="sui-btn sui-btn-ghost sui-btn-sm" href="https://github.com/adrianspeyer/Open-Colour-Labs"
-                   target="_blank" rel="noopener noreferrer" aria-label="View source on GitHub">
-                    <i data-lucide="github"></i>
+                <a class="sui-btn sui-btn-ghost sui-btn-sm" href="https://github.com/adrianspeyer/Open-Colour-Labs" target="_blank" rel="noopener noreferrer" aria-label="View source on GitHub">
+                    <i data-lucide="github" style="color:var(--sui-success);width:16px;height:16px;"></i>
                 </a>
             </div>
         </div>
@@ -299,10 +249,10 @@
 
     <main id="main"><div id="app-root"></div></main>
 
-    <!-- ===== FOOTER — SUI Footer ===== -->
+    <!-- FOOTER -->
     <footer class="sui-footer">
-        <p style="margin-bottom: var(--sui-space-2); font-size: var(--sui-text-meta);">
-            <i data-lucide="triangle-alert" style="width: 14px; height: 14px; vertical-align: middle;" aria-hidden="true"></i>
+        <p style="margin-bottom:var(--sui-space-2);font-size:var(--sui-text-meta);">
+            <i data-lucide="triangle-alert" style="width:14px;height:14px;vertical-align:middle;" aria-hidden="true"></i>
             This is an educational tool, not a medical device. It does not replace professional diagnosis.
         </p>
         <div class="sui-footer-links">
@@ -313,511 +263,526 @@
                 <i data-lucide="github"></i> Source
             </a>
         </div>
-        <a href="https://github.com/adrianspeyer/speyer-ui" target="_blank" rel="noopener noreferrer"
-           class="sui-shield" style="margin-top: var(--sui-space-2);">
-            <span class="sui-shield-label">built with</span>
-            <span class="sui-shield-value">SUI v2.1.2</span>
-        </a>
+        <div style="display:flex;gap:var(--sui-space-2);justify-content:center;margin-top:var(--sui-space-2);flex-wrap:wrap;">
+            <a href="https://github.com/adrianspeyer/Open-Colour-Labs" target="_blank" rel="noopener noreferrer" class="sui-shield sui-shield-success">
+                <span class="sui-shield-label">OpenColor Labs</span><span class="sui-shield-value">v3.0.0</span>
+            </a>
+            <a href="https://github.com/adrianspeyer/speyer-ui" target="_blank" rel="noopener noreferrer" class="sui-shield">
+                <span class="sui-shield-label">built with</span><span class="sui-shield-value">SUI v2.1.2</span>
+            </a>
+        </div>
     </footer>
 
     <script>
     // =================================================================
-    //  OpenColor Labs v2.0.0 — Colour Vision Analysis Engine
-    //  https://github.com/adrianspeyer/Open-Colour-Labs | MIT Licence
-    //
-    //  14-PLATE TEST SEQUENCE (Hardy, Rand & Rittler 1945 PIP types):
-    //  - demo:           High-contrast control (everyone sees it)
-    //  - red_green:      Vanishing plate (R/G confusion axis)
-    //  - red_green_hard: Desaturated vanishing (~15% saturation)
-    //  - brightness:     Diagnostic (protan-specific luminance trap)
-    //  - tritan:         Blue-yellow vanishing plate
-    //  - hidden:         Reverse plate (CVD sees, normal vision doesn't)
-    //  - nothing:        Trap plate (random noise, no number)
-    //
-    //  SCORING: screen validation → guessing detection → type
-    //  classification (Normal / Protan / Deutan / Tritan / Indeterminate)
-    //  → severity estimation (dichromacy vs anomalous trichromacy)
+    //  OpenColor Labs v3.0.0 — Colour Vision Analysis Engine
+    //  MIT Licence | https://github.com/adrianspeyer/Open-Colour-Labs
     // =================================================================
+    const rr = (a, b) => Math.random() * (b - a) + a;
 
-    const randomRange = (min, max) => Math.random() * (max - min) + min;
+    const SIM_DESCRIPTIONS = {
+        protan: {
+            sim: `<strong>What to look for:</strong> The red peppers and apples on the left should look vivid and bright. On the right (simulated protanopia), those same reds appear <em>dark — almost brown or black</em>. The pumpkin looks greenish-brown instead of warm orange. If both sides look the same to you, your vision matches the protanopia simulation.`,
+            reveal: `<strong>Toggle between views.</strong> When you switch to "Colours Revealed," look at the peppers and apples — if new <em>blues and purples</em> appear where you previously saw dark browns, those are the colour differences your eyes normally miss. The more the image changes, the stronger the effect.`
+        },
+        deutan: {
+            sim: `<strong>What to look for:</strong> The red peppers and green peppers on the left are completely different colours. On the right (simulated deuteranopia), they blend into <em>similar shades of brownish-yellow</em>. The carrots and broccoli also merge. If both sides look the same to you, your vision matches the deuteranopia simulation.`,
+            reveal: `<strong>Toggle between views.</strong> When you switch to "Colours Revealed," look at the red peppers versus the green peppers — if new <em>blues and purples</em> appear where you previously saw uniform olive-brown, those are the distinctions your eyes normally miss.`
+        },
+        tritan: {
+            sim: `<strong>What to look for:</strong> The bananas and lemons on the left are warm yellow, clearly different from the green peppers and apples. On the right (simulated tritanopia), those yellows and greens <em>blend together</em>, and the purple grapes and eggplant look greyish. If both sides look the same to you, your vision matches the tritanopia simulation.`,
+            reveal: `<strong>Toggle between views.</strong> When you switch to "Colours Revealed," look at the bananas versus the green peppers — if new <em>reds and pinks</em> appear separating colours that looked identical, those are the blue-yellow distinctions your eyes normally miss.`
+        }
+    };
 
-    class ColorVisionApp {
+    // Per-type detail for results
+    const TYPE_DETAIL = {
+        Protan: {
+            prevalence: 'Protanomaly (mild) affects ~1% of males; protanopia (severe) affects ~1% of males. It is caused by a deficiency or absence of the L-cone (long wavelength / red receptor).',
+            impact: 'Reds appear <strong>dark and muted</strong> — they can look brown, olive, or even black. Difficulty distinguishing red vs green traffic lights (you rely on position), ripe vs unripe fruit, and red warning indicators on dashboards or charts. Brown and green clothing may look identical.',
+            luminance: 'Unlike deuteranopia, protanopia causes <strong>luminance loss</strong> on warm colours. The L-cone contributes ~60% of perceived brightness, so reds literally look darker to you — not just a different hue, but dimmer.',
+            career: 'May affect eligibility for aviation, maritime, rail, electrical, emergency services, and military roles that require colour discrimination.',
+            sources: '<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12385717/" target="_blank" rel="noopener noreferrer">Alhazmi 2025</a> · <a href="https://pubmed.ncbi.nlm.nih.gov/41022199/" target="_blank" rel="noopener noreferrer">Gobira et al. 2025</a> · <a href="https://www.aaojournal.org/article/S0161-6420(25)00465-8/abstract" target="_blank" rel="noopener noreferrer">Global CVD Meta-Analysis 2025</a>'
+        },
+        Deutan: {
+            prevalence: 'Deuteranomaly (mild) affects ~5% of males; deuteranopia (severe) affects ~1% of males. This is the <strong>most common</strong> colour vision deficiency worldwide, affecting roughly 1 in 12 men of Northern European descent. Caused by a deficiency or absence of the M-cone (medium wavelength / green receptor).',
+            impact: 'Reds and greens blend into similar brownish-yellow tones. Difficulty with colour-coded charts and maps, choosing matching clothing, cooking (raw vs cooked meat can look similar), and distinguishing ripe vs unripe produce.',
+            luminance: 'Unlike protanopia, deuteranopia does <strong>not</strong> cause significant luminance loss. Colours shift in hue but stay roughly the same brightness. This is why you can often pass brightness-based tests but fail hue-based ones.',
+            career: 'Same occupational restrictions as protan — aviation, maritime, rail, electrical, emergency services, and military roles.',
+            sources: '<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12385717/" target="_blank" rel="noopener noreferrer">Alhazmi 2025</a> · <a href="https://pubmed.ncbi.nlm.nih.gov/41022199/" target="_blank" rel="noopener noreferrer">Gobira et al. 2025</a> · <a href="https://www.aaojournal.org/article/S0161-6420(25)00465-8/abstract" target="_blank" rel="noopener noreferrer">Global CVD Meta-Analysis 2025</a>'
+        },
+        Tritan: {
+            prevalence: 'Tritanomaly and tritanopia are rare, affecting roughly 1 in 10,000 people. Unlike red-green CVD, tritan deficiency is <strong>not X-linked</strong> — it affects males and females equally. It can be congenital or acquired.',
+            impact: 'Blues and yellows are confused. Difficulty distinguishing sky from water, yellow from pink, and blue from green. Purple may look reddish or brownish.',
+            luminance: 'Tritan deficiency affects the S-cone (short wavelength / blue receptor). Because S-cones contribute minimally to luminance, brightness perception is largely unaffected.',
+            career: 'Tritan deficiency can be <strong>acquired</strong> through age-related changes, medication, diabetes, or ocular disease. A professional evaluation is recommended to rule out underlying conditions.',
+            sources: '<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12385717/" target="_blank" rel="noopener noreferrer">Alhazmi 2025</a> · <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11417771/" target="_blank" rel="noopener noreferrer">FM100 Lifespan Study 2024</a>'
+        }
+    };
+
+    class App {
         constructor() {
             this.root = document.getElementById('app-root');
-            this.state = {
-                view: 'intro',
-                plateIndex: 0,
-                history: [],
-                simMode: 'protanopia',
-                sliderPos: 50,
-                testSequence: [
-                    { type: 'demo',            number: '12',      desc: 'Control' },
-                    { type: 'red_green',        number: '74',      desc: 'R/G Confusion' },
-                    { type: 'nothing',          number: 'Nothing', desc: 'Noise Trap' },
-                    { type: 'red_green_hard',   number: '6',       desc: 'R/G Hard' },
-                    { type: 'brightness',       number: '42',      desc: 'Brightness Trap' },
-                    { type: 'tritan',           number: '57',      desc: 'Blue/Yellow' },
-                    { type: 'nothing',          number: 'Nothing', desc: 'Noise Trap' },
-                    { type: 'hidden',           number: '3',       desc: 'Hidden Digit' },
-                    { type: 'brightness',       number: '8',       desc: 'Brightness Trap' },
-                    { type: 'red_green',        number: '29',      desc: 'R/G Confusion' },
-                    { type: 'tritan',           number: '16',      desc: 'Blue/Yellow' },
-                    { type: 'red_green_hard',   number: '5',       desc: 'R/G Hard' },
-                    { type: 'hidden',           number: '7',       desc: 'Hidden Digit' },
-                    { type: 'demo',             number: '97',      desc: 'Control' }
+            this.S = {
+                view: 'intro', plateIdx: 0, history: [],
+                simType: 'deutan', revealOn: false, revealFiltered: false, sliderPos: 50,
+                seq: [
+                    { type:'demo',          num:'12' },
+                    { type:'red_green',     num:'74' },
+                    { type:'nothing',       num:'X' },
+                    { type:'red_green_hard',num:'6' },
+                    { type:'brightness',    num:'42' },
+                    { type:'transform',     numP:'5', numD:'2' },
+                    { type:'tritan',        num:'57' },
+                    { type:'nothing',       num:'X' },
+                    { type:'hidden',        num:'3' },
+                    { type:'red_green',     num:'29' },
+                    { type:'brightness',    num:'8' },
+                    { type:'transform',     numP:'7', numD:'4' },
+                    { type:'tritan',        num:'16' },
+                    { type:'red_green_hard',num:'5' },
+                    { type:'red_green',     num:'15' },
+                    { type:'hidden',        num:'7' },
+                    { type:'nothing',       num:'X' },
+                    { type:'demo',          num:'97' }
                 ]
             };
+            this._raf = null; this._sliderClean = null;
             this.setView = this.setView.bind(this);
-            this.handleAnswer = this.handleAnswer.bind(this);
-            this._sliderCleanup = null;
+            this.answer = this.answer.bind(this);
             this.render();
         }
 
-        setView(view) {
-            this.state.view = view;
-            if (view === 'test') { this.state.plateIndex = 0; this.state.history = []; }
+        setView(v) {
+            this.S.view = v;
+            if (v === 'test') { this.S.plateIdx = 0; this.S.history = []; }
+            if (v === 'sim') { this.S.revealOn = false; this.S.revealFiltered = false; }
             this.render();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // =============================================================
-        //  CANVAS — Procedural Ishihara Plate Generator
-        //
-        //  HSL jitter (hue ±8°, sat ±15%, lum ±8%) ensures no two
-        //  plates are identical. Rejection sampling (max 25 attempts)
-        //  constrains dots to a circular region.
-        //
-        //  NEW in v2.0.0:
-        //  - tritan: blue bg vs yellow fg (B/Y confusion axis)
-        //  - hidden: equiluminant mixed bg with red fg that appears
-        //    darker only to protanopes (L-cone luminance loss),
-        //    making the number visible to CVD but not normal vision
-        // =============================================================
-        drawPlate(canvas, type, number) {
+        // ── PLATE DRAWING ──
+        drawPlate(canvas, plate) {
             const ctx = canvas.getContext('2d');
-            const W = canvas.width, H = canvas.height;
-            const cx = W / 2, cy = H / 2, radius = W * 0.45;
-            ctx.clearRect(0, 0, W, H);
+            const W = canvas.width, H = canvas.height, cx = W/2, cy = H/2, R = W*0.45;
+            ctx.clearRect(0,0,W,H);
 
-            const mask = document.createElement('canvas');
-            mask.width = W; mask.height = H;
-            const mCtx = mask.getContext('2d');
-            mCtx.fillStyle = '#000';
-            mCtx.fillRect(0, 0, W, H);
-            mCtx.fillStyle = '#fff';
-            mCtx.font = `bold ${W * 0.5}px system-ui, sans-serif`;
-            mCtx.textAlign = 'center';
-            mCtx.textBaseline = 'middle';
-            if (type !== 'nothing') mCtx.fillText(number, cx, cy);
+            const makeMask = (num) => {
+                const m = document.createElement('canvas'); m.width=W; m.height=H;
+                const mc = m.getContext('2d'); mc.fillStyle='#000'; mc.fillRect(0,0,W,H);
+                if (num && num !== 'X') {
+                    mc.fillStyle='#fff'; mc.font=`bold ${W*0.5}px system-ui,sans-serif`;
+                    mc.textAlign='center'; mc.textBaseline='middle'; mc.fillText(num,cx,cy);
+                }
+                return mc.getImageData(0,0,W,H).data;
+            };
 
-            let bgColors, fgColors;
-            switch (type) {
+            let bgC, fgC, fgC2, mask1, mask2, isTransform = false;
+            switch (plate.type) {
                 case 'demo':
-                    bgColors = [[180, 50, 45], [190, 60, 40]];
-                    fgColors = [[20, 80, 60], [30, 90, 55]];
-                    break;
+                    bgC=[[180,50,45],[190,60,40]]; fgC=[[20,80,60],[30,90,55]]; break;
                 case 'red_green':
-                    bgColors = [[90, 40, 50], [120, 30, 50]];
-                    fgColors = [[0, 50, 60], [15, 60, 55]];
-                    break;
+                    bgC=[[90,40,50],[120,30,50]]; fgC=[[0,50,60],[15,60,55]]; break;
                 case 'red_green_hard':
-                    bgColors = [[130, 15, 50], [150, 15, 50]];
-                    fgColors = [[350, 15, 50], [10, 15, 50]];
-                    break;
+                    bgC=[[130,15,50],[150,15,50]]; fgC=[[350,15,50],[10,15,50]]; break;
                 case 'brightness':
-                    bgColors = [[120, 10, 25], [140, 15, 30]];
-                    fgColors = [[350, 80, 20], [0, 90, 25]];
-                    break;
+                    bgC=[[120,10,25],[140,15,30]]; fgC=[[350,80,20],[0,90,25]]; break;
                 case 'tritan':
-                    // Blue/violet background vs yellow/green foreground
-                    // Tritan observers confuse blues and yellows
-                    bgColors = [[220, 45, 48], [240, 40, 50], [200, 35, 52]];
-                    fgColors = [[55, 50, 52], [45, 55, 48], [65, 45, 50]];
-                    break;
+                    bgC=[[220,45,48],[240,40,50],[200,35,52]]; fgC=[[55,50,52],[45,55,48],[65,45,50]]; break;
                 case 'hidden':
-                    // Equiluminant mixed hues: normal vision sees colourful noise
-                    // Protans perceive reds as darker → number emerges from bg
-                    bgColors = [[200, 35, 52], [170, 30, 50], [90, 25, 50], [250, 25, 48]];
-                    fgColors = [[0, 45, 50], [350, 40, 48], [15, 42, 52]];
-                    break;
+                    bgC=[[200,35,52],[170,30,50],[90,25,50],[250,25,48]]; fgC=[[0,45,50],[350,40,48],[15,42,52]]; break;
                 case 'nothing':
-                    bgColors = fgColors = [[120, 30, 50], [0, 50, 60], [90, 40, 50], [15, 60, 55]];
+                    bgC=fgC=[[120,30,50],[0,50,60],[90,40,50],[15,60,55]]; break;
+                case 'transform':
+                    isTransform = true;
+                    // BG: neutral warm grey-green
+                    bgC=[[60,15,48],[80,12,50],[100,10,46]];
+                    // Protan number: reds that look DARK to protans (they miss it) but deutans see
+                    fgC=[[355,60,42],[5,55,40],[345,50,44]];
+                    // Deutan number: greens that look brownish to deutans (they miss it) but protans see
+                    fgC2=[[120,50,42],[130,45,40],[110,55,44]];
                     break;
             }
 
-            const DOTS = 2000;
-            const maskData = mCtx.getImageData(0, 0, W, H).data;
-            for (let i = 0; i < DOTS; i++) {
-                let x, y, d, attempts = 0;
-                do {
-                    x = Math.random() * W; y = Math.random() * H;
-                    d = Math.sqrt((x - cx) ** 2 + (y - cy) ** 2);
-                    attempts++;
-                } while (d > radius && attempts < 25);
-                if (d > radius) continue;
+            if (isTransform) {
+                // Draw two overlapping numbers with offset positions
+                const m1 = document.createElement('canvas'); m1.width=W; m1.height=H;
+                const mc1 = m1.getContext('2d'); mc1.fillStyle='#000'; mc1.fillRect(0,0,W,H);
+                mc1.fillStyle='#fff'; mc1.font=`bold ${W*0.42}px system-ui,sans-serif`;
+                mc1.textAlign='center'; mc1.textBaseline='middle';
+                mc1.fillText(plate.numP, cx - W*0.12, cy);
+                mask1 = mc1.getImageData(0,0,W,H).data;
 
-                const idx = (Math.floor(y) * W + Math.floor(x)) * 4;
-                const isNumber = maskData[idx] > 128;
-                const palette = isNumber ? fgColors : bgColors;
-                const base = palette[Math.floor(Math.random() * palette.length)];
-                const h = base[0] + randomRange(-8, 8);
-                const s = base[1] + randomRange(-15, 15);
-                const l = base[2] + randomRange(-8, 8);
-                const r = randomRange(W * 0.006, W * 0.016);
-                ctx.beginPath();
-                ctx.arc(x, y, r, 0, Math.PI * 2);
-                ctx.fillStyle = `hsl(${h}, ${s}%, ${l}%)`;
-                ctx.fill();
-            }
-        }
+                const m2 = document.createElement('canvas'); m2.width=W; m2.height=H;
+                const mc2 = m2.getContext('2d'); mc2.fillStyle='#000'; mc2.fillRect(0,0,W,H);
+                mc2.fillStyle='#fff'; mc2.font=`bold ${W*0.42}px system-ui,sans-serif`;
+                mc2.textAlign='center'; mc2.textBaseline='middle';
+                mc2.fillText(plate.numD, cx + W*0.12, cy);
+                mask2 = mc2.getImageData(0,0,W,H).data;
 
-        handleAnswer(selectedOpt) {
-            const current = this.state.testSequence[this.state.plateIndex];
-            this.state.history.push({
-                ...current,
-                answer: selectedOpt,
-                isCorrect: selectedOpt === current.number,
-                isUnsure: selectedOpt === 'Unsure',
-                isNothing: selectedOpt === 'Nothing'
-            });
-            if (this.state.plateIndex < this.state.testSequence.length - 1) {
-                this.state.plateIndex++;
-                this.render();
+                const DOTS = 2200;
+                for (let i=0; i<DOTS; i++) {
+                    let x,y,d,att=0;
+                    do { x=Math.random()*W; y=Math.random()*H; d=Math.hypot(x-cx,y-cy); att++; } while(d>R&&att<25);
+                    if (d>R) continue;
+                    const idx=(Math.floor(y)*W+Math.floor(x))*4;
+                    const isP = mask1[idx]>128, isD = mask2[idx]>128;
+                    const pal = isP ? fgC : (isD ? fgC2 : bgC);
+                    const b = pal[Math.floor(Math.random()*pal.length)];
+                    const r2 = rr(W*0.006, W*0.016);
+                    ctx.beginPath(); ctx.arc(x,y,r2,0,Math.PI*2);
+                    ctx.fillStyle=`hsl(${b[0]+rr(-8,8)},${b[1]+rr(-15,15)}%,${b[2]+rr(-8,8)}%)`;
+                    ctx.fill();
+                }
             } else {
-                this.setView('results');
+                const maskData = makeMask(plate.num);
+                const DOTS = 2000;
+                for (let i=0; i<DOTS; i++) {
+                    let x,y,d,att=0;
+                    do { x=Math.random()*W; y=Math.random()*H; d=Math.hypot(x-cx,y-cy); att++; } while(d>R&&att<25);
+                    if (d>R) continue;
+                    const idx=(Math.floor(y)*W+Math.floor(x))*4;
+                    const isNum = maskData[idx]>128;
+                    const pal = isNum ? fgC : bgC;
+                    const b = pal[Math.floor(Math.random()*pal.length)];
+                    const r2 = rr(W*0.006, W*0.016);
+                    ctx.beginPath(); ctx.arc(x,y,r2,0,Math.PI*2);
+                    ctx.fillStyle=`hsl(${b[0]+rr(-8,8)},${b[1]+rr(-15,15)}%,${b[2]+rr(-8,8)}%)`;
+                    ctx.fill();
+                }
             }
         }
 
-        // =============================================================
-        //  SCORING — Diagnosis Engine
-        //
-        //  Pipeline:
-        //  1. Screen validation (demo plates)
-        //  2. Guessing detection (noise traps)
-        //  3. Hidden-digit confirmation (CVD sees, normal doesn't)
-        //  4. Type classification (Protan / Deutan / Tritan)
-        //  5. Severity estimation (Nothing vs Unsure ratio)
-        // =============================================================
-        getDiagnosis() {
-            const H = this.state.history;
-
-            // 1. Screen validation
-            if (H.filter(h => h.type === 'demo' && !h.isCorrect).length > 0) return {
-                title: "Screen Calibration Issue",
-                desc: "You missed the high-contrast control plates. Please increase screen brightness, disable any \"Night Mode\" or colour filters, and try again.",
-                color: "var(--sui-neutral)", badge: "Invalid", badgeClass: "sui-badge sui-badge-neutral", severity: null
-            };
-
-            // 2. Guessing detection
-            if (H.filter(h => h.type === 'nothing' && !h.isNothing && !h.isUnsure).length > 0) return {
-                title: "Unreliable Result",
-                desc: "You identified numbers on plates that were purely random noise. This suggests guessing. Please retake the test carefully.",
-                color: "var(--sui-neutral)", badge: "Invalid", badgeClass: "sui-badge sui-badge-neutral", severity: null
-            };
-
-            // Gather misses on diagnostic plates
-            const diagnostic = H.filter(h => !['nothing', 'demo', 'hidden'].includes(h.type));
-            const misses = diagnostic.filter(h => !h.isCorrect);
-            const protanMisses = H.filter(h => h.type === 'brightness' && !h.isCorrect);
-            const rgMisses = H.filter(h => (h.type === 'red_green' || h.type === 'red_green_hard') && !h.isCorrect);
-            const tritanMisses = H.filter(h => h.type === 'tritan' && !h.isCorrect);
-
-            // 3. Hidden-digit confirmation: if CVD user correctly read a hidden plate
-            const hiddenHits = H.filter(h => h.type === 'hidden' && h.isCorrect);
-
-            if (misses.length === 0 && hiddenHits.length === 0) return {
-                title: "Normal Colour Vision",
-                desc: "You correctly identified all diagnostic plates and did not detect hidden-digit patterns. Your colour vision aligns with standard trichromacy.",
-                color: "var(--sui-success)", badge: "Normal", badgeClass: "sui-badge sui-badge-success", severity: null
-            };
-
-            const unsureCount = misses.filter(h => h.isUnsure).length;
-            const nothingCount = misses.filter(h => h.isNothing).length;
-            const severityNote = unsureCount > 0 && nothingCount === 0
-                ? " You reported partial visibility on missed plates, consistent with anomalous trichromacy (mild to moderate)."
-                : nothingCount > 0 && unsureCount === 0
-                    ? " You reported seeing nothing on missed plates, consistent with dichromacy (more severe)."
-                    : "";
-            const hiddenNote = hiddenHits.length > 0
-                ? " You also detected hidden-digit plates designed to be invisible to normal vision, which provides additional confirmation."
-                : "";
-
-            // 4. Tritan classification
-            if (tritanMisses.length >= 1 && protanMisses.length === 0 && rgMisses.length === 0) return {
-                title: "Likely Tritanomaly (Blue-Weak)",
-                desc: "You struggled with blue-yellow differentiation but passed red-green plates. Tritan deficiency is rare and can indicate acquired conditions — consider a professional evaluation." + severityNote + hiddenNote,
-                color: "var(--sui-info)", badge: "Tritan", badgeClass: "sui-badge sui-badge-info", severity: unsureCount > nothingCount ? 'mild' : 'severe'
-            };
-
-            // 5. Protan classification
-            if (protanMisses.length >= 1) return {
-                title: "Likely Protanomaly (Red-Weak)",
-                desc: "You struggled with plates where red brightness was the key factor. Red likely appears dark or muted to you. This affects roughly 1% of males." + severityNote + hiddenNote,
-                color: "var(--sui-error)", badge: "Protan", badgeClass: "sui-badge sui-badge-error", severity: unsureCount > nothingCount ? 'mild' : 'severe'
-            };
-
-            // 6. Deutan classification
-            if (rgMisses.length >= 1) return {
-                title: "Likely Deuteranomaly (Green-Weak)",
-                desc: "You struggled with red-green differentiation but identified brightness plates correctly. This is the most common type, affecting roughly 6% of males." + severityNote + hiddenNote,
-                color: "var(--sui-warning)", badge: "Deutan", badgeClass: "sui-badge sui-badge-warning", severity: unsureCount > nothingCount ? 'mild' : 'severe'
-            };
-
-            // 7. Hidden-only detection (passed all vanishing plates but detected hidden)
-            if (hiddenHits.length > 0 && misses.length === 0) return {
-                title: "Possible Mild Deficiency",
-                desc: "You passed all standard plates but detected hidden-digit patterns designed for CVD observers. This may indicate a very mild anomalous trichromacy. A professional anomaloscope test can confirm.",
-                color: "var(--sui-warning)", badge: "Mild", badgeClass: "sui-badge sui-badge-warning", severity: 'mild'
-            };
-
-            return {
-                title: "Indeterminate Deficiency",
-                desc: "You missed several plates, but the pattern is unclear. A professional optometrist can provide a definitive diagnosis." + severityNote + hiddenNote,
-                color: "var(--sui-text-primary)", badge: "Check-up", badgeClass: "sui-badge sui-badge-neutral", severity: null
-            };
+        answer(sel) {
+            const p = this.S.seq[this.S.plateIdx];
+            this.S.history.push({ ...p, answer: sel,
+                isCorrect: p.type === 'nothing' ? (sel === 'Nothing' || sel === 'Unsure')
+                          : p.type === 'transform' ? (sel === p.numP || sel === p.numD)
+                          : sel === p.num,
+                sawProtan: p.type === 'transform' && sel === p.numP,
+                sawDeutan: p.type === 'transform' && sel === p.numD,
+                isUnsure: sel === 'Unsure', isNothing: sel === 'Nothing'
+            });
+            if (this.S.plateIdx < this.S.seq.length - 1) { this.S.plateIdx++; this.render(); }
+            else this.setView('results');
         }
 
-        // =============================================================
-        //  DRAGGABLE SLIDER — Touch + Mouse Comparison
-        // =============================================================
+        // ── DIAGNOSIS ──
+        getDx() {
+            const H = this.S.history;
+            if (H.filter(h=>h.type==='demo'&&!h.isCorrect).length > 0) return {
+                title:"Screen Calibration Issue", badge:"Invalid", cls:"sui-badge sui-badge-neutral", color:"var(--sui-neutral)",
+                desc:"You missed control plates. Please increase brightness, disable Night Mode or colour filters, and retry.", severity:null, type:null };
+
+            if (H.filter(h=>h.type==='nothing'&&!h.isNothing&&!h.isUnsure).length >= 2) return {
+                title:"Unreliable Result", badge:"Invalid", cls:"sui-badge sui-badge-neutral", color:"var(--sui-neutral)",
+                desc:"You identified numbers on purely random noise plates, which indicates guessing. Please retake carefully.", severity:null, type:null };
+
+            const diag = H.filter(h=>!['nothing','demo','hidden','transform'].includes(h.type));
+            const misses = diag.filter(h=>!h.isCorrect);
+            const rgM = H.filter(h=>(h.type==='red_green'||h.type==='red_green_hard')&&!h.isCorrect);
+            const brM = H.filter(h=>h.type==='brightness'&&!h.isCorrect);
+            const trM = H.filter(h=>h.type==='tritan'&&!h.isCorrect);
+            const hidH = H.filter(h=>h.type==='hidden'&&h.isCorrect);
+            const tPro = H.filter(h=>h.type==='transform'&&h.sawProtan).length;
+            const tDeu = H.filter(h=>h.type==='transform'&&h.sawDeutan).length;
+
+            const unsC = misses.filter(h=>h.isUnsure).length;
+            const noC = misses.filter(h=>h.isNothing).length;
+            const sev = unsC > 0 && noC === 0 ? 'mild' : noC > 0 ? 'severe' : null;
+            const sevLabel = sev === 'mild' ? 'Anomalous Trichromacy' : sev === 'severe' ? 'Likely Dichromacy' : '';
+            const sevNote = sev === 'mild' ? ' Partial visibility on missed plates suggests anomalous trichromacy (mild to moderate).'
+                          : sev === 'severe' ? ' Seeing nothing on missed plates suggests dichromacy (more severe).' : '';
+            const hidNote = hidH.length > 0 ? ' You detected hidden-digit plates invisible to normal vision, providing additional confirmation.' : '';
+
+            if (misses.length === 0 && hidH.length === 0) return {
+                title:"Normal Colour Vision", badge:"Normal", cls:"sui-badge sui-badge-success", color:"var(--sui-success)",
+                desc:"You identified all diagnostic plates correctly and didn't detect hidden-digit patterns. Your colour vision aligns with standard trichromacy.", severity:null, type:null };
+
+            // Tritan
+            if (trM.length >= 1 && brM.length === 0 && rgM.length === 0) return {
+                title:"Likely Tritan (Blue-Yellow)", badge:"Tritan", cls:"sui-badge sui-badge-info", color:"var(--sui-info)",
+                desc:"You struggled with blue-yellow plates but passed red-green." + sevNote + hidNote, severity:sev, type:'Tritan' };
+
+            // Protan vs Deutan — use transformation plate data + brightness
+            const protanScore = brM.length * 2 + tPro;
+            const deutanScore = (rgM.length > 0 && brM.length === 0 ? 2 : 0) + tDeu;
+
+            if (protanScore > deutanScore || brM.length >= 1) return {
+                title:"Likely Protan (Red-Weak)", badge:"Protan", cls:"sui-badge sui-badge-error", color:"var(--sui-error)",
+                desc:"You struggled with plates where red brightness was the key factor, and transformation plate responses align with protanomaly." + sevNote + hidNote, severity:sev, type:'Protan' };
+
+            if (rgM.length >= 1) return {
+                title:"Likely Deutan (Green-Weak)", badge:"Deutan", cls:"sui-badge sui-badge-warning", color:"var(--sui-warning)",
+                desc:"You struggled with red-green hue differentiation but passed brightness plates, and transformation plate responses align with deuteranomaly." + sevNote + hidNote, severity:sev, type:'Deutan' };
+
+            if (hidH.length > 0 && misses.length === 0) return {
+                title:"Possible Mild Deficiency", badge:"Mild", cls:"sui-badge sui-badge-warning", color:"var(--sui-warning)",
+                desc:"You passed all standard plates but detected hidden-digit patterns. This may indicate very mild anomalous trichromacy. An anomaloscope test can confirm.", severity:'mild', type:null };
+
+            return { title:"Indeterminate", badge:"Check-up", cls:"sui-badge sui-badge-neutral", color:"var(--sui-text-primary)",
+                desc:"The pattern is unclear. A professional optometrist can provide a definitive diagnosis." + sevNote + hidNote, severity:null, type:null };
+        }
+
+        // ── SLIDER ──
         initSlider() {
-            if (this._sliderCleanup) this._sliderCleanup();
-            const container = document.getElementById('compare-box');
-            if (!container) return;
+            if (this._sliderClean) this._sliderClean();
+            const box = document.getElementById('cmp-box');
+            if (!box) return;
+            const top = box.querySelector('.cmp-top');
+            const div = box.querySelector('.cmp-divider');
+            let drag = false;
 
-            const topImg = container.querySelector('.compare-img-top');
-            const divider = container.querySelector('.compare-divider');
-            let dragging = false;
-
-            const setPosition = (clientX) => {
-                const rect = container.getBoundingClientRect();
-                let pct = ((clientX - rect.left) / rect.width) * 100;
-                pct = Math.max(2, Math.min(98, pct));
-                this.state.sliderPos = pct;
-                topImg.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
-                divider.style.left = pct + '%';
+            const setPos = (cx) => {
+                const r = box.getBoundingClientRect();
+                let p = ((cx - r.left) / r.width) * 100;
+                p = Math.max(2, Math.min(98, p));
+                this.S.sliderPos = p;
+                if (!this._raf) {
+                    this._raf = requestAnimationFrame(() => {
+                        top.style.clipPath = `inset(0 ${100-this.S.sliderPos}% 0 0)`;
+                        div.style.left = this.S.sliderPos + '%';
+                        this._raf = null;
+                    });
+                }
             };
+            const dn = e => { drag=true; setPos(e.touches?e.touches[0].clientX:e.clientX); };
+            const mv = e => { if(!drag)return; e.preventDefault(); setPos(e.touches?e.touches[0].clientX:e.clientX); };
+            const up = () => { drag=false; };
 
-            const onDown = (e) => { dragging = true; setPosition(e.touches ? e.touches[0].clientX : e.clientX); };
-            const onMove = (e) => { if (!dragging) return; e.preventDefault(); setPosition(e.touches ? e.touches[0].clientX : e.clientX); };
-            const onUp = () => { dragging = false; };
+            box.addEventListener('mousedown',dn);
+            box.addEventListener('touchstart',dn,{passive:true});
+            window.addEventListener('mousemove',mv);
+            window.addEventListener('touchmove',mv,{passive:false});
+            window.addEventListener('mouseup',up);
+            window.addEventListener('touchend',up);
 
-            container.addEventListener('mousedown', onDown);
-            container.addEventListener('touchstart', onDown, { passive: true });
-            window.addEventListener('mousemove', onMove);
-            window.addEventListener('touchmove', onMove, { passive: false });
-            window.addEventListener('mouseup', onUp);
-            window.addEventListener('touchend', onUp);
+            top.style.clipPath = `inset(0 ${100-this.S.sliderPos}% 0 0)`;
+            div.style.left = this.S.sliderPos + '%';
 
-            topImg.style.clipPath = `inset(0 ${100 - this.state.sliderPos}% 0 0)`;
-            divider.style.left = this.state.sliderPos + '%';
-
-            this._sliderCleanup = () => {
-                container.removeEventListener('mousedown', onDown);
-                container.removeEventListener('touchstart', onDown);
-                window.removeEventListener('mousemove', onMove);
-                window.removeEventListener('touchmove', onMove);
-                window.removeEventListener('mouseup', onUp);
-                window.removeEventListener('touchend', onUp);
+            this._sliderClean = () => {
+                box.removeEventListener('mousedown',dn);
+                box.removeEventListener('touchstart',dn);
+                window.removeEventListener('mousemove',mv);
+                window.removeEventListener('touchmove',mv);
+                window.removeEventListener('mouseup',up);
+                window.removeEventListener('touchend',up);
             };
         }
 
-        // =============================================================
-        //  VIEW RENDERERS
-        // =============================================================
-
-        renderIntro() {
-            return `
-                <div class="fade-in" style="max-width: 600px; text-align: center;">
-                    <div style="position: relative; display: inline-block;">
-                        <div class="hero-glow"></div>
-                        <h1 class="hero-title">Open Source<br><span class="hero-gradient">Vision Analysis</span></h1>
-                    </div>
-                    <p style="font-size: var(--sui-text-h3); color: var(--sui-text-secondary); line-height: var(--sui-leading-body); margin-bottom: var(--sui-space-5);">
-                        Transparent science. Community driven.<br>
-                        No paid diagnosis — just code. Fork the repo, improve the algorithm, or test your vision right here.
-                    </p>
-                    <div style="display: flex; gap: var(--sui-space-3); justify-content: center; flex-wrap: wrap;">
-                        <button onclick="app.setView('test')" class="sui-btn sui-btn-success">
-                            <i data-lucide="play" style="width: 18px; height: 18px;" aria-hidden="true"></i> Start Analysis
-                        </button>
-                        <button onclick="app.setView('sim')" class="sui-btn sui-btn-secondary">
-                            <i data-lucide="split" style="width: 18px; height: 18px;" aria-hidden="true"></i> Reality Simulator
-                        </button>
-                    </div>
-                    <p style="margin-top: var(--sui-space-5); font-size: var(--sui-text-small); color: var(--sui-text-muted);">
-                        14 plates · Protan · Deutan · Tritan · Hidden-digit confirmation
-                    </p>
-                </div>`;
+        // ── VIEWS ──
+        vIntro() {
+            return `<div class="fade-in" style="max-width:600px;text-align:center;">
+                <div style="position:relative;display:inline-block;">
+                    <div class="hero-glow"></div>
+                    <h1 class="hero-title">Open Source<br><span class="hero-gradient">Vision Analysis</span></h1>
+                </div>
+                <p style="font-size:var(--sui-text-h3);color:var(--sui-text-secondary);line-height:var(--sui-leading-body);margin-bottom:var(--sui-space-5);">
+                    Transparent science. Community driven.<br>No paid diagnosis — just code.
+                </p>
+                <div style="display:flex;gap:var(--sui-space-3);justify-content:center;flex-wrap:wrap;">
+                    <button onclick="app.setView('test')" class="sui-btn sui-btn-success">
+                        <i data-lucide="play" style="width:18px;height:18px;" aria-hidden="true"></i> Start Analysis
+                    </button>
+                    <button onclick="app.setView('sim')" class="sui-btn sui-btn-secondary">
+                        <i data-lucide="split" style="width:18px;height:18px;" aria-hidden="true"></i> Reality Simulator
+                    </button>
+                </div>
+                <p style="margin-top:var(--sui-space-5);font-size:var(--sui-text-small);color:var(--sui-text-muted);">
+                    18 plates · Protan · Deutan · Tritan · Transformation · Hidden-digit
+                </p>
+            </div>`;
         }
 
-        renderTest() {
-            const plate = this.state.testSequence[this.state.plateIndex];
-            const total = this.state.testSequence.length;
-            const pct = Math.round(((this.state.plateIndex) / total) * 100);
-            const isMultiDigit = plate.number.length > 1 && plate.number !== 'Nothing';
-            const min = isMultiDigit ? 10 : 2, max = isMultiDigit ? 99 : 9;
-            let options = new Set();
-            if (plate.number !== 'Nothing') options.add(plate.number);
-            while (options.size < 4) options.add(String(Math.floor(Math.random() * (max - min + 1)) + min));
-            options = Array.from(options).sort((a, b) => Number(a) - Number(b));
+        vTest() {
+            const p = this.S.seq[this.S.plateIdx], total = this.S.seq.length;
+            const pct = Math.round((this.S.plateIdx / total) * 100);
+            const isT = p.type === 'transform';
+            const isMD = isT ? false : (p.num.length > 1 && p.num !== 'X');
+            const min = isMD ? 10 : 2, max = isMD ? 99 : 9;
+            let opts = new Set();
+            if (isT) { opts.add(p.numP); opts.add(p.numD); }
+            else if (p.num !== 'X') opts.add(p.num);
+            while (opts.size < 4) opts.add(String(Math.floor(Math.random()*(max-min+1))+min));
+            opts = [...opts].sort((a,b)=>+a - +b);
 
-            setTimeout(() => {
-                const c = document.getElementById('test-canvas');
-                if (c) this.drawPlate(c, plate.type, plate.number);
-            }, 0);
+            setTimeout(() => { const c=document.getElementById('tc'); if(c) this.drawPlate(c,p); }, 0);
 
-            return `
-                <div class="fade-in" style="display: flex; flex-direction: column; width: 100%; max-width: 460px; align-items: center;">
-                    <div style="width: 100%; display: flex; justify-content: center; align-items: center; margin-bottom: var(--sui-space-2);">
-                        <span class="sui-badge sui-badge-neutral sui-badge-sm">
-                            <i data-lucide="layers" style="width: 12px; height: 12px;" aria-hidden="true"></i>
-                            Plate ${this.state.plateIndex + 1} / ${total}
+            return `<div class="fade-in" style="display:flex;flex-direction:column;width:100%;max-width:460px;align-items:center;">
+                <span class="sui-badge sui-badge-neutral sui-badge-sm" style="margin-bottom:var(--sui-space-2);">
+                    <i data-lucide="layers" style="width:12px;height:12px;" aria-hidden="true"></i>
+                    Plate ${this.S.plateIdx+1} / ${total}
+                </span>
+                <div class="sui-progress sui-progress-success" role="progressbar"
+                     aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"
+                     style="margin-bottom:var(--sui-space-3);height:4px;">
+                    <div class="sui-progress-bar" style="width:${pct}%;"></div>
+                </div>
+                <div class="plate-wrap" role="img" aria-label="Colour plate ${this.S.plateIdx+1}">
+                    <canvas id="tc" width="800" height="800"></canvas>
+                </div>
+                <h2 style="font-size:var(--sui-text-h3);font-weight:var(--sui-weight-semibold);margin-bottom:var(--sui-space-2);">What number do you see?</h2>
+                <div class="opt-grid" role="group" aria-label="Answer options">
+                    ${opts.map(o=>`<button onclick="app.answer('${o}')" class="btn-opt">${o}</button>`).join('')}
+                    <button onclick="app.answer('Nothing')" class="btn-special">
+                        <i data-lucide="eye-off" style="width:14px;height:14px;vertical-align:middle;" aria-hidden="true"></i>
+                        I see no number — just dots
+                    </button>
+                    <button onclick="app.answer('Unsure')" class="btn-special">
+                        <i data-lucide="help-circle" style="width:14px;height:14px;vertical-align:middle;" aria-hidden="true"></i>
+                        I see something, but can't make it out
+                    </button>
+                </div>
+            </div>`;
+        }
+
+        vResults() {
+            const dx = this.getDx();
+            const diagPlates = this.S.history.filter(h=>!['hidden'].includes(h.type));
+            const score = diagPlates.filter(h=>h.isCorrect).length;
+            const total = diagPlates.length;
+            const sevLabel = dx.severity === 'mild' ? ' (Anomalous Trichromacy)' : dx.severity === 'severe' ? ' (Likely Dichromacy)' : '';
+            const sevPct = dx.severity === 'mild' ? 33 : dx.severity === 'severe' ? 80 : 0;
+            const simType = dx.type === 'Protan' ? 'protan' : dx.type === 'Deutan' ? 'deutan' : dx.type === 'Tritan' ? 'tritan' : null;
+            const detail = dx.type ? TYPE_DETAIL[dx.type] : null;
+
+            return `<div class="fade-in" style="width:100%;display:flex;flex-direction:column;align-items:center;gap:var(--sui-space-4);">
+                <div class="sui-card sui-card-lg" style="text-align:center;max-width:600px;width:100%;">
+                    <div style="margin-bottom:var(--sui-space-3);">
+                        <span class="${dx.cls}">
+                            <i data-lucide="${dx.badge==='Normal'?'check':dx.badge==='Invalid'?'x':'alert-triangle'}" style="width:14px;height:14px;" aria-hidden="true"></i>
+                            ${dx.badge}${sevLabel}
                         </span>
                     </div>
-                    <!-- SUI Progress Bar -->
-                    <div class="sui-progress sui-progress-success" role="progressbar"
-                         aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"
-                         aria-label="Test progress" style="margin-bottom: var(--sui-space-3); height: 4px;">
-                        <div class="sui-progress-bar" style="width: ${pct}%;"></div>
-                    </div>
-                    <div class="plate-container" role="img" aria-label="Ishihara colour plate ${this.state.plateIndex + 1}">
-                        <canvas id="test-canvas" width="800" height="800"></canvas>
-                    </div>
-                    <h2 style="font-size: var(--sui-text-h3); font-weight: var(--sui-weight-semibold); margin-bottom: var(--sui-space-2);">What number do you see?</h2>
-                    <div class="options-grid" role="group" aria-label="Answer options">
-                        ${options.map(opt => `
-                            <button onclick="app.handleAnswer('${opt}')" class="btn-opt" aria-label="I see ${opt}">${opt}</button>
-                        `).join('')}
-                        <button onclick="app.handleAnswer('Nothing')" class="btn-special" aria-label="I see no number at all">
-                            <i data-lucide="eye-off" style="width: 14px; height: 14px; vertical-align: middle;" aria-hidden="true"></i>
-                            I see no number — just dots
-                        </button>
-                        <button onclick="app.handleAnswer('Unsure')" class="btn-special" aria-label="I can see something but cannot make it out">
-                            <i data-lucide="help-circle" style="width: 14px; height: 14px; vertical-align: middle;" aria-hidden="true"></i>
-                            I see something, but can't make it out
-                        </button>
-                    </div>
-                </div>`;
-        }
-
-        renderResults() {
-            const dx = this.getDiagnosis();
-            const score = this.state.history.filter(h => h.isCorrect).length;
-            const total = this.state.testSequence.length;
-            const simTarget = dx.badge === 'Protan' ? 'protanopia' : (dx.badge === 'Deutan' ? 'deuteranopia' : (dx.badge === 'Tritan' ? 'tritanopia' : 'normal'));
-            const severityLabel = dx.severity ? ` (${dx.severity === 'mild' ? 'Anomalous Trichromacy' : 'Likely Dichromacy'})` : '';
-
-            return `
-                <div class="fade-in" style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: var(--sui-space-4);">
-                    <div class="sui-card sui-card-lg" style="text-align: center; max-width: 600px; width: 100%;">
-                        <div style="margin-bottom: var(--sui-space-3);">
-                            <span class="${dx.badgeClass}">
-                                <i data-lucide="${dx.badge === 'Normal' ? 'check' : (dx.badge === 'Invalid' ? 'x' : 'alert-triangle')}" style="width: 14px; height: 14px;" aria-hidden="true"></i>
-                                ${dx.badge}${severityLabel}
-                            </span>
+                    <h2 style="font-size:var(--sui-text-h1);font-weight:var(--sui-weight-bold);margin-bottom:var(--sui-space-2);color:${dx.color};">${dx.title}</h2>
+                    <p style="color:var(--sui-text-secondary);line-height:var(--sui-leading-body);margin-bottom:var(--sui-space-4);">${dx.desc}</p>
+                    <div style="display:flex;gap:var(--sui-space-4);justify-content:center;flex-wrap:wrap;">
+                        <div class="sui-stat" style="text-align:center;">
+                            <div class="sui-kpi-label">Score</div>
+                            <div class="sui-kpi-value">${score} / ${total}</div>
                         </div>
-                        <h2 style="font-size: var(--sui-text-h1); font-weight: var(--sui-weight-bold); margin-bottom: var(--sui-space-2); color: ${dx.color};">${dx.title}</h2>
-                        <p style="color: var(--sui-text-secondary); line-height: var(--sui-leading-body); margin-bottom: var(--sui-space-4);">${dx.desc}</p>
-                        <div style="display: flex; gap: var(--sui-space-4); justify-content: center;">
-                            <div class="sui-stat" style="text-align: center;">
-                                <div class="sui-kpi-label">Score</div>
-                                <div class="sui-kpi-value">${score} / ${total}</div>
-                            </div>
-                            <div class="sui-stat" style="text-align: center;">
-                                <div class="sui-kpi-label">Classification</div>
-                                <div class="sui-kpi-value">${dx.badge}</div>
-                            </div>
+                        <div class="sui-stat" style="text-align:center;">
+                            <div class="sui-kpi-label">Classification</div>
+                            <div class="sui-kpi-value">${dx.badge}</div>
                         </div>
                     </div>
-                    ${['Protan', 'Deutan', 'Tritan'].includes(dx.badge) ? `
-                    <div class="sui-alert sui-alert-info" style="max-width: 600px;">
-                        <i data-lucide="info" style="width: 20px; height: 20px; flex-shrink: 0;" aria-hidden="true"></i>
-                        <div>
-                            <strong style="display: block; margin-bottom: var(--sui-space-1);">Verify this result yourself</strong>
-                            <p style="margin-bottom: var(--sui-space-3); line-height: var(--sui-leading-body);">
-                                Go to the Simulator. If the "Original" and "${dx.badge === 'Protan' ? 'Protanopia' : dx.badge === 'Deutan' ? 'Deuteranopia' : 'Tritanopia'}" sides look identical to you, the test is accurate. Then try "Reveal" to see what you've been missing.
-                            </p>
-                            <button onclick="app.state.simMode='${simTarget}'; app.setView('sim');" class="sui-btn sui-btn-primary sui-btn-sm">
-                                <i data-lucide="split" style="width: 14px; height: 14px;" aria-hidden="true"></i> Launch Verification Sim
-                            </button>
+                    ${dx.severity ? `
+                    <div style="margin-top:var(--sui-space-4);">
+                        <div class="sui-kpi-label" style="margin-bottom:var(--sui-space-1);">Estimated Severity</div>
+                        <div class="sui-progress ${dx.severity==='mild'?'sui-progress-warning':'sui-progress-error'}" role="progressbar"
+                             aria-valuenow="${sevPct}" aria-valuemin="0" aria-valuemax="100" style="height:6px;">
+                            <div class="sui-progress-bar" style="width:${sevPct}%;"></div>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;font-size:var(--sui-text-meta);color:var(--sui-text-muted);margin-top:var(--sui-space-1);">
+                            <span>Mild</span><span>Moderate</span><span>Severe</span>
                         </div>
                     </div>` : ''}
-                    <button onclick="app.setView('test')" class="sui-btn sui-btn-ghost sui-btn-sm">
-                        <i data-lucide="rotate-ccw" style="width: 14px; height: 14px;" aria-hidden="true"></i> Retake Test
-                    </button>
-                </div>`;
+                </div>
+                ${simType ? `
+                <div class="sui-alert sui-alert-info" style="max-width:600px;">
+                    <i data-lucide="info" style="width:20px;height:20px;flex-shrink:0;" aria-hidden="true"></i>
+                    <div>
+                        <strong style="display:block;margin-bottom:var(--sui-space-1);">Verify with the Simulator</strong>
+                        <p style="margin-bottom:var(--sui-space-3);line-height:var(--sui-leading-body);">
+                            Open the ${dx.badge} tab. If both sides of the slider look identical to you, the diagnosis is confirmed. Then try "Reveal" to see what you've been missing.
+                        </p>
+                        <button onclick="app.S.simType='${simType}';app.setView('sim');" class="sui-btn sui-btn-primary sui-btn-sm">
+                            <i data-lucide="split" style="width:14px;height:14px;" aria-hidden="true"></i> Launch Simulator
+                        </button>
+                    </div>
+                </div>` : ''}
+                ${detail ? `
+                <details class="results-detail">
+                    <summary>What does this mean?</summary>
+                    <div class="detail-body">
+                        <h4>Prevalence</h4><p>${detail.prevalence}</p>
+                        <h4>Daily Impact</h4><p>${detail.impact}</p>
+                        <h4>Luminance &amp; Brightness</h4><p>${detail.luminance}</p>
+                        <h4>Career &amp; Occupational Notes</h4><p>${detail.career}</p>
+                        <h4>Sources</h4><p>${detail.sources}</p>
+                    </div>
+                </details>` : ''}
+                <button onclick="app.setView('test')" class="sui-btn sui-btn-ghost sui-btn-sm">
+                    <i data-lucide="rotate-ccw" style="width:14px;height:14px;" aria-hidden="true"></i> Retake Test
+                </button>
+            </div>`;
         }
 
-        renderSim() {
-            const filters = [
-                { id: 'protanopia',   label: 'Protanopia (No Red)',    icon: 'eye-off' },
-                { id: 'deuteranopia', label: 'Deuteranopia (No Green)', icon: 'eye-off' },
-                { id: 'tritanopia',   label: 'Tritanopia (No Blue)',   icon: 'eye-off' },
-                { id: 'reveal',       label: 'Reveal What You\'re Missing', icon: 'sparkles' }
-            ];
-            const isReveal = this.state.simMode === 'reveal';
-            const filterUrl = isReveal ? 'url(#reveal-filter)' : `url(#${this.state.simMode}-filter)`;
-            const rightLabel = isReveal ? 'ENHANCED FOR YOU' : this.state.simMode.toUpperCase();
+        vSim() {
+            const t = this.S.simType;
+            const tabs = ['protan','deutan','tritan'];
+            const labels = { protan:'Protanopia', deutan:'Deuteranopia', tritan:'Tritanopia' };
+            const reveal = this.S.revealOn;
+            const filtered = this.S.revealFiltered;
+            const desc = SIM_DESCRIPTIONS[t];
+            const filterSim = `url(#f-${t})`;
+            const filterReveal = `url(#f-reveal-${t})`;
 
-            const description = isReveal
-                ? `<strong>Left:</strong> What you normally see. <strong>Right:</strong> Colours shifted so <em>you</em> can perceive what non-colourblind people see. If your wife looks, both sides look the same to her. Drag the slider to compare.`
-                : `<strong>Left:</strong> Original image. <strong>Right:</strong> Simulated ${this.state.simMode}. If both sides look the same to you, that confirms the diagnosis. Show someone with normal vision — they'll see the difference. Drag the slider to compare.`;
+            setTimeout(() => { if(!reveal) this.initSlider(); }, 0);
 
-            setTimeout(() => this.initSlider(), 0);
-
-            return `
-                <div class="fade-in" style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: var(--sui-space-4);">
-                    <div style="text-align: center; max-width: 650px;">
-                        <h2 style="font-size: var(--sui-text-h2); font-weight: var(--sui-weight-bold); margin-bottom: var(--sui-space-2);">The "Qualia" Validator</h2>
-                        <p style="color: var(--sui-text-secondary); font-size: var(--sui-text-small); line-height: var(--sui-leading-body);">
-                            ${description}
-                        </p>
+            return `<div class="fade-in" style="width:100%;max-width:900px;">
+                <h2 style="font-size:var(--sui-text-h2);font-weight:var(--sui-weight-bold);margin-bottom:var(--sui-space-3);text-align:center;">The "Qualia" Validator</h2>
+                <div class="sim-tabs" role="tablist" aria-label="Simulation type">
+                    ${tabs.map(tb=>`
+                        <button class="sim-tab ${t===tb&&!reveal?'active':''}" role="tab" aria-selected="${t===tb&&!reveal}"
+                            onclick="app.S.simType='${tb}';app.S.revealOn=false;app.S.revealFiltered=false;app.render();">${labels[tb]}</button>
+                    `).join('')}
+                    <button class="sim-tab ${reveal?'active':''}" role="tab" aria-selected="${reveal}"
+                        onclick="app.S.revealOn=true;app.S.revealFiltered=false;app.render();">
+                        &#10024; Reveal
+                    </button>
+                </div>
+                <div class="sui-card" style="padding:var(--sui-space-3);margin-bottom:var(--sui-space-3);">
+                    <p style="font-size:var(--sui-text-small);line-height:var(--sui-leading-body);color:var(--sui-text-secondary);">
+                        ${reveal ? desc.reveal : desc.sim}
+                    </p>
+                </div>
+                ${reveal ? `
+                    <div style="position:relative;">
+                        <img class="reveal-img" src="test-image.jpg" alt="${filtered ? 'Colour-enhanced view' : 'Your natural vision'}"
+                             style="filter:${filtered ? filterReveal : 'none'};">
+                        <span class="cmp-label cmp-label-l">${filtered ? 'COLOURS REVEALED' : 'YOUR VISION'}</span>
                     </div>
-                    <div class="sim-grid">
-                        <div style="order: 2;">
-                            <h3 style="font-size: var(--sui-text-meta); color: var(--sui-text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--sui-space-3); font-weight: var(--sui-weight-semibold);">Simulation Mode</h3>
-                            ${filters.map(f => {
-                                const isActive = this.state.simMode === f.id;
-                                const btnClass = isActive ? (f.id === 'reveal' ? 'active-reveal' : 'active') : '';
-                                return `
-                                <button onclick="app.state.simMode='${f.id}'; app.render();"
-                                    class="sim-btn ${btnClass}" aria-pressed="${isActive}">
-                                    <span><i data-lucide="${f.icon}" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px;" aria-hidden="true"></i> ${f.label}</span>
-                                    ${isActive ? '<i data-lucide="check" style="width: 16px; height: 16px;" aria-hidden="true"></i>' : ''}
-                                </button>`;
-                            }).join('')}
-                        </div>
-                        <div id="compare-box" class="compare-container" style="order: 1;"
-                             role="img" aria-label="Draggable comparison: original vs ${rightLabel}">
-                            <img class="compare-img-bottom" src="test-image.jpg" alt="" style="filter: ${filterUrl};">
-                            <img class="compare-img-top" src="test-image.jpg" alt=""
-                                 style="clip-path: inset(0 ${100 - this.state.sliderPos}% 0 0);">
-                            <div class="compare-label compare-label-left">ORIGINAL</div>
-                            <div class="compare-label compare-label-right"
-                                 ${isReveal ? 'style="color: var(--sui-pro); border-color: var(--sui-pro-strong);"' : ''}>
-                                ${rightLabel}
-                            </div>
-                            <div class="compare-divider" style="left: ${this.state.sliderPos}%;">
-                                <div class="compare-handle">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M8 6l-4 6 4 6"/><path d="M16 6l4 6-4 6"/>
-                                    </svg>
-                                </div>
+                    <div style="display:flex;justify-content:center;gap:var(--sui-space-2);margin-top:var(--sui-space-3);flex-wrap:wrap;">
+                        <button onclick="app.S.revealFiltered=false;app.render();"
+                                class="sui-btn ${!filtered?'sui-btn-primary':'sui-btn-ghost'} sui-btn-sm">
+                            <i data-lucide="eye" style="width:16px;height:16px;" aria-hidden="true"></i> Your Vision
+                        </button>
+                        <button onclick="app.S.revealFiltered=true;app.render();"
+                                class="sui-btn ${filtered?'sui-btn-success':'sui-btn-ghost'} sui-btn-sm">
+                            <i data-lucide="sparkles" style="width:16px;height:16px;" aria-hidden="true"></i> Colours Revealed
+                        </button>
+                    </div>
+                    <p style="text-align:center;font-size:var(--sui-text-meta);color:var(--sui-text-muted);margin-top:var(--sui-space-2);">
+                        Showing: <strong>${labels[t]}</strong> reveal filter — switch type using the tabs above
+                    </p>
+                ` : `
+                    <div id="cmp-box" class="compare-box" role="img" aria-label="Original vs ${labels[t]}">
+                        <img class="cmp-bottom" src="test-image.jpg" alt="" style="filter:${filterSim};">
+                        <img class="cmp-top" src="test-image.jpg" alt=""
+                             style="clip-path:inset(0 ${100-this.S.sliderPos}% 0 0);">
+                        <span class="cmp-label cmp-label-l">ORIGINAL</span>
+                        <span class="cmp-label cmp-label-r">${labels[t].toUpperCase()}</span>
+                        <div class="cmp-divider" style="left:${this.S.sliderPos}%;">
+                            <div class="cmp-handle">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M8 6l-4 6 4 6"/><path d="M16 6l4 6-4 6"/>
+                                </svg>
                             </div>
                         </div>
                     </div>
-                </div>`;
+                `}
+            </div>`;
         }
 
         render() {
-            const views = { intro: 'renderIntro', test: 'renderTest', results: 'renderResults', sim: 'renderSim' };
-            this.root.innerHTML = this[views[this.state.view]]();
+            const views = { intro:'vIntro', test:'vTest', results:'vResults', sim:'vSim' };
+            this.root.innerHTML = this[views[this.S.view]]();
             if (typeof lucide !== 'undefined') lucide.createIcons();
         }
     }
 
-    const app = new ColorVisionApp();
+    const app = new App();
     </script>
     <script src="https://cdn.jsdelivr.net/gh/adrianspeyer/speyer-ui@2.1.2/dist/sui.min.js" defer></script>
 </body>
