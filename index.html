@@ -70,10 +70,10 @@
         }
         .plate-container canvas { width: 100%; height: 100%; object-fit: contain; }
 
-        /* Answer Options */
+        /* Answer Options — 4 columns so all numbers fit on one row */
         .options-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr);
-            gap: var(--sui-space-2); width: 100%; max-width: 400px;
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: var(--sui-space-2); width: 100%; max-width: 460px;
         }
         .btn-opt {
             padding: var(--sui-space-3); background: var(--sui-bg-card);
@@ -89,7 +89,7 @@
         .btn-opt:focus-visible { outline: 2px solid var(--sui-blue-focus); outline-offset: 2px; }
 
         .btn-special {
-            grid-column: span 3; padding: var(--sui-space-2) var(--sui-space-3);
+            grid-column: span 4; padding: var(--sui-space-2) var(--sui-space-3);
             background: transparent; border: 1px dashed var(--sui-border);
             border-radius: var(--sui-radius-md); color: var(--sui-text-muted);
             font-size: var(--sui-text-small); cursor: pointer;
@@ -97,7 +97,6 @@
             min-height: var(--sui-touch-target); text-align: center;
         }
         .btn-special:hover { background: var(--sui-bg-elevated); color: var(--sui-text-primary); border-color: var(--sui-text-muted); }
-        .btn-special + .btn-special { border-top-style: dashed; }
 
         /* Results */
         .results-card {
@@ -127,9 +126,12 @@
         .split-pane { position: absolute; top: 0; bottom: 0; width: 50%; overflow: hidden; }
         .split-left { left: 0; border-right: 1px solid rgba(255,255,255,0.15); }
         .split-right { right: 0; }
-        .split-img { position: absolute; top: 0; height: 100%; width: 200%; max-width: none; object-fit: cover; }
-        .img-left { left: 0; object-position: left; }
-        .img-right { left: -100%; object-position: right; }
+        .split-bg {
+            position: absolute; top: 0; left: 0;
+            width: 200%; height: 100%;
+            background: url('test-image.jpg') center / cover no-repeat;
+        }
+        .split-right .split-bg { left: -100%; }
         .split-label {
             position: absolute; top: var(--sui-space-3);
             background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
@@ -543,7 +545,7 @@
             }, 0);
 
             return `
-                <div class="fade-in" style="display: flex; flex-direction: column; width: 100%; max-width: 400px; align-items: center;">
+                <div class="fade-in" style="display: flex; flex-direction: column; width: 100%; max-width: 460px; align-items: center;">
                     <div style="width: 100%; display: flex; justify-content: space-between; margin-bottom: var(--sui-space-3);">
                         <span class="sui-badge sui-badge-neutral sui-badge-sm">
                             <i data-lucide="layers" style="width: 12px; height: 12px;" aria-hidden="true"></i>
@@ -647,11 +649,11 @@
                         </div>
                         <div class="split-screen-container" style="order: 1;" role="img" aria-label="Side-by-side: original image left, ${this.state.simMode} simulation right">
                             <div class="split-pane split-left">
-                                <img src="test-image.jpg" class="split-img img-left" alt="">
+                                <div class="split-bg"></div>
                                 <div class="split-label split-label-left">ORIGINAL</div>
                             </div>
                             <div class="split-pane split-right">
-                                <img src="test-image.jpg" class="split-img img-right" style="filter: ${filterUrl};" alt="">
+                                <div class="split-bg" style="filter: ${filterUrl};"></div>
                                 <div class="split-label split-label-right" ${isReveal ? 'style="color: var(--sui-pro); border-color: var(--sui-pro-strong);"' : ''}>
                                     ${isReveal ? 'ENHANCED (FALSE COLOUR)' : this.state.simMode.toUpperCase()}
                                 </div>
