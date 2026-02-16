@@ -627,8 +627,7 @@
                 do { d1 = String(Math.floor(Math.random()*8)+2); } while(d1===p.numP||d1===p.numD);
                 do { d2 = String(Math.floor(Math.random()*8)+2); } while(d2===p.numP||d2===p.numD||d2===d1);
                 const [dLo,dHi] = [d1,d2].sort((a,b)=>+a - +b);
-                const [rLo,rHi] = [p.numP,p.numD].sort((a,b)=>+a - +b);
-                opts = [p.numP, p.numD, `${rLo} & ${rHi}`, `${dLo} & ${dHi}`];
+                opts = [p.numP, p.numD, `${p.numP} & ${p.numD}`, `${dLo} & ${dHi}`];
                 // Shuffle so position isn't predictable
                 for (let i=opts.length-1;i>0;i--) { const j=Math.floor(Math.random()*(i+1));[opts[i],opts[j]]=[opts[j],opts[i]]; }
             } else {
