@@ -34,7 +34,7 @@
     <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" onload="lucide.createIcons()"></script>
 
     <style>
-        /* === OpenColor Labs v3.0.0 — Custom CSS === */
+        /* === OpenColor Labs v3.0.1 — Custom CSS === */
         body {
             background: var(--sui-bg-primary); color: var(--sui-text-primary);
             display: flex; flex-direction: column; min-height: 100vh; margin: 0;
@@ -193,6 +193,18 @@
 
         /* Footer safe area */
         .sui-footer { padding-bottom: calc(var(--sui-space-5) + env(safe-area-inset-bottom)); }
+
+        /* Green header accent — ensure SUI topbar components don't override */
+        .brand-green { color: var(--sui-success) !important; }
+        .sui-topbar .sui-brand-mark i[data-lucide] { color: var(--sui-success) !important; }
+        .sui-topbar-actions .sui-btn i[data-lucide] { color: var(--sui-success) !important; }
+        .sui-topbar-actions .sui-btn:hover i[data-lucide] { opacity: 0.85; }
+
+        /* Transform plate selected state */
+        .btn-opt.selected {
+            background: var(--sui-blue-soft); border-color: var(--sui-blue-primary);
+            box-shadow: 0 0 0 2px var(--sui-blue-focus);
+        }
     </style>
 </head>
 <body>
@@ -229,8 +241,8 @@
                     <i data-lucide="scan-eye" style="color:var(--sui-success);"></i>
                 </div>
                 <div class="sui-brand-title">
-                    <span class="sui-brand-name">Open<span style="color:var(--sui-success);">Color</span> Labs</span>
-                    <span class="sui-version-pill">v3.0.0</span>
+                    <span class="sui-brand-name">Open<span class="brand-green">Color</span> Labs</span>
+                    <span class="sui-version-pill">v3.0.1</span>
                 </div>
             </div>
             <div class="sui-topbar-actions">
@@ -265,7 +277,7 @@
         </div>
         <div style="display:flex;gap:var(--sui-space-2);justify-content:center;margin-top:var(--sui-space-2);flex-wrap:wrap;">
             <a href="https://github.com/adrianspeyer/Open-Colour-Labs" target="_blank" rel="noopener noreferrer" class="sui-shield sui-shield-success">
-                <span class="sui-shield-label">OpenColor Labs</span><span class="sui-shield-value">v3.0.0</span>
+                <span class="sui-shield-label">OpenColor Labs</span><span class="sui-shield-value">v3.0.1</span>
             </a>
             <a href="https://github.com/adrianspeyer/speyer-ui" target="_blank" rel="noopener noreferrer" class="sui-shield">
                 <span class="sui-shield-label">built with</span><span class="sui-shield-value">SUI v2.1.2</span>
@@ -275,23 +287,23 @@
 
     <script>
     // =================================================================
-    //  OpenColor Labs v3.0.0 — Colour Vision Analysis Engine
+    //  OpenColor Labs v3.0.1 — Colour Vision Analysis Engine
     //  MIT Licence | https://github.com/adrianspeyer/Open-Colour-Labs
     // =================================================================
     const rr = (a, b) => Math.random() * (b - a) + a;
 
     const SIM_DESCRIPTIONS = {
         protan: {
-            sim: `<strong>What to look for:</strong> The red peppers and apples on the left should look vivid and bright. On the right (simulated protanopia), those same reds appear <em>dark — almost brown or black</em>. The pumpkin looks greenish-brown instead of warm orange. If both sides look the same to you, your vision matches the protanopia simulation.`,
-            reveal: `<strong>Toggle between views.</strong> When you switch to "Colours Revealed," look at the peppers and apples — if new <em>blues and purples</em> appear where you previously saw dark browns, those are the colour differences your eyes normally miss. The more the image changes, the stronger the effect.`
+            sim: `<strong>For someone with normal colour vision:</strong> The left side shows vivid red peppers and apples that are clearly different from the green peppers and broccoli. On the right (protanopia simulation), those reds become <em>dark and muddy</em> — almost brown. If both sides look the same to you, this matches how you see the world.`,
+            reveal: `<strong>This is for you.</strong> Toggle to "Colours Revealed" and look at the apples and red peppers on the left side of the image. If new, brighter tones appear where you normally see dark or brownish colours, those are the reds your eyes have been missing. The more dramatic the change, the stronger the effect. Someone without colour vision deficiency would see <em>no difference</em> between the two views.`
         },
         deutan: {
-            sim: `<strong>What to look for:</strong> The red peppers and green peppers on the left are completely different colours. On the right (simulated deuteranopia), they blend into <em>similar shades of brownish-yellow</em>. The carrots and broccoli also merge. If both sides look the same to you, your vision matches the deuteranopia simulation.`,
-            reveal: `<strong>Toggle between views.</strong> When you switch to "Colours Revealed," look at the red peppers versus the green peppers — if new <em>blues and purples</em> appear where you previously saw uniform olive-brown, those are the distinctions your eyes normally miss.`
+            sim: `<strong>For someone with normal colour vision:</strong> The left side shows red peppers that are completely different from the green peppers and broccoli. On the right (deuteranopia simulation), reds and greens blur into <em>similar brownish-yellow tones</em>. If both sides look the same to you, this matches how you see the world.`,
+            reveal: `<strong>This is for you.</strong> Toggle to "Colours Revealed" and look at the red peppers versus the green peppers. If you suddenly see a <em>clear difference</em> between items that normally look similar to you, those are the colour distinctions your eyes miss. Someone without colour vision deficiency would see <em>no difference</em> between the two views.`
         },
         tritan: {
-            sim: `<strong>What to look for:</strong> The bananas and lemons on the left are warm yellow, clearly different from the green peppers and apples. On the right (simulated tritanopia), those yellows and greens <em>blend together</em>, and the purple grapes and eggplant look greyish. If both sides look the same to you, your vision matches the tritanopia simulation.`,
-            reveal: `<strong>Toggle between views.</strong> When you switch to "Colours Revealed," look at the bananas versus the green peppers — if new <em>reds and pinks</em> appear separating colours that looked identical, those are the blue-yellow distinctions your eyes normally miss.`
+            sim: `<strong>For someone with normal colour vision:</strong> The left side shows bright yellow bananas and lemons clearly distinct from the green peppers and apples. On the right (tritanopia simulation), yellows and greens <em>blend together</em>, and the purple grapes lose their colour. If both sides look the same to you, this matches how you see the world.`,
+            reveal: `<strong>This is for you.</strong> Toggle to "Colours Revealed" and look at the bananas versus the green peppers. If colours that normally look the same to you suddenly <em>separate into distinct tones</em>, those are the blue-yellow distinctions your eyes miss. Someone without colour vision deficiency would see <em>no difference</em> between the two views.`
         }
     };
 
@@ -455,12 +467,17 @@
 
         answer(sel) {
             const p = this.S.seq[this.S.plateIdx];
+            // Parse combo answers like "2 & 5" into individual numbers
+            const parts = sel.includes('&') ? sel.split('&').map(s=>s.trim()) : [sel];
+            const sawP = p.type==='transform' && parts.includes(p.numP);
+            const sawD = p.type==='transform' && parts.includes(p.numD);
             this.S.history.push({ ...p, answer: sel,
                 isCorrect: p.type === 'nothing' ? (sel === 'Nothing' || sel === 'Unsure')
-                          : p.type === 'transform' ? (sel === p.numP || sel === p.numD)
+                          : p.type === 'transform' ? (sawP || sawD)
                           : sel === p.num,
-                sawProtan: p.type === 'transform' && sel === p.numP,
-                sawDeutan: p.type === 'transform' && sel === p.numD,
+                sawProtan: sawP && !sawD,
+                sawDeutan: sawD && !sawP,
+                sawBoth:   sawP && sawD,
                 isUnsure: sel === 'Unsure', isNothing: sel === 'Nothing'
             });
             if (this.S.plateIdx < this.S.seq.length - 1) { this.S.plateIdx++; this.render(); }
@@ -484,8 +501,8 @@
             const brM = H.filter(h=>h.type==='brightness'&&!h.isCorrect);
             const trM = H.filter(h=>h.type==='tritan'&&!h.isCorrect);
             const hidH = H.filter(h=>h.type==='hidden'&&h.isCorrect);
-            const tPro = H.filter(h=>h.type==='transform'&&h.sawProtan).length;
-            const tDeu = H.filter(h=>h.type==='transform'&&h.sawDeutan).length;
+            const tPro = H.filter(h=>h.type==='transform'&&h.sawProtan&&!h.sawBoth).length;
+            const tDeu = H.filter(h=>h.type==='transform'&&h.sawDeutan&&!h.sawBoth).length;
 
             const unsC = misses.filter(h=>h.isUnsure).length;
             const noC = misses.filter(h=>h.isNothing).length;
@@ -600,11 +617,25 @@
             const isT = p.type === 'transform';
             const isMD = isT ? false : (p.num.length > 1 && p.num !== 'X');
             const min = isMD ? 10 : 2, max = isMD ? 99 : 9;
-            let opts = new Set();
-            if (isT) { opts.add(p.numP); opts.add(p.numD); }
-            else if (p.num !== 'X') opts.add(p.num);
-            while (opts.size < 4) opts.add(String(Math.floor(Math.random()*(max-min+1))+min));
-            opts = [...opts].sort((a,b)=>+a - +b);
+
+            let opts;
+            if (isT) {
+                // 4 buttons: numP, numD, real combo, decoy combo
+                // Generate two unique decoy digits for the fake combo
+                let d1, d2;
+                do { d1 = String(Math.floor(Math.random()*8)+2); } while(d1===p.numP||d1===p.numD);
+                do { d2 = String(Math.floor(Math.random()*8)+2); } while(d2===p.numP||d2===p.numD||d2===d1);
+                const [dLo,dHi] = [d1,d2].sort((a,b)=>+a - +b);
+                const [rLo,rHi] = [p.numP,p.numD].sort((a,b)=>+a - +b);
+                opts = [p.numP, p.numD, `${rLo} & ${rHi}`, `${dLo} & ${dHi}`];
+                // Shuffle so position isn't predictable
+                for (let i=opts.length-1;i>0;i--) { const j=Math.floor(Math.random()*(i+1));[opts[i],opts[j]]=[opts[j],opts[i]]; }
+            } else {
+                opts = new Set();
+                if (p.num !== 'X') opts.add(p.num);
+                while (opts.size < 4) opts.add(String(Math.floor(Math.random()*(max-min+1))+min));
+                opts = [...opts].sort((a,b)=>+a - +b);
+            }
 
             setTimeout(() => { const c=document.getElementById('tc'); if(c) this.drawPlate(c,p); }, 0);
 
@@ -738,17 +769,19 @@
                     </p>
                 </div>
                 ${reveal ? `
-                    <div style="position:relative;">
-                        <img class="reveal-img" src="test-image.jpg" alt="${filtered ? 'Colour-enhanced view' : 'Your natural vision'}"
-                             style="filter:${filtered ? filterReveal : 'none'};">
-                        <span class="cmp-label cmp-label-l">${filtered ? 'COLOURS REVEALED' : 'YOUR VISION'}</span>
+                    <div style="position:relative;overflow:hidden;border:1px solid var(--sui-border);border-radius:var(--sui-radius-lg);">
+                        <img class="reveal-img" id="reveal-base" src="test-image.jpg" alt="Your natural vision"
+                             style="filter:none;position:relative;z-index:1;transition:opacity 0.4s var(--sui-easing);opacity:${filtered ? '0' : '1'};border:none;border-radius:0;">
+                        <img class="reveal-img" src="test-image.jpg" alt="Colour-enhanced view"
+                             style="filter:${filterReveal};position:absolute;top:0;left:0;z-index:0;border:none;border-radius:0;">
+                        <span class="cmp-label cmp-label-l" id="reveal-label">${filtered ? 'COLOURS REVEALED' : 'YOUR VISION'}</span>
                     </div>
                     <div style="display:flex;justify-content:center;gap:var(--sui-space-2);margin-top:var(--sui-space-3);flex-wrap:wrap;">
-                        <button onclick="app.S.revealFiltered=false;app.render();"
+                        <button id="btn-your-vision" onclick="app.toggleReveal(false)"
                                 class="sui-btn ${!filtered?'sui-btn-primary':'sui-btn-ghost'} sui-btn-sm">
                             <i data-lucide="eye" style="width:16px;height:16px;" aria-hidden="true"></i> Your Vision
                         </button>
-                        <button onclick="app.S.revealFiltered=true;app.render();"
+                        <button id="btn-colours-revealed" onclick="app.toggleReveal(true)"
                                 class="sui-btn ${filtered?'sui-btn-success':'sui-btn-ghost'} sui-btn-sm">
                             <i data-lucide="sparkles" style="width:16px;height:16px;" aria-hidden="true"></i> Colours Revealed
                         </button>
@@ -773,6 +806,22 @@
                     </div>
                 `}
             </div>`;
+        }
+
+        // ── REVEAL TOGGLE (in-place crossfade, no re-render) ──
+        toggleReveal(filtered) {
+            this.S.revealFiltered = filtered;
+            const base = document.getElementById('reveal-base');
+            const label = document.getElementById('reveal-label');
+            const btnYour = document.getElementById('btn-your-vision');
+            const btnReveal = document.getElementById('btn-colours-revealed');
+            if (!base || !label) return;
+            base.style.opacity = filtered ? '0' : '1';
+            label.textContent = filtered ? 'COLOURS REVEALED' : 'YOUR VISION';
+            if (btnYour && btnReveal) {
+                btnYour.className = `sui-btn ${!filtered?'sui-btn-primary':'sui-btn-ghost'} sui-btn-sm`;
+                btnReveal.className = `sui-btn ${filtered?'sui-btn-success':'sui-btn-ghost'} sui-btn-sm`;
+            }
         }
 
         render() {

@@ -70,6 +70,13 @@ This is an **educational tool**, not a medical device. It does not replace profe
 
 ## Changelog
 
+### v3.0.1 — QA & UX Fixes
+- **Transform plate multi-select:** Options now include combo answers (e.g. "2 & 5") alongside singles, so users who see both numbers can select them naturally — without revealing that two numbers exist on the plate. Decoy combos prevent the correct combo from standing out.
+- **Sim descriptions rewritten:** Narration now speaks directly to the CVD user ("This is for you") rather than describing the condition abstractly. Reveal descriptions clarify that someone without CVD would see no difference between views.
+- **Reveal crossfade:** Toggle between "Your Vision" and "Colours Revealed" now uses an in-place opacity crossfade instead of a full DOM re-render — no image flicker.
+- **Green header fix:** Added explicit CSS overrides (`.brand-green` class) so SUI topbar component styles no longer override the green accent colour on the logo and nav icons.
+- **Diagnosis engine:** "Both" (combo) answers on transform plates are excluded from protan/deutan scoring — seeing both numbers indicates normal vision on that axis.
+
 ### v3.0.0 — Major Release
 - **18 plates** (up from 14): added 2 transformation plates, 1 extra R/G vanishing, 1 extra noise trap
 - **Transformation plates:** Protan sees digit A, deutan sees digit B — reliable differentiation
@@ -82,7 +89,7 @@ This is an **educational tool**, not a medical device. It does not replace profe
 - **Nothing plate scoring:** "Nothing" is now correctly counted as correct for noise trap plates
 - **Slider performance:** Wrapped in `requestAnimationFrame` for smooth 60fps drag
 - **Green nav icons restored:** Eye, split, and GitHub icons use `--sui-success` colour
-- **Version shield:** OpenColor Labs v3.0.0 shield in footer alongside SUI v2.1.2
+- **Version shield:** OpenColor Labs v3.0.1 shield in footer alongside SUI v2.1.2
 
 ### v2.0.0
 - 14-plate test sequence (demo, R/G, brightness trap, tritan, hidden-digit, noise trap)
