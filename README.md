@@ -1,5 +1,9 @@
 # OpenColor Labs
 
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Speyer UI](https://img.shields.io/badge/Speyer_UI-v2.1.2-green)
+![Licence](https://img.shields.io/badge/licence-MIT-lightgrey)
+
 **Open source, scientifically transparent colour vision analysis and simulation.**
 
 [Live Demo](https://adrianspeyer.github.io/Open-Colour-Labs/) · [View Source](https://github.com/adrianspeyer/Open-Colour-Labs)
@@ -10,7 +14,7 @@
 
 Most online colour blindness tests are marketing tools designed to sell expensive "correction" glasses. OpenColor Labs is different. It is a strictly mathematical, open-source tool designed to provide directional analysis and, more importantly, **validation**.
 
-We use procedural generation to create Ishihara-style dot plates that cannot be memorised, and we provide a "Reality Simulator" to let users prove the diagnosis to themselves using their own **qualia** (subjective experience).
+We use procedural generation to create Ishihara-style dot plates that cannot be memorised, and we provide a "Qualia Validator" to let users prove the diagnosis to themselves using their own **qualia** (subjective experience).
 
 ---
 
@@ -18,7 +22,7 @@ We use procedural generation to create Ishihara-style dot plates that cannot be 
 
 **Procedural Generation** — Test plates are generated in real-time using HTML5 Canvas. No static images means you cannot cheat by memorising answers. HSL colour jitter ensures no two plates are ever identical.
 
-**The "Qualia" Validator** — A split-screen simulator that uses SVG colour matrices to simulate Protanopia, Deuteranopia, and Tritanopia. If you are colourblind, the "Original" and "Simulated" sides will look identical to you — providing definitive proof of the diagnosis.
+**The "Qualia" Validator** — A draggable split-screen simulator that uses SVG colour matrices to simulate Protanopia, Deuteranopia, and Tritanopia. If you are colourblind, the "Original" and "Simulated" sides will look identical to you — providing definitive proof of the diagnosis. Drag the divider to compare precisely.
 
 **Scientifically Grounded Simulation** — The simulator uses the Machado, Oliveira & Fernandes (2009) severity=1.0 matrices, the gold standard for dichromacy simulation. These are validated against the Brettel, Viénot & Mollon (1997) model and operate correctly in the SVG `linearRGB` colour space.
 
@@ -26,7 +30,7 @@ We use procedural generation to create Ishihara-style dot plates that cannot be 
 
 **Strict Scoring** — Includes "Trap" plates (random noise) to detect guessing and "Brightness" traps to distinguish between Protan (Red-Blind) and Deutan (Green-Blind) deficiencies.
 
-**Reveal Mode** — A daltonisation filter ("Reveal Hidden Colours") shifts confused hues into the Blue/Yellow spectrum, allowing colourblind users to see the information they are missing.
+**Reveal Mode** — A daltonisation filter ("Reveal What You're Missing") shifts confused hues into the Blue/Yellow spectrum, allowing colourblind users to see the information they are missing. For normal-vision observers, both sides appear nearly identical — confirming the shift is targeted to the CVD channel.
 
 ---
 
@@ -46,7 +50,9 @@ This project is a single-file application. No build steps, no servers, no depend
 |-------|-----------|---------|
 | Rendering | HTML5 Canvas | Pixel-perfect, randomised dot generation |
 | Simulation | SVG `feColorMatrix` Filters | Machado et al. (2009) colour vision simulation matrices |
-| Design System | [Speyer UI](https://github.com/adrianspeyer/speyer-ui) | Accessible, colour-blind friendly interface with design tokens |
+| Daltonisation | SVG `feColorMatrix` Filter | R-G opponent signal shifted into Blue channel for Reveal mode |
+| Comparison | Draggable Slider | Mouse + touch clip-path comparison with divider handle |
+| Design System | [Speyer UI v2.1.2](https://github.com/adrianspeyer/speyer-ui) | Accessible, colour-blind friendly interface with design tokens |
 | Icons | [Lucide](https://lucide.dev/) | Lightweight iconography |
 | Logic | Vanilla JavaScript | State management and view rendering — zero frameworks |
 
@@ -79,14 +85,16 @@ The engine uses a strict pipeline with severity estimation:
 
 ### The Simulator
 
-The Reality Simulator applies SVG `feColorMatrix` transforms to a reference image (`test-image.jpg`). The matrices are from Machado, Oliveira & Fernandes (2009), severity=1.0:
+The Qualia Validator applies SVG `feColorMatrix` transforms to a reference image (`test-image.jpg`) via a draggable split-screen comparison. The simulation matrices are from Machado, Oliveira & Fernandes (2009), severity=1.0:
 
 - **Protanopia** — L-cone (red) absent. Reds appear dark/black.
 - **Deuteranopia** — M-cone (green) absent. Greens and reds collapse together.
 - **Tritanopia** — S-cone (blue) absent. Blues and yellows become confused.
-- **Reveal** — Custom daltonisation that shifts the red-green confusion axis into blue-yellow, making hidden information visible.
+- **Reveal** — Custom daltonisation that shifts the red-green confusion axis into blue-yellow, making hidden information visible. Matrix: `B' = 0.5R − 0.4G + B`.
 
-If you are colourblind and the "Original" and "Simulated" halves look identical, it confirms the diagnosis from the test.
+**For colourblind users:** If the "Original" and "Simulated" halves look identical, it confirms the diagnosis. Switch to "Reveal" to see what you've been missing — reds shift blue-ish, greens shift yellow-ish.
+
+**For normal-vision observers:** The simulation side looks dramatically different to you. In Reveal mode, both sides look nearly identical — because the shift targets a channel you already perceive.
 
 ---
 
@@ -108,8 +116,9 @@ This project is grounded in peer-reviewed colour vision research:
 ```
 Open-Colour-Labs/
 ├── index.html        # Complete application (HTML + CSS + JS)
-├── test-image.jpg    # Reference image for the Reality Simulator
+├── test-image.jpg    # Reference image for the Qualia Validator
 ├── LICENSE           # MIT Licence
+├── CONTRIBUTING.md   # Contribution guidelines
 └── README.md         # This file
 ```
 
@@ -136,6 +145,30 @@ We welcome contributions! Specifically, we are looking for:
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
+
+---
+
+## Changelog
+
+### [1.0.0] — 2026-02-16
+
+**Initial versioned release.** Everything prior was unversioned iteration.
+
+#### Added
+- **Procedural Ishihara Plate Generator** — 5 plate types (demo, R/G confusion, R/G hard, brightness trap, noise trap) with 2,000 dots per plate, HSL colour jitter (hue ±8°, sat ±15%, lum ±8°), and rejection sampling for circular dot placement.
+- **Three-Option Response System** — Number selection (4 randomised choices), "I see no number — just dots", and "I see something, but can't make it out." Severity estimation from Nothing vs Unsure ratio.
+- **Scoring Engine** — Strict pipeline: screen validation → guessing detection → type classification (Normal / Protan / Deutan / Indeterminate) → severity estimation (dichromacy vs anomalous trichromacy).
+- **Qualia Validator (Simulator)** — Draggable split-screen comparison with mouse + touch support. Bottom layer: filtered image. Top layer: original image clipped to slider position. Divider handle with `backdrop-filter: blur(4px)`.
+- **CVD Simulation Filters** — Machado et al. (2009) severity=1.0 matrices for Protanopia, Deuteranopia, and Tritanopia. SVG `feColorMatrix` in `linearRGB` colour space.
+- **Reveal Mode (Daltonisation)** — Custom filter shifting R-G opponent signal into Blue channel (`B' = 0.5R − 0.4G + B`). Colourblind users see colour differences for the first time; normal-vision observers see near-identical sides.
+- **Results → Simulator Bridge** — "Launch Verification Sim" button on results page pre-selects the diagnosed type in the simulator.
+- **Viewport-Safe Test Layout** — Plate uses `max-height: min(380px, 40vh)` so the entire test view (plate + all 6 buttons) fits on a 1080p screen at 100% zoom without scrolling. Compact button sizing (44px number buttons, 36px special buttons) with reduced spacing.
+
+#### Tech
+- Single-file architecture: `index.html` + `test-image.jpg`, zero build steps.
+- Speyer UI v2.1.2 for design tokens and components.
+- Lucide icons. Vanilla JavaScript with class-based state management.
+- Accessible: skip link, ARIA labels, `role="img"`, `aria-pressed`, `focus-visible` outlines, `prefers-reduced-motion` support.
 
 ---
 

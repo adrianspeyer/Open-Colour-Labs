@@ -15,7 +15,7 @@
 
     <style>
         /* =====================================================
-           CUSTOM CSS — OpenColor Labs
+           CUSTOM CSS — OpenColor Labs v1.0.0
            SUI handles tokens, typography, spacing, components.
            Below is app-specific layout and the test UI only.
         ===================================================== */
@@ -54,19 +54,20 @@
         .app-header-logo .accent { color: var(--sui-success); }
         .app-header nav { display: flex; gap: var(--sui-space-2); align-items: center; }
 
-        /* Main */
+        /* Main — reduced vertical padding so test fits 1080p viewports */
         main {
             flex-grow: 1; width: 100%; max-width: var(--sui-max-width);
-            margin: 0 auto; padding: var(--sui-space-5) var(--sui-space-3);
+            margin: 0 auto; padding: var(--sui-space-3) var(--sui-space-3);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
 
-        /* Ishihara Plate */
+        /* Ishihara Plate — scales to viewport height so test fits without scrolling */
         .plate-container {
-            position: relative; width: 100%; max-width: 380px; aspect-ratio: 1 / 1;
+            position: relative; width: 100%; max-width: 380px;
+            max-height: min(380px, 40vh); aspect-ratio: 1 / 1;
             background: var(--sui-bg-elevated); border-radius: var(--sui-radius-full);
             border: 4px solid var(--sui-border); box-shadow: var(--sui-shadow-lg);
-            margin-bottom: var(--sui-space-5); overflow: hidden;
+            margin-bottom: var(--sui-space-3); overflow: hidden;
         }
         .plate-container canvas { width: 100%; height: 100%; object-fit: contain; }
 
@@ -76,25 +77,25 @@
             gap: var(--sui-space-2); width: 100%; max-width: 460px;
         }
         .btn-opt {
-            padding: var(--sui-space-3); background: var(--sui-bg-card);
+            padding: var(--sui-space-2) var(--sui-space-3); background: var(--sui-bg-card);
             border: 1px solid var(--sui-border); border-radius: var(--sui-radius-md);
             color: var(--sui-text-primary); font-size: var(--sui-text-h3);
             font-weight: var(--sui-weight-semibold); cursor: pointer;
             transition: background var(--sui-duration-fast) var(--sui-easing),
                         border-color var(--sui-duration-fast) var(--sui-easing);
-            min-height: var(--sui-touch-target);
+            min-height: 44px;
         }
         .btn-opt:hover { background: var(--sui-bg-elevated); border-color: var(--sui-blue-primary); }
         .btn-opt:active { transform: scale(0.98); }
         .btn-opt:focus-visible { outline: 2px solid var(--sui-blue-focus); outline-offset: 2px; }
 
         .btn-special {
-            grid-column: span 4; padding: var(--sui-space-2) var(--sui-space-3);
+            grid-column: span 4; padding: var(--sui-space-1) var(--sui-space-3);
             background: transparent; border: 1px dashed var(--sui-border);
             border-radius: var(--sui-radius-md); color: var(--sui-text-muted);
             font-size: var(--sui-text-small); cursor: pointer;
             transition: all var(--sui-duration-fast) var(--sui-easing);
-            min-height: var(--sui-touch-target); text-align: center;
+            min-height: 36px; text-align: center;
         }
         .btn-special:hover { background: var(--sui-bg-elevated); color: var(--sui-text-primary); border-color: var(--sui-text-muted); }
 
@@ -111,40 +112,60 @@
             color: var(--sui-text-muted); font-size: var(--sui-text-small);
         }
 
-        /* Simulator */
+        /* ── Simulator Layout ── */
         .sim-grid {
             display: grid; grid-template-columns: 1fr;
             gap: var(--sui-space-4); width: 100%; max-width: var(--sui-max-width);
         }
         @media (min-width: 1024px) { .sim-grid { grid-template-columns: 280px 1fr; } }
 
-        .split-screen-container {
-            position: relative; width: 100%; background: #000;
+        /* ── Draggable Comparison Container ── */
+        .compare-container {
+            position: relative; overflow: hidden; cursor: ew-resize;
+            user-select: none; -webkit-user-select: none;
             border: 1px solid var(--sui-border); border-radius: var(--sui-radius-lg);
-            overflow: hidden; min-height: 480px; display: flex;
+            background: #000;
         }
-        .split-pane { position: absolute; top: 0; bottom: 0; width: 50%; overflow: hidden; }
-        .split-left { left: 0; border-right: 1px solid rgba(255,255,255,0.15); }
-        .split-right { right: 0; }
-        .split-bg {
-            position: absolute; top: 0; left: 0;
-            width: 200%; height: 100%;
-            background: url('test-image.jpg') center / cover no-repeat;
+        /* Bottom layer: filtered image, sets container size */
+        .compare-img-bottom {
+            display: block; width: 100%; height: auto;
         }
-        .split-right .split-bg { left: -100%; }
-        .split-label {
-            position: absolute; top: var(--sui-space-3);
+        /* Top layer: original image, clipped to slider position */
+        .compare-clip {
+            position: absolute; top: 0; left: 0; bottom: 0;
+            width: 50%; overflow: hidden;
+        }
+        .compare-img-top {
+            display: block; height: 100%; width: auto; max-width: none;
+        }
+        /* Divider line */
+        .compare-divider {
+            position: absolute; top: 0; bottom: 0; left: 50%;
+            width: 3px; background: rgba(255,255,255,0.5);
+            transform: translateX(-50%); pointer-events: none; z-index: 3;
+        }
+        /* Drag handle circle */
+        .compare-handle {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 44px; height: 44px; border-radius: 50%;
+            background: rgba(0,0,0,0.55); border: 2px solid rgba(255,255,255,0.8);
+            backdrop-filter: blur(4px); display: flex; align-items: center;
+            justify-content: center; pointer-events: none;
+        }
+        .compare-handle svg { color: #fff; width: 22px; height: 22px; }
+        /* Labels */
+        .compare-label {
+            position: absolute; top: var(--sui-space-3); z-index: 2;
             background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
             padding: var(--sui-space-1) var(--sui-space-3);
             border-radius: var(--sui-radius-full); font-size: var(--sui-text-meta);
-            font-family: var(--sui-font-mono); border: 1px solid rgba(255,255,255,0.1); color: #e2e8f0;
+            font-family: var(--sui-font-mono); border: 1px solid rgba(255,255,255,0.1);
+            color: #e2e8f0; pointer-events: none;
         }
-        .split-label-left { left: var(--sui-space-3); }
-        .split-label-right { right: var(--sui-space-3); }
-        .split-divider {
-            position: absolute; top: 0; bottom: 0; left: 50%; width: 2px;
-            background: rgba(255,255,255,0.2); transform: translateX(-50%); pointer-events: none;
-        }
+        .compare-label-left { left: var(--sui-space-3); }
+        .compare-label-right { right: var(--sui-space-3); }
+
         .sim-btn {
             width: 100%; padding: var(--sui-space-3); text-align: left;
             background: var(--sui-bg-primary); border: 1px solid var(--sui-border);
@@ -156,6 +177,7 @@
         }
         .sim-btn:hover { background: var(--sui-bg-elevated); }
         .sim-btn.active { background: var(--sui-success-soft); border-color: var(--sui-success); color: var(--sui-success); }
+        .sim-btn.active-reveal { background: var(--sui-pro-soft); border-color: var(--sui-pro); color: var(--sui-pro); }
         .sim-btn:focus-visible { outline: 2px solid var(--sui-blue-focus); outline-offset: 2px; }
 
         /* Footer */
@@ -197,9 +219,16 @@
          sRGB → linearise → matrix multiply → re-gamma → sRGB.
          This matches the intended use of the Machado model.
 
-         REVEAL filter is a custom daltonisation transform that shifts
-         the red-green confusion axis into blue-yellow, making hidden
-         colour information visible to red-green colourblind users.
+         REVEAL filter: daltonisation that redistributes red-green
+         opponent information into the blue channel, making previously
+         invisible colour differences visible to red-green colourblind
+         users. For normal-vision observers the effect is a subtle
+         blue/warm shift. For CVD observers, reds shift blue-ish and
+         greens shift yellow-ish, making them distinguishable.
+
+         Matrix logic:  R' = R (unchanged)
+                        G' = G (unchanged)
+                        B' = 0.5R − 0.4G + B (adds R-G diff to blue)
     ================================================================ -->
     <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" aria-hidden="true">
         <defs>
@@ -212,8 +241,9 @@
             <filter id="tritanopia-filter" color-interpolation-filters="linearRGB">
                 <feColorMatrix type="matrix" values="1.255528 -0.076749 -0.178779 0 0  -0.078411 0.930809 0.147602 0 0  0.004733 0.691367 0.303900 0 0  0 0 0 1 0" />
             </filter>
+            <!-- Daltonisation: shifts R-G opponent signal into Blue channel -->
             <filter id="reveal-filter" color-interpolation-filters="linearRGB">
-                <feColorMatrix type="matrix" values="0 0 0 0 0  1 1 0 0 0  1 0 0 0 0  0 0 0 1 0" />
+                <feColorMatrix type="matrix" values="1.0 0.0 0.0 0 0  0.0 1.0 0.0 0 0  0.5 -0.4 1.0 0 0  0 0 0 1 0" />
             </filter>
         </defs>
     </svg>
@@ -254,65 +284,31 @@
 
     <script>
     // =================================================================
-    //  OpenColor Labs — Colour Vision Analysis Engine
+    //  OpenColor Labs v1.0.0 — Colour Vision Analysis Engine
     //  https://github.com/adrianspeyer/Open-Colour-Labs | MIT Licence
     //
-    //  SCIENTIFIC BASIS
-    //  ────────────────
-    //  Plate generation follows pseudoisochromatic plate (PIP) design
-    //  principles as described in Hardy, Rand & Rittler (1945) and
-    //  used in the Ishihara test (38-plate edition).
+    //  ARCHITECTURE:
+    //  Single-page app with 4 views: intro, test, results, sim.
+    //  Test uses procedural Ishihara plate generation on HTML5 Canvas.
+    //  Simulator uses SVG feColorMatrix filters + draggable comparison.
     //
-    //  Simulation matrices in the SVG filters use Machado, Oliveira &
-    //  Fernandes (2009) severity=1.0 values — the gold standard for
-    //  dichromacy simulation, validated against Brettel et al. (1997).
+    //  PLATE TYPES (PIP classification per Hardy, Rand & Rittler 1945):
+    //  - demo:           High-contrast control (everyone sees it)
+    //  - red_green:      Vanishing plate (R/G confusion axis)
+    //  - red_green_hard: Desaturated vanishing (~15% saturation)
+    //  - brightness:     Diagnostic (protan-specific luminance trap)
+    //  - nothing:        Trap plate (random noise, no number)
     //
-    //  PLATE TYPES (based on PIP classification)
-    //  ──────────────────────────────────────────
-    //  demo            "Demonstration" plate. High-contrast (teal vs
-    //                  orange). All observers see it. Validates screen
-    //                  calibration and that the user understands the task.
+    //  RESPONSE SEMANTICS:
+    //  - Correct number → normal vision for that plate
+    //  - "Nothing" (no number visible) → suggests dichromacy (severe)
+    //  - "Unsure" (partial visibility) → suggests anomalous trichromacy
     //
-    //  red_green       "Vanishing" plate. Standard confusion axis:
-    //                  green-yellow background vs red-orange foreground.
-    //                  The number vanishes for both protan and deutan.
-    //
-    //  red_green_hard  "Vanishing" plate, desaturated (~15% sat).
-    //                  Catches mild anomalous trichromacy that passes
-    //                  the standard-saturation plates.
-    //
-    //  brightness      "Diagnostic" plate. Dark red foreground on dark
-    //                  grey-green background. Protan-specific: protanopes
-    //                  perceive red as very dark/black (reduced L-cone
-    //                  luminance sensitivity), so the number vanishes.
-    //                  Deuteranopes still see the brightness difference.
-    //
-    //  nothing         "Trap" plate. All confusion colours mixed randomly
-    //                  with no embedded number. Detects guessing. If you
-    //                  report seeing a number here, the result is invalid.
-    //
-    //  RESPONSE OPTIONS
-    //  ────────────────
-    //  [Number]        "I clearly see this number."
-    //  Nothing         "I see no number at all — just dots."
-    //  Unsure          "I can see something, but I can't make it out."
-    //
-    //  The distinction between "Nothing" and "Unsure" is clinically
-    //  meaningful: partial visibility suggests anomalous trichromacy
-    //  (mild deficiency), while seeing nothing suggests full dichromacy.
-    //
-    //  SCORING PIPELINE
-    //  ────────────────
-    //  Gate 1: Failed demo → "Screen Calibration Issue"
-    //  Gate 2: False positive on noise → "Unreliable (guessing)"
-    //  Gate 3: Zero misses → "Normal"
-    //  Gate 4: Brightness trap failures → "Protan"
-    //  Gate 5: R/G confusion without brightness failure → "Deutan"
-    //  Gate 6: Mixed pattern → "Indeterminate — see an optometrist"
-    //
-    //  Within each diagnosis, "Unsure" responses are used to estimate
-    //  severity: all "Nothing" = likely dichromacy (severe),
-    //  mixed "Unsure" = likely anomalous trichromacy (mild-moderate).
+    //  SCORING PIPELINE:
+    //  1. Validate screen (demo plates)
+    //  2. Detect guessing (noise traps)
+    //  3. Classify: Normal / Protan / Deutan / Indeterminate
+    //  4. Estimate severity from Nothing vs Unsure ratio
     // =================================================================
 
     const randomRange = (min, max) => Math.random() * (max - min) + min;
@@ -325,6 +321,7 @@
                 plateIndex: 0,
                 history: [],
                 simMode: 'protanopia',
+                sliderPos: 50,
                 testSequence: [
                     { type: 'demo',            number: '12',      desc: 'Control' },
                     { type: 'red_green',        number: '74',      desc: 'R/G Confusion' },
@@ -340,6 +337,7 @@
             };
             this.setView = this.setView.bind(this);
             this.handleAnswer = this.handleAnswer.bind(this);
+            this._sliderCleanup = null;
             this.render();
         }
 
@@ -352,9 +350,18 @@
 
         // =============================================================
         //  CANVAS — Procedural Ishihara Plate Generator
-        //  Uses rejection sampling within a circular boundary.
-        //  HSL jitter on both hue (±8°) and saturation (±15%) ensures
-        //  no two plates are identical and screenshots cannot be reused.
+        //
+        //  Each plate type uses a different pair of HSL palettes:
+        //  - bgColors: palette for background (non-number) dots
+        //  - fgColors: palette for foreground (number) dots
+        //
+        //  The number is rendered to an off-screen mask canvas, then
+        //  dot placement uses the mask to decide which palette to use.
+        //  HSL jitter (hue ±8°, sat ±15%, lum ±8%) ensures no two
+        //  plates are identical and prevents pixel-level memorisation.
+        //
+        //  Rejection sampling (max 25 attempts) constrains dots to a
+        //  circular region for the classic Ishihara look.
         // =============================================================
         drawPlate(canvas, type, number) {
             const ctx = canvas.getContext('2d');
@@ -440,26 +447,29 @@
         }
 
         // =============================================================
-        //  SCORING — Diagnosis Pipeline with Severity Estimation
+        //  SCORING — Diagnosis Engine
+        //
+        //  Pipeline:
+        //  1. Screen validation (demo plates)
+        //  2. Guessing detection (noise traps)
+        //  3. Type classification (Protan vs Deutan)
+        //  4. Severity estimation (Nothing vs Unsure ratio)
         // =============================================================
         getDiagnosis() {
             const H = this.state.history;
 
-            // Gate 1: Control plates
             if (H.filter(h => h.type === 'demo' && !h.isCorrect).length > 0) return {
                 title: "Screen Calibration Issue",
                 desc: "You missed the high-contrast control plates. Please increase screen brightness, disable any \"Night Mode\" or colour filters, and try again.",
                 color: "var(--sui-neutral)", badge: "Invalid", badgeClass: "sui-badge sui-badge-neutral", severity: null
             };
 
-            // Gate 2: Noise trap — false positives (not Nothing, not Unsure)
             if (H.filter(h => h.type === 'nothing' && !h.isNothing && !h.isUnsure).length > 0) return {
                 title: "Unreliable Result",
                 desc: "You identified numbers on plates that were purely random noise. This suggests guessing. Please retake the test carefully.",
                 color: "var(--sui-neutral)", badge: "Invalid", badgeClass: "sui-badge sui-badge-neutral", severity: null
             };
 
-            // Score diagnostic plates
             const real = H.filter(h => h.type !== 'nothing' && h.type !== 'demo');
             const misses = real.filter(h => !h.isCorrect);
             const protanMisses = H.filter(h => h.type === 'brightness' && !h.isCorrect);
@@ -471,8 +481,6 @@
                 color: "var(--sui-success)", badge: "Normal", badgeClass: "sui-badge sui-badge-success", severity: null
             };
 
-            // Severity estimation: "Unsure" = partial visibility = anomalous trichromacy
-            // "Nothing" = no visibility = likely dichromacy
             const unsureCount = misses.filter(h => h.isUnsure).length;
             const nothingCount = misses.filter(h => h.isNothing).length;
             const severityNote = unsureCount > 0 && nothingCount === 0
@@ -501,8 +509,77 @@
         }
 
         // =============================================================
+        //  DRAGGABLE SLIDER — Comparison Image Controller
+        //
+        //  Architecture:
+        //  - Bottom layer: full-width <img> with SVG filter applied.
+        //    This sets the container's natural dimensions.
+        //  - Top layer: <div> clipped to slider width, containing an
+        //    <img> at full height (width: auto) so it matches the
+        //    bottom image pixel-for-pixel. Overflow hidden clips it.
+        //  - Divider + handle: positioned at slider percentage.
+        //
+        //  Touch + mouse events on container drive the slider.
+        // =============================================================
+        initSlider() {
+            // Clean up previous listeners
+            if (this._sliderCleanup) this._sliderCleanup();
+
+            const container = document.getElementById('compare-box');
+            if (!container) return;
+
+            const clip = container.querySelector('.compare-clip');
+            const divider = container.querySelector('.compare-divider');
+            let dragging = false;
+
+            const setPosition = (clientX) => {
+                const rect = container.getBoundingClientRect();
+                let pct = ((clientX - rect.left) / rect.width) * 100;
+                pct = Math.max(2, Math.min(98, pct));
+                this.state.sliderPos = pct;
+                clip.style.width = pct + '%';
+                divider.style.left = pct + '%';
+            };
+
+            const onDown = (e) => {
+                dragging = true;
+                const x = e.touches ? e.touches[0].clientX : e.clientX;
+                setPosition(x);
+            };
+            const onMove = (e) => {
+                if (!dragging) return;
+                e.preventDefault();
+                const x = e.touches ? e.touches[0].clientX : e.clientX;
+                setPosition(x);
+            };
+            const onUp = () => { dragging = false; };
+
+            container.addEventListener('mousedown', onDown);
+            container.addEventListener('touchstart', onDown, { passive: true });
+            window.addEventListener('mousemove', onMove);
+            window.addEventListener('touchmove', onMove, { passive: false });
+            window.addEventListener('mouseup', onUp);
+            window.addEventListener('touchend', onUp);
+
+            // Set initial position
+            clip.style.width = this.state.sliderPos + '%';
+            divider.style.left = this.state.sliderPos + '%';
+
+            // Cleanup function for next render
+            this._sliderCleanup = () => {
+                container.removeEventListener('mousedown', onDown);
+                container.removeEventListener('touchstart', onDown);
+                window.removeEventListener('mousemove', onMove);
+                window.removeEventListener('touchmove', onMove);
+                window.removeEventListener('mouseup', onUp);
+                window.removeEventListener('touchend', onUp);
+            };
+        }
+
+        // =============================================================
         //  VIEW RENDERERS
         // =============================================================
+
         renderIntro() {
             return `
                 <div class="fade-in" style="max-width: 600px; text-align: center;">
@@ -546,7 +623,7 @@
 
             return `
                 <div class="fade-in" style="display: flex; flex-direction: column; width: 100%; max-width: 460px; align-items: center;">
-                    <div style="width: 100%; display: flex; justify-content: space-between; margin-bottom: var(--sui-space-3);">
+                    <div style="width: 100%; display: flex; justify-content: space-between; margin-bottom: var(--sui-space-2);">
                         <span class="sui-badge sui-badge-neutral sui-badge-sm">
                             <i data-lucide="layers" style="width: 12px; height: 12px;" aria-hidden="true"></i>
                             Plate ${this.state.plateIndex + 1} / ${this.state.testSequence.length}
@@ -556,7 +633,7 @@
                     <div class="plate-container" role="img" aria-label="Ishihara colour plate ${this.state.plateIndex + 1}">
                         <canvas id="test-canvas" width="800" height="800"></canvas>
                     </div>
-                    <h2 style="font-size: var(--sui-text-h3); font-weight: var(--sui-weight-semibold); margin-bottom: var(--sui-space-4);">What number do you see?</h2>
+                    <h2 style="font-size: var(--sui-text-h3); font-weight: var(--sui-weight-semibold); margin-bottom: var(--sui-space-2);">What number do you see?</h2>
                     <div class="options-grid" role="group" aria-label="Answer options">
                         ${options.map(opt => `
                             <button onclick="app.handleAnswer('${opt}')" class="btn-opt" aria-label="I see ${opt}">${opt}</button>
@@ -602,7 +679,7 @@
                         <div>
                             <strong style="display: block; margin-bottom: var(--sui-space-1);">Verify this result yourself</strong>
                             <p style="margin-bottom: var(--sui-space-3); line-height: var(--sui-leading-body);">
-                                Go to the Simulator. If the "Original" and "${dx.badge}" sides look identical to you, the test is accurate.
+                                Go to the Simulator. If the "Original" and "${dx.badge}" sides look identical to you, the test is accurate. Then try "Reveal" to see what you've been missing.
                             </p>
                             <button onclick="app.state.simMode='${simTarget}'; app.setView('sim');" class="sui-btn sui-btn-primary sui-btn-sm">
                                 <i data-lucide="split" style="width: 14px; height: 14px;" aria-hidden="true"></i> Launch Verification Sim
@@ -615,50 +692,96 @@
                 </div>`;
         }
 
+        // =============================================================
+        //  SIMULATOR — "Qualia" Validator
+        //
+        //  Simulation modes (Protanopia, Deuteranopia, Tritanopia):
+        //    Left  = Original image (no filter)
+        //    Right = CVD-simulated image (Machado matrix)
+        //    → Colourblind user: both sides look IDENTICAL (confirms dx)
+        //    → Normal-vision observer: sees the difference clearly
+        //
+        //  Reveal mode (daltonisation):
+        //    Left  = Original image (no filter)
+        //    Right = Daltonised image (R-G info shifted into Blue)
+        //    → Colourblind user: sees a DIFFERENCE for the first time
+        //      (reds shift blue-ish, greens shift yellow-ish)
+        //    → Normal-vision observer: both sides look nearly identical
+        //
+        //  Draggable divider slides across to compare precisely.
+        // =============================================================
         renderSim() {
             const filters = [
                 { id: 'protanopia',   label: 'Protanopia (No Red)',    icon: 'eye-off' },
                 { id: 'deuteranopia', label: 'Deuteranopia (No Green)', icon: 'eye-off' },
                 { id: 'tritanopia',   label: 'Tritanopia (No Blue)',   icon: 'eye-off' },
-                { id: 'reveal',       label: 'Reveal Hidden Colours',  icon: 'sparkles' }
+                { id: 'reveal',       label: 'Reveal What You\'re Missing', icon: 'sparkles' }
             ];
-            const filterUrl = this.state.simMode === 'reveal' ? 'url(#reveal-filter)' : `url(#${this.state.simMode}-filter)`;
             const isReveal = this.state.simMode === 'reveal';
+            const filterUrl = isReveal ? 'url(#reveal-filter)' : `url(#${this.state.simMode}-filter)`;
+            const rightLabel = isReveal ? 'ENHANCED FOR YOU' : this.state.simMode.toUpperCase();
+
+            const description = isReveal
+                ? `<strong>Left:</strong> What you normally see. <strong>Right:</strong> Colours shifted so <em>you</em> can perceive what non-colourblind people see. If your wife looks, both sides look the same to her. Drag the slider to compare.`
+                : `<strong>Left:</strong> Original image. <strong>Right:</strong> Simulated ${this.state.simMode}. If both sides look the same to you, that confirms the diagnosis. Show someone with normal vision — they'll see the difference. Drag the slider to compare.`;
+
+            // Schedule slider initialisation after DOM update
+            setTimeout(() => this.initSlider(), 0);
 
             return `
                 <div class="fade-in" style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: var(--sui-space-5);">
-                    <div style="text-align: center; max-width: 600px;">
+                    <div style="text-align: center; max-width: 650px;">
                         <h2 style="font-size: var(--sui-text-h2); font-weight: var(--sui-weight-bold); margin-bottom: var(--sui-space-2);">The "Qualia" Validator</h2>
                         <p style="color: var(--sui-text-secondary); font-size: var(--sui-text-small); line-height: var(--sui-leading-body);">
-                            <strong>Left:</strong> Original image. <strong>Right:</strong> Simulation.
-                            If the two sides look identical to you, that confirms your diagnosis.
-                            Use "Reveal" to see what you may be missing.
+                            ${description}
                         </p>
                     </div>
                     <div class="sim-grid">
+                        <!-- Mode buttons (right on desktop, below on mobile) -->
                         <div style="order: 2;">
                             <h3 style="font-size: var(--sui-text-meta); color: var(--sui-text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--sui-space-3); font-weight: var(--sui-weight-semibold);">Simulation Mode</h3>
-                            ${filters.map(f => `
+                            ${filters.map(f => {
+                                const isActive = this.state.simMode === f.id;
+                                const btnClass = isActive ? (f.id === 'reveal' ? 'active-reveal' : 'active') : '';
+                                return `
                                 <button onclick="app.state.simMode='${f.id}'; app.render();"
-                                    class="sim-btn ${this.state.simMode === f.id ? 'active' : ''}"
-                                    aria-pressed="${this.state.simMode === f.id}">
+                                    class="sim-btn ${btnClass}"
+                                    aria-pressed="${isActive}">
                                     <span><i data-lucide="${f.icon}" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px;" aria-hidden="true"></i> ${f.label}</span>
-                                    ${this.state.simMode === f.id ? '<i data-lucide="check" style="width: 16px; height: 16px;" aria-hidden="true"></i>' : ''}
-                                </button>
-                            `).join('')}
+                                    ${isActive ? '<i data-lucide="check" style="width: 16px; height: 16px;" aria-hidden="true"></i>' : ''}
+                                </button>`;
+                            }).join('')}
                         </div>
-                        <div class="split-screen-container" style="order: 1;" role="img" aria-label="Side-by-side: original image left, ${this.state.simMode} simulation right">
-                            <div class="split-pane split-left">
-                                <div class="split-bg"></div>
-                                <div class="split-label split-label-left">ORIGINAL</div>
+
+                        <!-- Draggable comparison image -->
+                        <div id="compare-box" class="compare-container" style="order: 1;"
+                             role="img" aria-label="Draggable comparison: original vs ${rightLabel}">
+
+                            <!-- Bottom layer: filtered image (full width, always visible) -->
+                            <img class="compare-img-bottom" src="test-image.jpg" alt=""
+                                 style="filter: ${filterUrl};">
+
+                            <!-- Top layer: original image, clipped to slider position -->
+                            <div class="compare-clip" style="width: ${this.state.sliderPos}%;">
+                                <img class="compare-img-top" src="test-image.jpg" alt="">
                             </div>
-                            <div class="split-pane split-right">
-                                <div class="split-bg" style="filter: ${filterUrl};"></div>
-                                <div class="split-label split-label-right" ${isReveal ? 'style="color: var(--sui-pro); border-color: var(--sui-pro-strong);"' : ''}>
-                                    ${isReveal ? 'ENHANCED (FALSE COLOUR)' : this.state.simMode.toUpperCase()}
+
+                            <!-- Labels -->
+                            <div class="compare-label compare-label-left">ORIGINAL</div>
+                            <div class="compare-label compare-label-right"
+                                 ${isReveal ? 'style="color: var(--sui-pro); border-color: var(--sui-pro-strong);"' : ''}>
+                                ${rightLabel}
+                            </div>
+
+                            <!-- Draggable divider with handle -->
+                            <div class="compare-divider" style="left: ${this.state.sliderPos}%;">
+                                <div class="compare-handle">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M8 6l-4 6 4 6"/>
+                                        <path d="M16 6l4 6-4 6"/>
+                                    </svg>
                                 </div>
                             </div>
-                            <div class="split-divider"></div>
                         </div>
                     </div>
                 </div>`;
