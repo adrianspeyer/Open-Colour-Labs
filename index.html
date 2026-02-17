@@ -733,6 +733,17 @@
                         </div>
                     </div>` : ''}
                 </div>
+                ${detail ? `
+                <details class="results-detail">
+                    <summary>What does this mean?</summary>
+                    <div class="detail-body">
+                        <h4>Prevalence</h4><p>${detail.prevalence}</p>
+                        <h4>Daily Impact</h4><p>${detail.impact}</p>
+                        <h4>Luminance &amp; Brightness</h4><p>${detail.luminance}</p>
+                        <h4>Career &amp; Occupational Notes</h4><p>${detail.career}</p>
+                        <h4>Sources</h4><p>${detail.sources}</p>
+                    </div>
+                </details>` : ''}
                 ${simType ? `
                 <div class="sui-alert sui-alert-info" style="max-width:600px;">
                     <i data-lucide="info" style="width:20px;height:20px;flex-shrink:0;" aria-hidden="true"></i>
@@ -746,17 +757,6 @@
                         </button>
                     </div>
                 </div>` : ''}
-                ${detail ? `
-                <details class="results-detail">
-                    <summary>What does this mean?</summary>
-                    <div class="detail-body">
-                        <h4>Prevalence</h4><p>${detail.prevalence}</p>
-                        <h4>Daily Impact</h4><p>${detail.impact}</p>
-                        <h4>Luminance &amp; Brightness</h4><p>${detail.luminance}</p>
-                        <h4>Career &amp; Occupational Notes</h4><p>${detail.career}</p>
-                        <h4>Sources</h4><p>${detail.sources}</p>
-                    </div>
-                </details>` : ''}
                 <button onclick="app.setView('test')" class="sui-btn sui-btn-ghost sui-btn-sm">
                     <i data-lucide="rotate-ccw" style="width:14px;height:14px;" aria-hidden="true"></i> Retake Test
                 </button>
