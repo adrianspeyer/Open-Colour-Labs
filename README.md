@@ -6,19 +6,24 @@
 
 ## What It Does
 
-OpenColor Labs is a free, browser-based colour blindness screening tool that uses **18 procedurally generated Ishihara-style plates** to detect and differentiate protan (red-weak), deutan (green-weak), and tritan (blue-yellow) colour vision deficiencies. It includes a **Reality Simulator** with split-screen comparison sliders, contextual narration referencing the actual test image, and daltonisation-based reveal filters.
+OpenColor Labs is a free, browser-based colour blindness screening tool that uses **22 procedurally generated Ishihara-style plates** to detect and differentiate protan (red-weak), deutan (green-weak), and tritan (blue-yellow) colour vision deficiencies. It includes a **Reality Simulator** with split-screen comparison sliders, contextual narration referencing the actual test image, and daltonisation-based reveal filters.
+
+## Plate Breakdown
+
+| Type | Count | In Score | Purpose |
+|------|-------|----------|---------|
+| Demo | 2 | Yes | Screen calibration — if you can't see these, adjust your display |
+| Red-green vanishing | 4 | Yes | Standard protan/deutan detection |
+| Red-green desaturated | 3 | Yes | Catches subtle/mild deficiencies |
+| Brightness trap | 3 | Yes | Protan-specific — exploits L-cone luminance loss |
+| Transformation | 3 | Yes | Protan reads one number, deutan reads a different number, normal vision sees both |
+| Tritan | 2 | Yes | Blue-yellow confusion axis |
+| Hidden-digit | 2 | No | CVD observers see the number, normal vision doesn't — positive confirmation |
+| Noise trap | 3 | Yes | Pure random dots — detects guessing |
+
+**Scoring:** 20 plates contribute to the displayed score. Hidden-digit plates are excluded because their correctness logic is inverted (seeing the number = CVD confirmation, not a correct answer in the traditional sense). Transformation plates contribute to the score and provide separate protan vs deutan signals based on which number(s) the user identified.
 
 ## Features
-
-### 18-Plate Colour Vision Test
-- **Demo plates (2):** Screen calibration — if you can't see these, adjust your display
-- **Red-green vanishing (3):** Standard protan/deutan detection
-- **Red-green desaturated (2):** Catch subtle deficiencies
-- **Brightness trap (2):** Protan-specific — exploits L-cone luminance loss
-- **Transformation (2):** Protan reads one number, deutan reads a different number
-- **Tritan (2):** Blue-yellow confusion axis
-- **Hidden-digit (2):** CVD observers see the number, normal vision doesn't — positive confirmation
-- **Noise trap (3):** Pure random dots — detects guessing
 
 ### Scoring Engine
 - Protan vs deutan differentiation using transformation plates + brightness response
@@ -32,7 +37,7 @@ OpenColor Labs is a free, browser-based colour blindness screening tool that use
   - Protan reveal: shifts red luminance + R-G hue into blue channel
   - Deutan reveal: shifts R-G hue distinction into blue channel
   - Tritan reveal: shifts B-Y distinction into red-green channel
-- **Contextual narration:** Each tab describes what to look for in the actual test image (fruits and vegetables)
+- **Contextual narration:** Each tab speaks directly to the CVD user about what they'll see in the actual test image
 - **Slider performance:** `requestAnimationFrame` for smooth 60fps dragging
 
 ### Results Detail Panel
@@ -50,7 +55,7 @@ OpenColor Labs is a free, browser-based colour blindness screening tool that use
 | UI Framework | [Speyer UI v2.1.2](https://github.com/adrianspeyer/speyer-ui) |
 | CVD Simulation | SVG `feColorMatrix` — Machado et al. (2009) severity=1.0 in linearRGB |
 | Daltonisation | Custom SVG `feColorMatrix` filters per CVD type (Fidaner et al. 2005 inspired) |
-| Plate Generation | Procedural canvas — randomised dot placement with HSL colour masks |
+| Plate Generation | Procedural canvas — Ishihara mechanism with mixed-hue backgrounds and ±12 lightness jitter |
 | Slider | CSS `clip-path: inset()` with `requestAnimationFrame` updates |
 | Icons | Lucide (pinned with `onload` callback) |
 | SEO | JSON-LD (WebApplication + FAQPage), Open Graph, Twitter Cards |
@@ -70,26 +75,40 @@ This is an **educational tool**, not a medical device. It does not replace profe
 
 ## Changelog
 
+### v3.0.3 — Expanded Plate Sequence
+- **22 plates** (up from 18): added 1 red-green, 1 red-green desaturated, 1 brightness trap, and 1 transformation plate for stronger diagnostic confidence
+- **Diagnostic coverage raised:** 13 scoring plates plus 3 transform signals — reduces false negatives and provides more data for protan vs deutan differentiation
+- **Ishihara mechanism implemented:** Red-green plates use mixed red+green backgrounds at 50–65% saturation with ±12 lightness jitter across all dots to eliminate luminance cues — only hue distinguishes figure from ground
+- **Tritan plates cleaned:** Use only blue (230°) and yellow (55°) hues with no red or green involvement to prevent false tritan flags on red-green CVD users
+- **Dark mode locked:** Triple-set `data-theme="dark"` to prevent SUI JS from switching to system light preference
+
+### v3.0.2 — Plate Calibration & Scoring Fix
+- **Critical scoring bug fixed:** Transform plate signals were inverted — seeing the red number (numP) was incorrectly counted as a protan signal when it actually indicates deutan (can see red = green-blind). Now correctly mapped.
+- **Hardened plate colours:** All plate types use precisely matched saturation and lightness between figure and ground. Only hue differs on the target confusion axis.
+- **Transform plate overhaul:** Background saturation raised, digit saturation lowered, dot density increased from 2,200 to 2,800
+- **Tighter jitter:** Lightness jitter reduced from ±8 to ±5, saturation jitter from ±15 to ±10 to prevent random luminance edges at number boundaries
+- **Combo button order:** Transform combo shows digits in visual order (left & right as drawn on plate) instead of numerically sorted
+
 ### v3.0.1 — QA & UX Fixes
-- **Transform plate multi-select:** Options now include combo answers (e.g. "2 & 5") alongside singles, so users who see both numbers can select them naturally — without revealing that two numbers exist on the plate. Decoy combos prevent the correct combo from standing out.
-- **Sim descriptions rewritten:** Narration now speaks directly to the CVD user ("This is for you") rather than describing the condition abstractly. Reveal descriptions clarify that someone without CVD would see no difference between views.
-- **Reveal crossfade:** Toggle between "Your Vision" and "Colours Revealed" now uses an in-place opacity crossfade instead of a full DOM re-render — no image flicker.
-- **Green header fix:** Added explicit CSS overrides (`.brand-green` class) so SUI topbar component styles no longer override the green accent colour on the logo and nav icons.
-- **Diagnosis engine:** "Both" (combo) answers on transform plates are excluded from protan/deutan scoring — seeing both numbers indicates normal vision on that axis.
+- **Transform plate multi-select:** Options include combo answers (e.g. "5 & 2") alongside singles with decoy combos, so users who see both numbers can select them naturally without revealing that two numbers exist
+- **Sim descriptions rewritten:** Narration speaks directly to the CVD user ("This is for you") with explicit note that someone without CVD sees no difference
+- **Reveal crossfade:** In-place opacity crossfade instead of full DOM re-render — no image flicker
+- **Green header fix:** `.brand-green` class + `sui-brand-mark` background override so SUI topbar styles don't swallow the green accent
+- **Diagnosis engine:** "Both" answers on transform plates excluded from protan/deutan scoring — seeing both numbers indicates normal vision
 
 ### v3.0.0 — Major Release
 - **18 plates** (up from 14): added 2 transformation plates, 1 extra R/G vanishing, 1 extra noise trap
 - **Transformation plates:** Protan sees digit A, deutan sees digit B — reliable differentiation
 - **Tab-based simulator:** 4 tabs (Protanopia, Deuteranopia, Tritanopia, Reveal) replacing sidebar layout
-- **Reveal mode redesign:** Toggle between "Your Vision" and "Colours Revealed" with type-specific daltonisation filters (separate protan, deutan, tritan reveal formulas)
+- **Reveal mode redesign:** Toggle between "Your Vision" and "Colours Revealed" with type-specific daltonisation filters
 - **Contextual narration:** Each sim tab describes what to look for referencing actual produce in the test image
 - **Richer results:** Collapsible "What does this mean?" panel with prevalence, daily impact, luminance explanation, career notes, and linked academic sources
 - **Severity gauge:** Visual progress bar with mild/moderate/severe scale based on response pattern
-- **Score fix:** Excludes hidden-digit plates from score denominator (hidden plates have inverted correctness logic)
-- **Nothing plate scoring:** "Nothing" is now correctly counted as correct for noise trap plates
-- **Slider performance:** Wrapped in `requestAnimationFrame` for smooth 60fps drag
-- **Green nav icons restored:** Eye, split, and GitHub icons use `--sui-success` colour
-- **Version shield:** OpenColor Labs v3.0.1 shield in footer alongside SUI v2.1.2
+- **Score fix:** Excludes hidden-digit plates from score denominator
+- **Nothing plate scoring:** "Nothing" correctly counted as correct for noise trap plates
+- **Slider performance:** `requestAnimationFrame` for smooth 60fps drag
+- **Green nav icons:** Eye, split, and GitHub icons use `--sui-success` colour
+- **Version shield:** OpenColor Labs + SUI shields in footer
 
 ### v2.0.0
 - 14-plate test sequence (demo, R/G, brightness trap, tritan, hidden-digit, noise trap)

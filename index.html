@@ -4,22 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Colour Blind Test — Free Online Colour Vision Analysis | OpenColor Labs</title>
-    <meta name="description" content="Free, open-source colour blindness test with 18 procedurally generated Ishihara plates covering protan, deutan, and tritan axes. Split-screen Reality Simulator with contextual narration. Scientifically grounded.">
+    <meta name="description" content="Free, open-source colour blindness test with 22 procedurally generated Ishihara plates covering protan, deutan, and tritan axes. Split-screen Reality Simulator with contextual narration. Scientifically grounded.">
     <link rel="canonical" href="https://adrianspeyer.github.io/Open-Colour-Labs/">
     <meta property="og:title" content="OpenColor Labs — Free Colour Blind Test">
-    <meta property="og:description" content="Open-source colour vision analysis with 18 procedural Ishihara plates, transformation plates for protan/deutan differentiation, and a Qualia Validator simulator.">
+    <meta property="og:description" content="Open-source colour vision analysis with 22 procedural Ishihara plates, transformation plates for protan/deutan differentiation, and a Qualia Validator simulator.">
     <meta property="og:url" content="https://adrianspeyer.github.io/Open-Colour-Labs/">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="en_CA">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="OpenColor Labs — Free Colour Blind Test">
-    <meta name="twitter:description" content="Open-source colour vision analysis. 18 plates, transformation-based differentiation, Qualia Validator, daltonisation reveal.">
+    <meta name="twitter:description" content="Open-source colour vision analysis. 22 plates, transformation-based differentiation, Qualia Validator, daltonisation reveal.">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#0B0F1A">
     <meta name="mobile-web-app-capable" content="yes">
     <script type="application/ld+json">
-    {"@context":"https://schema.org","@type":"WebApplication","name":"OpenColor Labs","url":"https://adrianspeyer.github.io/Open-Colour-Labs/","applicationCategory":"HealthApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"CAD"},"description":"Open-source colour blindness test using 18 procedurally generated Ishihara plates and a tab-based Reality Simulator with CVD simulation matrices from Machado et al. (2009).","author":{"@type":"Person","name":"Adrian Speyer"},"license":"https://opensource.org/licenses/MIT"}
+    {"@context":"https://schema.org","@type":"WebApplication","name":"OpenColor Labs","url":"https://adrianspeyer.github.io/Open-Colour-Labs/","applicationCategory":"HealthApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"CAD"},"description":"Open-source colour blindness test using 22 procedurally generated Ishihara plates and a tab-based Reality Simulator with CVD simulation matrices from Machado et al. (2009).","author":{"@type":"Person","name":"Adrian Speyer"},"license":"https://opensource.org/licenses/MIT"}
     </script>
     <script type="application/ld+json">
     {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How accurate are online colour blindness tests?","acceptedAnswer":{"@type":"Answer","text":"A 2025 study (Gobira et al.) found digital Ishihara tests achieve 96.4% sensitivity and 99.3% specificity compared to physical plates. However, screen calibration, ambient lighting, and Night Mode settings can affect results. Online tests are screening tools — consult an optometrist for a definitive diagnosis."}},{"@type":"Question","name":"What types of colour blindness does this test detect?","acceptedAnswer":{"@type":"Answer","text":"OpenColor Labs tests for Protan (red-weak), Deutan (green-weak), and Tritan (blue-yellow) colour vision deficiencies using seven plate types including transformation plates that differentiate protan from deutan."}}]}
@@ -34,7 +34,7 @@
     <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" onload="lucide.createIcons()"></script>
 
     <style>
-        /* === OpenColor Labs v3.0.1 — Custom CSS === */
+        /* === OpenColor Labs v3.0.3 — Custom CSS === */
         body {
             background: var(--sui-bg-primary); color: var(--sui-text-primary);
             display: flex; flex-direction: column; min-height: 100vh; margin: 0;
@@ -243,7 +243,7 @@
                 </div>
                 <div class="sui-brand-title">
                     <span class="sui-brand-name">Open<span class="brand-green">Color</span> Labs</span>
-                    <span class="sui-version-pill">v3.0.1</span>
+                    <span class="sui-version-pill">v3.0.3</span>
                 </div>
             </div>
             <div class="sui-topbar-actions">
@@ -278,7 +278,7 @@
         </div>
         <div style="display:flex;gap:var(--sui-space-2);justify-content:center;margin-top:var(--sui-space-2);flex-wrap:wrap;">
             <a href="https://github.com/adrianspeyer/Open-Colour-Labs" target="_blank" rel="noopener noreferrer" class="sui-shield sui-shield-success">
-                <span class="sui-shield-label">OpenColor Labs</span><span class="sui-shield-value">v3.0.1</span>
+                <span class="sui-shield-label">OpenColor Labs</span><span class="sui-shield-value">v3.0.3</span>
             </a>
             <a href="https://github.com/adrianspeyer/speyer-ui" target="_blank" rel="noopener noreferrer" class="sui-shield">
                 <span class="sui-shield-label">built with</span><span class="sui-shield-value">SUI v2.1.2</span>
@@ -288,7 +288,7 @@
 
     <script>
     // =================================================================
-    //  OpenColor Labs v3.0.1 — Colour Vision Analysis Engine
+    //  OpenColor Labs v3.0.3 — Colour Vision Analysis Engine
     //  MIT Licence | https://github.com/adrianspeyer/Open-Colour-Labs
     // =================================================================
     const rr = (a, b) => Math.random() * (b - a) + a;
@@ -347,14 +347,18 @@
                     { type:'brightness',    num:'42' },
                     { type:'transform',     numP:'5', numD:'2' },
                     { type:'tritan',        num:'57' },
+                    { type:'red_green',     num:'38' },
                     { type:'nothing',       num:'X' },
                     { type:'hidden',        num:'3' },
                     { type:'red_green',     num:'29' },
                     { type:'brightness',    num:'8' },
                     { type:'transform',     numP:'7', numD:'4' },
+                    { type:'red_green_hard',num:'9' },
                     { type:'tritan',        num:'16' },
                     { type:'red_green_hard',num:'5' },
+                    { type:'brightness',    num:'31' },
                     { type:'red_green',     num:'15' },
+                    { type:'transform',     numP:'3', numD:'6' },
                     { type:'hidden',        num:'7' },
                     { type:'nothing',       num:'X' },
                     { type:'demo',          num:'97' }
@@ -391,29 +395,47 @@
             };
 
             let bgC, fgC, fgC2, mask1, mask2, isTransform = false;
+            // Per-dot lightness variation range (applied to ALL dots equally)
+            const lVar = 12;
             switch (plate.type) {
                 case 'demo':
-                    bgC=[[180,50,45],[190,60,40]]; fgC=[[20,80,60],[30,90,55]]; break;
+                    // Easy — high contrast, everyone should see these
+                    bgC=[[180,55,45],[190,60,42]]; fgC=[[20,85,55],[30,90,52]]; break;
                 case 'red_green':
-                    bgC=[[90,40,50],[120,30,50]]; fgC=[[0,50,60],[15,60,55]]; break;
+                    // ISHIHARA: bg = saturated red+green mix, fg = red only
+                    // High saturation so CVD confusion axis is fully engaged
+                    // Lightness deliberately varied ±lVar on EVERY dot so luminance is unreliable
+                    bgC=[[105,65,45],[120,60,47],[0,65,45],[10,60,47],[95,55,46]];
+                    fgC=[[0,65,46],[8,60,45],[352,62,47]]; break;
                 case 'red_green_hard':
-                    bgC=[[130,15,50],[150,15,50]]; fgC=[[350,15,50],[10,15,50]]; break;
+                    // Medium saturation — catches mild anomalous trichromacy
+                    bgC=[[108,45,46],[118,42,47],[2,45,46],[12,42,47],[100,40,48]];
+                    fgC=[[4,44,47],[356,42,46],[8,40,48]]; break;
                 case 'brightness':
-                    bgC=[[120,10,25],[140,15,30]]; fgC=[[350,80,20],[0,90,25]]; break;
+                    // Protan trap — saturated reds against dark green+red mix
+                    // Protans lose L-cone luminance so reds look dim
+                    bgC=[[115,25,28],[130,22,27],[350,55,26],[5,50,27],[105,20,28]];
+                    fgC=[[350,60,27],[2,55,26],[356,52,28]]; break;
                 case 'tritan':
-                    bgC=[[220,45,48],[240,40,50],[200,35,52]]; fgC=[[55,50,52],[45,55,48],[65,45,50]]; break;
+                    // Blue vs yellow — ONLY on blue-yellow axis, no red or green involved
+                    // This should NOT confuse red-green CVD
+                    bgC=[[230,50,46],[240,48,47],[55,50,46],[48,48,47],[235,45,48]];
+                    fgC=[[55,52,46],[50,50,47],[60,48,48]]; break;
                 case 'hidden':
-                    bgC=[[200,35,52],[170,30,50],[90,25,50],[250,25,48]]; fgC=[[0,45,50],[350,40,48],[15,42,52]]; break;
+                    // Reverse plate: fg uses red+green at SAME sat/light — looks identical to CVD
+                    // but different colours to normal vision. CVD sees uniform tone = number pops via OTHER cue
+                    bgC=[[200,30,48],[45,28,49],[280,26,48],[160,28,49]];
+                    fgC=[[0,42,48],[120,42,48],[8,40,49],[115,40,49]]; break;
                 case 'nothing':
-                    bgC=fgC=[[120,30,50],[0,50,60],[90,40,50],[15,60,55]]; break;
+                    bgC=fgC=[[105,50,46],[0,52,47],[55,48,47],[210,46,48],[350,50,46],[125,48,47]]; break;
                 case 'transform':
                     isTransform = true;
-                    // BG: neutral warm grey-green
-                    bgC=[[60,15,48],[80,12,50],[100,10,46]];
-                    // Protan number: reds that look DARK to protans (they miss it) but deutans see
-                    fgC=[[355,60,42],[5,55,40],[345,50,44]];
-                    // Deutan number: greens that look brownish to deutans (they miss it) but protans see
-                    fgC2=[[120,50,42],[130,45,40],[110,55,44]];
+                    // BG: saturated mix of reds + greens + neutral
+                    bgC=[[0,50,46],[10,48,47],[120,50,46],[130,48,47],[60,25,47],[80,22,46]];
+                    // numP drawn in RED only — protans miss it, deutans see it
+                    fgC=[[0,52,46],[6,50,47],[354,54,46]];
+                    // numD drawn in GREEN only — deutans miss it, protans see it
+                    fgC2=[[120,52,46],[128,50,47],[115,54,46]];
                     break;
             }
 
@@ -433,7 +455,7 @@
                 mc2.fillText(plate.numD, cx + W*0.12, cy);
                 mask2 = mc2.getImageData(0,0,W,H).data;
 
-                const DOTS = 2200;
+                const DOTS = 2800;
                 for (let i=0; i<DOTS; i++) {
                     let x,y,d,att=0;
                     do { x=Math.random()*W; y=Math.random()*H; d=Math.hypot(x-cx,y-cy); att++; } while(d>R&&att<25);
@@ -444,12 +466,12 @@
                     const b = pal[Math.floor(Math.random()*pal.length)];
                     const r2 = rr(W*0.006, W*0.016);
                     ctx.beginPath(); ctx.arc(x,y,r2,0,Math.PI*2);
-                    ctx.fillStyle=`hsl(${b[0]+rr(-8,8)},${b[1]+rr(-15,15)}%,${b[2]+rr(-8,8)}%)`;
+                    ctx.fillStyle=`hsl(${b[0]+rr(-6,6)},${b[1]+rr(-8,8)}%,${b[2]+rr(-lVar,lVar)}%)`;
                     ctx.fill();
                 }
             } else {
                 const maskData = makeMask(plate.num);
-                const DOTS = 2000;
+                const DOTS = 2600;
                 for (let i=0; i<DOTS; i++) {
                     let x,y,d,att=0;
                     do { x=Math.random()*W; y=Math.random()*H; d=Math.hypot(x-cx,y-cy); att++; } while(d>R&&att<25);
@@ -460,7 +482,7 @@
                     const b = pal[Math.floor(Math.random()*pal.length)];
                     const r2 = rr(W*0.006, W*0.016);
                     ctx.beginPath(); ctx.arc(x,y,r2,0,Math.PI*2);
-                    ctx.fillStyle=`hsl(${b[0]+rr(-8,8)},${b[1]+rr(-15,15)}%,${b[2]+rr(-8,8)}%)`;
+                    ctx.fillStyle=`hsl(${b[0]+rr(-6,6)},${b[1]+rr(-8,8)}%,${b[2]+rr(-lVar,lVar)}%)`;
                     ctx.fill();
                 }
             }
@@ -502,8 +524,10 @@
             const brM = H.filter(h=>h.type==='brightness'&&!h.isCorrect);
             const trM = H.filter(h=>h.type==='tritan'&&!h.isCorrect);
             const hidH = H.filter(h=>h.type==='hidden'&&h.isCorrect);
-            const tPro = H.filter(h=>h.type==='transform'&&h.sawProtan&&!h.sawBoth).length;
-            const tDeu = H.filter(h=>h.type==='transform'&&h.sawDeutan&&!h.sawBoth).length;
+            // Transform scoring: sawProtan = saw red number (numP) = can see red = DEUTAN signal
+            // sawDeutan = saw green number (numD) = can see green = PROTAN signal
+            const tProtanSig = H.filter(h=>h.type==='transform'&&h.sawDeutan&&!h.sawBoth).length;
+            const tDeutanSig = H.filter(h=>h.type==='transform'&&h.sawProtan&&!h.sawBoth).length;
 
             const unsC = misses.filter(h=>h.isUnsure).length;
             const noC = misses.filter(h=>h.isNothing).length;
@@ -523,8 +547,8 @@
                 desc:"You struggled with blue-yellow plates but passed red-green." + sevNote + hidNote, severity:sev, type:'Tritan' };
 
             // Protan vs Deutan — use transformation plate data + brightness
-            const protanScore = brM.length * 2 + tPro;
-            const deutanScore = (rgM.length > 0 && brM.length === 0 ? 2 : 0) + tDeu;
+            const protanScore = brM.length * 2 + tProtanSig;
+            const deutanScore = (rgM.length > 0 && brM.length === 0 ? 2 : 0) + tDeutanSig;
 
             if (protanScore > deutanScore || brM.length >= 1) return {
                 title:"Likely Protan (Red-Weak)", badge:"Protan", cls:"sui-badge sui-badge-error", color:"var(--sui-error)",
@@ -607,7 +631,7 @@
                     </button>
                 </div>
                 <p style="margin-top:var(--sui-space-5);font-size:var(--sui-text-small);color:var(--sui-text-muted);">
-                    18 plates · Protan · Deutan · Tritan · Transformation · Hidden-digit
+                    22 plates · Protan · Deutan · Tritan · Transformation · Hidden-digit
                 </p>
             </div>`;
         }
@@ -769,7 +793,7 @@
                     </p>
                 </div>
                 ${reveal ? `
-                    <div style="position:relative;overflow:hidden;border:1px solid var(--sui-border);border-radius:var(--sui-radius-lg);">
+                    <div style="position:relative;overflow:hidden;border:1px solid var(--sui-border);border-radius:var(--sui-radius-lg);background:var(--sui-bg-elevated);">
                         <img class="reveal-img" id="reveal-base" src="test-image.jpg" alt="Your natural vision"
                              style="filter:none;position:relative;z-index:1;transition:opacity 0.4s var(--sui-easing);opacity:${filtered ? '0' : '1'};border:none;border-radius:0;">
                         <img class="reveal-img" src="test-image.jpg" alt="Colour-enhanced view"
@@ -832,7 +856,11 @@
     }
 
     const app = new App();
+
+    // Force dark theme — prevent SUI JS from switching to system light preference
+    document.documentElement.setAttribute('data-theme', 'dark');
     </script>
-    <script src="https://cdn.jsdelivr.net/gh/adrianspeyer/speyer-ui@2.1.2/dist/sui.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/gh/adrianspeyer/speyer-ui@2.1.2/dist/sui.min.js" defer
+            onload="document.documentElement.setAttribute('data-theme','dark');"></script>
 </body>
 </html>
