@@ -75,6 +75,10 @@ This is an **educational tool**, not a medical device. It does not replace profe
 
 ## Changelog
 
+### v3.0.4 — Hidden Plate Fix & Results Reorder
+- **Hidden plate fix:** Background now includes red+green dots alongside blue/yellow/purple so normal vision can't spot the figure by hue family alone. Previously the figure (red+green only) was trivially visible against a background with zero red or green.
+- **Results flow reordered:** "What does this mean?" detail panel now appears before the Simulator CTA — users get context on their result before being asked to verify it.
+
 ### v3.0.3 — Expanded Plate Sequence
 - **22 plates** (up from 18): added 1 red-green, 1 red-green desaturated, 1 brightness trap, and 1 transformation plate for stronger diagnostic confidence
 - **Diagnostic coverage raised:** 13 scoring plates plus 3 transform signals — reduces false negatives and provides more data for protan vs deutan differentiation

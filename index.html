@@ -34,7 +34,7 @@
     <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" onload="lucide.createIcons()"></script>
 
     <style>
-        /* === OpenColor Labs v3.0.3 — Custom CSS === */
+        /* === OpenColor Labs v3.0.4 — Custom CSS === */
         body {
             background: var(--sui-bg-primary); color: var(--sui-text-primary);
             display: flex; flex-direction: column; min-height: 100vh; margin: 0;
@@ -243,7 +243,7 @@
                 </div>
                 <div class="sui-brand-title">
                     <span class="sui-brand-name">Open<span class="brand-green">Color</span> Labs</span>
-                    <span class="sui-version-pill">v3.0.3</span>
+                    <span class="sui-version-pill">v3.0.4</span>
                 </div>
             </div>
             <div class="sui-topbar-actions">
@@ -278,7 +278,7 @@
         </div>
         <div style="display:flex;gap:var(--sui-space-2);justify-content:center;margin-top:var(--sui-space-2);flex-wrap:wrap;">
             <a href="https://github.com/adrianspeyer/Open-Colour-Labs" target="_blank" rel="noopener noreferrer" class="sui-shield sui-shield-success">
-                <span class="sui-shield-label">OpenColor Labs</span><span class="sui-shield-value">v3.0.3</span>
+                <span class="sui-shield-label">OpenColor Labs</span><span class="sui-shield-value">v3.0.4</span>
             </a>
             <a href="https://github.com/adrianspeyer/speyer-ui" target="_blank" rel="noopener noreferrer" class="sui-shield">
                 <span class="sui-shield-label">built with</span><span class="sui-shield-value">SUI v2.1.2</span>
@@ -288,7 +288,7 @@
 
     <script>
     // =================================================================
-    //  OpenColor Labs v3.0.3 — Colour Vision Analysis Engine
+    //  OpenColor Labs v3.0.4 — Colour Vision Analysis Engine
     //  MIT Licence | https://github.com/adrianspeyer/Open-Colour-Labs
     // =================================================================
     const rr = (a, b) => Math.random() * (b - a) + a;
@@ -422,10 +422,12 @@
                     bgC=[[230,50,46],[240,48,47],[55,50,46],[48,48,47],[235,45,48]];
                     fgC=[[55,52,46],[50,50,47],[60,48,48]]; break;
                 case 'hidden':
-                    // Reverse plate: fg uses red+green at SAME sat/light — looks identical to CVD
-                    // but different colours to normal vision. CVD sees uniform tone = number pops via OTHER cue
-                    bgC=[[200,30,48],[45,28,49],[280,26,48],[160,28,49]];
-                    fgC=[[0,42,48],[120,42,48],[8,40,49],[115,40,49]]; break;
+                    // Reverse plate: bg contains ALL hues including red+green
+                    // FG is ONLY red+green at same sat/light
+                    // Normal vision: red+green dots everywhere, no visible shape
+                    // CVD: figure's red+green collapses to uniform brown, bg stays varied = shape visible
+                    bgC=[[0,40,48],[120,40,48],[8,38,49],[115,38,49],[200,30,48],[45,28,49],[280,26,48],[160,28,49]];
+                    fgC=[[0,40,48],[120,40,48],[8,38,49],[115,38,49]]; break;
                 case 'nothing':
                     bgC=fgC=[[105,50,46],[0,52,47],[55,48,47],[210,46,48],[350,50,46],[125,48,47]]; break;
                 case 'transform':
