@@ -31,10 +31,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" onload="lucide.createIcons()"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" onload="lucide.createIcons()"></script>
 
     <style>
-        /* === OpenColor Labs v3.0.4 — Custom CSS === */
+        /* === OpenColor Labs v3.1.2 — Custom CSS === */
         body {
             background: var(--sui-bg-primary); color: var(--sui-text-primary);
             display: flex; flex-direction: column; min-height: 100vh; margin: 0;
@@ -95,7 +95,8 @@
         /* Comparison slider */
         .compare-box {
             position: relative; overflow: hidden; cursor: ew-resize;
-            user-select: none; -webkit-user-select: none;
+            user-select: none; -webkit-user-select: none; -webkit-user-drag: none;
+            touch-action: none;
             border: 1px solid var(--sui-border); border-radius: var(--sui-radius-lg);
             background: #000; width: 100%;
         }
@@ -103,11 +104,14 @@
         .compare-box img.cmp-top {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             object-fit: cover; clip-path: inset(0 50% 0 0);
+            pointer-events: auto;
+            will-change: clip-path; /* GPU Acceleration */
         }
         .cmp-divider {
             position: absolute; top: 0; bottom: 0; left: 50%;
             width: 3px; background: rgba(255,255,255,0.5);
             transform: translateX(-50%); pointer-events: none; z-index: 3;
+            will-change: left; /* GPU Acceleration */
         }
         .cmp-handle {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
@@ -127,6 +131,20 @@
         }
         .cmp-label-l { left: var(--sui-space-3); }
         .cmp-label-r { right: var(--sui-space-3); }
+
+        /* Range Slider Styling */
+        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; margin: 8px 0; }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none; height: 20px; width: 20px; border-radius: 50%;
+            background: var(--sui-success); cursor: pointer; margin-top: -8px;
+            box-shadow: 0 0 0 2px var(--sui-bg-primary);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%; height: 4px; cursor: pointer; background: var(--sui-border);
+            border-radius: 2px;
+        }
+        input[type=range]:focus { outline: none; }
+        input[type=range]:focus::-webkit-slider-thumb { box-shadow: 0 0 0 3px var(--sui-blue-focus); }
 
         /* Reveal full image */
         .reveal-img {
@@ -200,27 +218,21 @@
         .sui-topbar .sui-brand-mark i[data-lucide] { color: var(--sui-text-inverse) !important; }
         .sui-topbar-actions .sui-btn i[data-lucide] { color: var(--sui-success) !important; }
         .sui-topbar-actions .sui-btn:hover i[data-lucide] { opacity: 0.85; }
-
-        /* Transform plate selected state */
-        .btn-opt.selected {
-            background: var(--sui-blue-soft); border-color: var(--sui-blue-primary);
-            box-shadow: 0 0 0 2px var(--sui-blue-focus);
-        }
     </style>
 </head>
 <body>
     <a href="#main" class="sui-visually-hidden">Skip to main content</a>
 
-    <!-- SVG FILTERS — Machado et al. (2009) severity=1.0 linearRGB -->
+    <!-- SVG FILTERS — Machado et al. (2009) values dynamically injected via JS -->
     <svg style="position:absolute;width:0;height:0;overflow:hidden;" aria-hidden="true"><defs>
         <filter id="f-protan" color-interpolation-filters="linearRGB">
-            <feColorMatrix type="matrix" values="0.152286 1.052583 -0.204868 0 0  0.114503 0.786281 0.099216 0 0  -0.003882 -0.048116 1.051998 0 0  0 0 0 1 0"/>
+            <feColorMatrix type="matrix" values=""/>
         </filter>
         <filter id="f-deutan" color-interpolation-filters="linearRGB">
-            <feColorMatrix type="matrix" values="0.367322 0.860646 -0.227968 0 0  0.280085 0.672501 0.047413 0 0  -0.011820 0.042940 0.968881 0 0  0 0 0 1 0"/>
+            <feColorMatrix type="matrix" values=""/>
         </filter>
         <filter id="f-tritan" color-interpolation-filters="linearRGB">
-            <feColorMatrix type="matrix" values="1.255528 -0.076749 -0.178779 0 0  -0.078411 0.930809 0.147602 0 0  0.004733 0.691367 0.303900 0 0  0 0 0 1 0"/>
+            <feColorMatrix type="matrix" values=""/>
         </filter>
         <!-- Daltonisation reveal filters -->
         <filter id="f-reveal-protan" color-interpolation-filters="linearRGB">
@@ -243,7 +255,7 @@
                 </div>
                 <div class="sui-brand-title">
                     <span class="sui-brand-name">Open<span class="brand-green">Color</span> Labs</span>
-                    <span class="sui-version-pill">v3.0.4</span>
+                    <span class="sui-version-pill">v3.1.2</span>
                 </div>
             </div>
             <div class="sui-topbar-actions">
@@ -278,7 +290,7 @@
         </div>
         <div style="display:flex;gap:var(--sui-space-2);justify-content:center;margin-top:var(--sui-space-2);flex-wrap:wrap;">
             <a href="https://github.com/adrianspeyer/Open-Colour-Labs" target="_blank" rel="noopener noreferrer" class="sui-shield sui-shield-success">
-                <span class="sui-shield-label">OpenColor Labs</span><span class="sui-shield-value">v3.0.4</span>
+                <span class="sui-shield-label">OpenColor Labs</span><span class="sui-shield-value">v3.1.2</span>
             </a>
             <a href="https://github.com/adrianspeyer/speyer-ui" target="_blank" rel="noopener noreferrer" class="sui-shield">
                 <span class="sui-shield-label">built with</span><span class="sui-shield-value">SUI v2.1.2</span>
@@ -288,22 +300,22 @@
 
     <script>
     // =================================================================
-    //  OpenColor Labs v3.0.4 — Colour Vision Analysis Engine
+    //  OpenColor Labs v3.1.2 — Colour Vision Analysis Engine
     //  MIT Licence | https://github.com/adrianspeyer/Open-Colour-Labs
     // =================================================================
     const rr = (a, b) => Math.random() * (b - a) + a;
 
     const SIM_DESCRIPTIONS = {
         protan: {
-            sim: `<strong>For someone with normal colour vision:</strong> The left side shows vivid red peppers and apples that are clearly different from the green peppers and broccoli. On the right (protanopia simulation), those reds become <em>dark and muddy</em> — almost brown. If both sides look the same to you, this matches how you see the world.`,
-            reveal: `<strong>This is for you.</strong> Toggle to "Colours Revealed" and look at the apples and red peppers on the left side of the image. If new, brighter tones appear where you normally see dark or brownish colours, those are the reds your eyes have been missing. The more dramatic the change, the stronger the effect. Someone without colour vision deficiency would see <em>no difference</em> between the two views.`
+            sim: `<strong>For Normal Colour Vision:</strong> The left shows vivid red peppers and apples that clearly contrast with the green broccoli. On the right, those reds become <em>dark and muddy</em>.<br><br><strong style="color:var(--sui-success);">Calibrate Your Vision:</strong> Adjust the severity slider until the left and right sides look <strong>perfectly identical</strong> to you. That percentage is your exact severity level! If you push the slider past your actual level (e.g., up to 100%), the right side will start looking "too green" or "wrong" because the simulation is digitally removing red that your eyes are actually still capable of seeing.`,
+            reveal: `<strong>This is for you.</strong> Toggle to "Colours Revealed" and look at the apples and red peppers on the left side of the image. If new, brighter tones appear where you normally see dark or brownish colours, those are the reds your eyes have been missing. Someone without colour vision deficiency would see <em>no difference</em> between the two views.`
         },
         deutan: {
-            sim: `<strong>For someone with normal colour vision:</strong> The left side shows red peppers that are completely different from the green peppers and broccoli. On the right (deuteranopia simulation), reds and greens blur into <em>similar brownish-yellow tones</em>. If both sides look the same to you, this matches how you see the world.`,
+            sim: `<strong>For Normal Colour Vision:</strong> The left shows red peppers that are completely different from the green broccoli. On the right, reds and greens blur into <em>similar brownish-yellow tones</em>.<br><br><strong style="color:var(--sui-success);">Calibrate Your Vision:</strong> Adjust the severity slider until the left and right sides look <strong>perfectly identical</strong> to you. That percentage is your exact severity level! If you push the slider past your actual level (e.g., up to 100%), the right side will start looking "wrong" because the simulation is digitally removing red-green distinctions that your eyes are actually still capable of perceiving.`,
             reveal: `<strong>This is for you.</strong> Toggle to "Colours Revealed" and look at the red peppers versus the green peppers. If you suddenly see a <em>clear difference</em> between items that normally look similar to you, those are the colour distinctions your eyes miss. Someone without colour vision deficiency would see <em>no difference</em> between the two views.`
         },
         tritan: {
-            sim: `<strong>For someone with normal colour vision:</strong> The left side shows bright yellow bananas and lemons clearly distinct from the green peppers and apples. On the right (tritanopia simulation), yellows and greens <em>blend together</em>, and the purple grapes lose their colour. If both sides look the same to you, this matches how you see the world.`,
+            sim: `<strong>For Normal Colour Vision:</strong> The left shows bright yellow bananas that clearly contrast with the green peppers. On the right, yellows and greens <em>blend together</em>, and the purple grapes lose their colour.<br><br><strong style="color:var(--sui-success);">Calibrate Your Vision:</strong> Adjust the severity slider until the left and right sides look <strong>perfectly identical</strong> to you. That percentage is your exact severity level! If you push the slider past your actual level (e.g., up to 100%), the right side will start looking "wrong" because the simulation is digitally removing blue-yellow differences that your eyes are actually still capable of perceiving.`,
             reveal: `<strong>This is for you.</strong> Toggle to "Colours Revealed" and look at the bananas versus the green peppers. If colours that normally look the same to you suddenly <em>separate into distinct tones</em>, those are the blue-yellow distinctions your eyes miss. Someone without colour vision deficiency would see <em>no difference</em> between the two views.`
         }
     };
@@ -338,7 +350,7 @@
             this.root = document.getElementById('app-root');
             this.S = {
                 view: 'intro', plateIdx: 0, history: [],
-                simType: 'deutan', revealOn: false, revealFiltered: false, sliderPos: 50,
+                simType: 'deutan', simSeverity: 1.0, revealOn: false, revealFiltered: false, sliderPos: 50,
                 seq: [
                     { type:'demo',          num:'12' },
                     { type:'red_green',     num:'74' },
@@ -378,6 +390,31 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // ── DYNAMIC SEVERITY ENGINE (Interpolating Machado Matrices) ──
+        applySeverityFilter(type, severity) {
+            const NORMAL = [1,0,0,0,0, 0,1,0,0,0, 0,0,1,0,0, 0,0,0,1,0];
+            const MATS = {
+                protan: [0.152286, 1.052583, -0.204868, 0, 0,  0.114503, 0.786281, 0.099216, 0, 0,  -0.003882, -0.048116, 1.051998, 0, 0,  0,0,0,1,0],
+                deutan: [0.367322, 0.860646, -0.227968, 0, 0,  0.280085, 0.672501, 0.047413, 0, 0,  -0.011820, 0.042940, 0.968881, 0, 0,  0,0,0,1,0],
+                tritan: [1.255528, -0.076749, -0.178779, 0, 0,  -0.078411, 0.930809, 0.147602, 0, 0,  0.004733, 0.691367, 0.303900, 0, 0,  0,0,0,1,0]
+            };
+            const target = MATS[type];
+            if (!target) return;
+            // Interpolate linearly between Normal (0.0) and Target (1.0)
+            const result = NORMAL.map((n, i) => n + (target[i] - n) * severity);
+            const filterEl = document.querySelector(`#f-${type} feColorMatrix`);
+            if (filterEl) {
+                filterEl.setAttribute('values', result.join(' '));
+            }
+        }
+
+        updateSeverity(val) {
+            this.S.simSeverity = parseFloat(val);
+            const label = document.getElementById('sev-val');
+            if (label) label.innerText = Math.round(this.S.simSeverity * 100) + '%';
+            this.applySeverityFilter(this.S.simType, this.S.simSeverity);
+        }
+
         // ── PLATE DRAWING ──
         drawPlate(canvas, plate) {
             const ctx = canvas.getContext('2d');
@@ -399,50 +436,33 @@
             const lVar = 12;
             switch (plate.type) {
                 case 'demo':
-                    // Easy — high contrast, everyone should see these
                     bgC=[[180,55,45],[190,60,42]]; fgC=[[20,85,55],[30,90,52]]; break;
                 case 'red_green':
-                    // ISHIHARA: bg = saturated red+green mix, fg = red only
-                    // High saturation so CVD confusion axis is fully engaged
-                    // Lightness deliberately varied ±lVar on EVERY dot so luminance is unreliable
                     bgC=[[105,65,45],[120,60,47],[0,65,45],[10,60,47],[95,55,46]];
                     fgC=[[0,65,46],[8,60,45],[352,62,47]]; break;
                 case 'red_green_hard':
-                    // Medium saturation — catches mild anomalous trichromacy
                     bgC=[[108,45,46],[118,42,47],[2,45,46],[12,42,47],[100,40,48]];
                     fgC=[[4,44,47],[356,42,46],[8,40,48]]; break;
                 case 'brightness':
-                    // Protan trap — saturated reds against dark green+red mix
-                    // Protans lose L-cone luminance so reds look dim
                     bgC=[[115,25,28],[130,22,27],[350,55,26],[5,50,27],[105,20,28]];
                     fgC=[[350,60,27],[2,55,26],[356,52,28]]; break;
                 case 'tritan':
-                    // Blue vs yellow — ONLY on blue-yellow axis, no red or green involved
-                    // This should NOT confuse red-green CVD
                     bgC=[[230,50,46],[240,48,47],[55,50,46],[48,48,47],[235,45,48]];
                     fgC=[[55,52,46],[50,50,47],[60,48,48]]; break;
                 case 'hidden':
-                    // Reverse plate: bg contains ALL hues including red+green
-                    // FG is ONLY red+green at same sat/light
-                    // Normal vision: red+green dots everywhere, no visible shape
-                    // CVD: figure's red+green collapses to uniform brown, bg stays varied = shape visible
                     bgC=[[0,40,48],[120,40,48],[8,38,49],[115,38,49],[200,30,48],[45,28,49],[280,26,48],[160,28,49]];
                     fgC=[[0,40,48],[120,40,48],[8,38,49],[115,38,49]]; break;
                 case 'nothing':
                     bgC=fgC=[[105,50,46],[0,52,47],[55,48,47],[210,46,48],[350,50,46],[125,48,47]]; break;
                 case 'transform':
                     isTransform = true;
-                    // BG: saturated mix of reds + greens + neutral
                     bgC=[[0,50,46],[10,48,47],[120,50,46],[130,48,47],[60,25,47],[80,22,46]];
-                    // numP drawn in RED only — protans miss it, deutans see it
                     fgC=[[0,52,46],[6,50,47],[354,54,46]];
-                    // numD drawn in GREEN only — deutans miss it, protans see it
                     fgC2=[[120,52,46],[128,50,47],[115,54,46]];
                     break;
             }
 
             if (isTransform) {
-                // Draw two overlapping numbers with offset positions
                 const m1 = document.createElement('canvas'); m1.width=W; m1.height=H;
                 const mc1 = m1.getContext('2d'); mc1.fillStyle='#000'; mc1.fillRect(0,0,W,H);
                 mc1.fillStyle='#fff'; mc1.font=`bold ${W*0.42}px system-ui,sans-serif`;
@@ -526,8 +546,7 @@
             const brM = H.filter(h=>h.type==='brightness'&&!h.isCorrect);
             const trM = H.filter(h=>h.type==='tritan'&&!h.isCorrect);
             const hidH = H.filter(h=>h.type==='hidden'&&h.isCorrect);
-            // Transform scoring: sawProtan = saw red number (numP) = can see red = DEUTAN signal
-            // sawDeutan = saw green number (numD) = can see green = PROTAN signal
+            
             const tProtanSig = H.filter(h=>h.type==='transform'&&h.sawDeutan&&!h.sawBoth).length;
             const tDeutanSig = H.filter(h=>h.type==='transform'&&h.sawProtan&&!h.sawBoth).length;
 
@@ -548,7 +567,7 @@
                 title:"Likely Tritan (Blue-Yellow)", badge:"Tritan", cls:"sui-badge sui-badge-info", color:"var(--sui-info)",
                 desc:"You struggled with blue-yellow plates but passed red-green." + sevNote + hidNote, severity:sev, type:'Tritan' };
 
-            // Protan vs Deutan — use transformation plate data + brightness
+            // Protan vs Deutan
             const protanScore = brM.length * 2 + tProtanSig;
             const deutanScore = (rgM.length > 0 && brM.length === 0 ? 2 : 0) + tDeutanSig;
 
@@ -595,7 +614,7 @@
             const up = () => { drag=false; };
 
             box.addEventListener('mousedown',dn);
-            box.addEventListener('touchstart',dn,{passive:true});
+            box.addEventListener('touchstart',dn,{passive:false}); // non-passive for preventDefault
             window.addEventListener('mousemove',mv);
             window.addEventListener('touchmove',mv,{passive:false});
             window.addEventListener('mouseup',up);
@@ -647,14 +666,11 @@
 
             let opts;
             if (isT) {
-                // 4 buttons: numP, numD, real combo, decoy combo
-                // Generate two unique decoy digits for the fake combo
                 let d1, d2;
                 do { d1 = String(Math.floor(Math.random()*8)+2); } while(d1===p.numP||d1===p.numD);
                 do { d2 = String(Math.floor(Math.random()*8)+2); } while(d2===p.numP||d2===p.numD||d2===d1);
                 const [dLo,dHi] = [d1,d2].sort((a,b)=>+a - +b);
                 opts = [p.numP, p.numD, `${p.numP} & ${p.numD}`, `${dLo} & ${dHi}`];
-                // Shuffle so position isn't predictable
                 for (let i=opts.length-1;i>0;i--) { const j=Math.floor(Math.random()*(i+1));[opts[i],opts[j]]=[opts[j],opts[i]]; }
             } else {
                 opts = new Set();
@@ -752,9 +768,9 @@
                     <div>
                         <strong style="display:block;margin-bottom:var(--sui-space-1);">Verify with the Simulator</strong>
                         <p style="margin-bottom:var(--sui-space-3);line-height:var(--sui-leading-body);">
-                            Open the ${dx.badge} tab. If both sides of the slider look identical to you, the diagnosis is confirmed. Then try "Reveal" to see what you've been missing.
+                            Open the Simulator. We will automatically adjust the simulation severity to match your test results (${dx.severity === 'mild' ? '50% Mild' : '100% Severe'}). You can then fine-tune it yourself.
                         </p>
-                        <button onclick="app.S.simType='${simType}';app.setView('sim');" class="sui-btn sui-btn-primary sui-btn-sm">
+                        <button onclick="app.S.simType='${simType}'; app.S.simSeverity=${dx.severity==='mild'?0.5:1.0}; app.setView('sim');" class="sui-btn sui-btn-primary sui-btn-sm">
                             <i data-lucide="split" style="width:14px;height:14px;" aria-hidden="true"></i> Launch Simulator
                         </button>
                     </div>
@@ -775,6 +791,8 @@
             const filterSim = `url(#f-${t})`;
             const filterReveal = `url(#f-reveal-${t})`;
 
+            // Ensure the SVG filter has the mathematically correct matrix applied immediately
+            this.applySeverityFilter(t, this.S.simSeverity);
             setTimeout(() => { if(!reveal) this.initSlider(); }, 0);
 
             return `<div class="fade-in" style="width:100%;max-width:900px;">
@@ -789,11 +807,25 @@
                         &#10024; Reveal
                     </button>
                 </div>
+                
                 <div class="sui-card" style="padding:var(--sui-space-3);margin-bottom:var(--sui-space-3);">
                     <p style="font-size:var(--sui-text-small);line-height:var(--sui-leading-body);color:var(--sui-text-secondary);">
                         ${reveal ? desc.reveal : desc.sim}
                     </p>
+                    ${!reveal ? `
+                    <div style="margin-top:var(--sui-space-3); padding-top:var(--sui-space-3); border-top:1px solid var(--sui-border);">
+                        <label style="display:flex; justify-content:space-between; font-size:var(--sui-text-small); font-weight:var(--sui-weight-semibold); color:var(--sui-text-primary); margin-bottom:var(--sui-space-1);">
+                            <span>Simulation Severity</span>
+                            <span id="sev-val">${Math.round(this.S.simSeverity * 100)}%</span>
+                        </label>
+                        <input type="range" min="0" max="1" step="0.05" value="${this.S.simSeverity}"
+                               oninput="app.updateSeverity(this.value)">
+                        <div style="display:flex; justify-content:space-between; font-size:var(--sui-text-meta); color:var(--sui-text-muted); margin-top:2px;">
+                            <span>Normal (0%)</span><span>Severe (100%)</span>
+                        </div>
+                    </div>` : ''}
                 </div>
+
                 ${reveal ? `
                     <div style="position:relative;overflow:hidden;border:1px solid var(--sui-border);border-radius:var(--sui-radius-lg);background:var(--sui-bg-elevated);">
                         <img class="reveal-img" id="reveal-base" src="test-image.jpg" alt="Your natural vision"
@@ -834,7 +866,6 @@
             </div>`;
         }
 
-        // ── REVEAL TOGGLE (in-place crossfade, no re-render) ──
         toggleReveal(filtered) {
             this.S.revealFiltered = filtered;
             const base = document.getElementById('reveal-base');
